@@ -9,31 +9,45 @@ import SwiftUI
 
 struct MenuView: View {
     var body: some View {
-        ScrollView {
-            VStack {
-                HStack {
-                    Circle()
-                        .frame(width: 41, height: 41)
-                        .padding(.leading, 20)
-                    VStack(alignment: .leading) {
-                        Text("Casa")
-                            .fontWeight(.bold)
-                        Text("Av. Alan Turing, 275")
+        
+        ScrollViewReader { value in
+            ScrollView {
+                VStack {
+                    HStack {
+                        Circle()
+                            .frame(width: 41, height: 41)
+                            .padding(.leading, 20)
+                        VStack(alignment: .leading) {
+                            Text("Casa")
+                                .fontWeight(.bold)
+                            Text("Av. Alan Turing, 275")
+                        }
+                        Spacer()
                     }
-                    Spacer()
+                    HStack {
+                        Text("Title")
+                            .fontWeight(.semibold)
+                            .font(.title2)
+                            .padding()
+                        Spacer()
+                    }
+                    Carrousel()
+                        .frame(height: 305)
+                    ScrollHorizontal(ScrollToSobremesa: {
+                        value.scrollTo("Sobremesa", anchor: .top)
+                    })
+                    HStack {
+                        Text("Sobremesa")
+                            .fontWeight(.semibold)
+                            .font(.title2)
+                            .padding()
+                            .id("Sobremesa")
+                        Spacer()
+                    }
                 }
-                HStack {
-                    Text("Title")
-                        .fontWeight(.semibold)
-                        .font(.title2)
-                        .padding()
-                    Spacer()
-                }
-                Carrousel()
-                    .frame(height: 305)
-                ScrollHorizontal()
             }
         }
+        
         //.background(Color.green)
     }
 }

@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct ScrollHorizontal: View {
+    var ScrollToSobremesa: (() -> Void)? // Closure para ação do botão
+    
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 20) {
-                Rectangle()
-                    .fill(Color.red)
+                Button("Sobremesa"){
+                    ScrollToSobremesa?()
+                }
+                Text("Salgados")
                     .frame(width: 145, height: 32)
-                
+                    .background(.red)
                 Rectangle()
                     .fill(Color.green)
                     .frame(width: 145, height: 32)
