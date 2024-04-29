@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ScrollHorizontal: View {
     var ScrollToSobremesa: (() -> Void)? // Closure para ação do botão
+    var ScrollToSalgados: (() -> Void)?
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -16,9 +17,9 @@ struct ScrollHorizontal: View {
                 Button("Sobremesa"){
                     ScrollToSobremesa?()
                 }
-                Text("Salgados")
-                    .frame(width: 145, height: 32)
-                    .background(.red)
+                Button("Salgados"){
+                    ScrollToSalgados?()
+                }
                 Rectangle()
                     .fill(Color.green)
                     .frame(width: 145, height: 32)

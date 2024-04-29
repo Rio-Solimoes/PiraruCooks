@@ -34,7 +34,13 @@ struct MenuView: View {
                     Carrousel()
                         .frame(height: 305)
                     ScrollHorizontal(ScrollToSobremesa: {
-                        value.scrollTo("Sobremesa", anchor: .top)
+                        withAnimation {
+                            value.scrollTo("Sobremesa", anchor: .top)
+                        }
+                    }, ScrollToSalgados: {
+                        withAnimation {
+                            value.scrollTo("Salgados", anchor: .top)
+                        }
                     })
                     HStack {
                         Text("Sobremesa")
@@ -43,6 +49,28 @@ struct MenuView: View {
                             .padding()
                             .id("Sobremesa")
                         Spacer()
+                    }
+                    ForEach(0..<3) { index in
+                        Rectangle()
+                            .fill(Color.blue)
+                            .frame(width: 382, height: 305)
+                            .cornerRadius(10)
+                            .tag(index)
+                    }
+                    HStack {
+                        Text("Salgados")
+                            .fontWeight(.semibold)
+                            .font(.title2)
+                            .padding()
+                            .id("Salgados")
+                        Spacer()
+                    }
+                    ForEach(0..<3) { index in
+                        Rectangle()
+                            .fill(Color.red)
+                            .frame(width: 382, height: 305)
+                            .cornerRadius(10)
+                            .tag(index)
                     }
                 }
             }
