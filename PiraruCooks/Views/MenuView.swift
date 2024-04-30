@@ -73,6 +73,8 @@ struct MenuView: View {
                     }
                 }
             }
+            
+            ListOfDishes()
         }
         
         //.background(Color.green)
