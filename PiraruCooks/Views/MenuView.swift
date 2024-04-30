@@ -14,9 +14,8 @@ struct MenuView: View {
             ScrollView {
                 VStack {
                     HStack {
-                        Circle()
-                            .frame(width: 41, height: 41)
-                            .padding(.leading, 20)
+                        Image("Endereço")
+                            .padding(.leading)
                         VStack(alignment: .leading) {
                             Text("Casa")
                                 .fontWeight(.bold)
