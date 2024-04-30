@@ -8,25 +8,21 @@
 import SwiftUI
 
 struct ScrollHorizontal: View {
+    var categorias: [String]
+    var value: SwiftUI.ScrollViewProxy
     var ScrollToSobremesa: (() -> Void)? // Closure para ação do botão
     var ScrollToSalgados: (() -> Void)?
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 20) {
-                Button("Sobremesa"){
-                    ScrollToSobremesa?()
+                ForEach(categorias, id: \.self) {categoria in
+                    Button(categoria){
+                        withAnimation {
+                            value.scrollTo("\(categoria)Id", anchor: .top)
+                        }
+                    }
                 }
-                Button("Salgados"){
-                    ScrollToSalgados?()
-                }
-                Rectangle()
-                    .fill(Color.green)
-                    .frame(width: 145, height: 32)
-                
-                Rectangle()
-                    .fill(Color.blue)
-                    .frame(width: 145, height: 32)
             }
             .padding()
         }
@@ -34,6 +30,6 @@ struct ScrollHorizontal: View {
     }
 }
 
-#Preview {
-    ScrollHorizontal()
-}
+//#Preview {
+//    ScrollHorizontal()
+//}

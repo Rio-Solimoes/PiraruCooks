@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ListOfDishes: View {
     
-    @ObservedObject var datas = MenuViewModel()
+    @ObservedObject var datas: MenuViewModel
     
     var body: some View {
         VStack {
@@ -19,6 +19,7 @@ struct ListOfDishes: View {
                         .font(.title2)
                     Spacer()
                 }.padding(.horizontal, 24)
+                    .id("\(categoria)Id")
                 ForEach(datas.pratos.filter({prato in prato.categoria == categoria}), id: \.self){prato in
                     Button {
                         print("AAA")
@@ -54,6 +55,6 @@ struct ListOfDishes: View {
     }
 }
 
-#Preview {
-    ListOfDishes()
-}
+//#Preview {
+//    ListOfDishes()
+//}
