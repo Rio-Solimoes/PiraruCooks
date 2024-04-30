@@ -7,7 +7,9 @@
 
 import Foundation
 
+@Observable
 class ListOfDishesModel {
+    @ObservationIgnored
     var lastCategory = ""
     
     func newCategory(currentCategory: String) -> String {

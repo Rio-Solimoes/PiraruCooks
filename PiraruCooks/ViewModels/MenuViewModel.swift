@@ -9,6 +9,7 @@ import Foundation
 
 class MenuViewModel: ObservableObject  {
     @Published var pratos = [Prato]()
+    @Published var categorias = [String]()
     
     init(){
         loadData()
@@ -23,6 +24,11 @@ class MenuViewModel: ObservableObject  {
             let data = try Data(contentsOf: url)
             let pratos = try JSONDecoder().decode([Prato].self, from: data)
             self.pratos = pratos
+            pratos.forEach({prato in
+                if (!categorias.contains(prato.categoria)) {
+                    categorias.append(prato.categoria)
+                }
+            })
         } catch {
             print("Error loading JSON:", error)
         }
