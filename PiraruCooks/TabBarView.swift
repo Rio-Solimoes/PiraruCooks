@@ -11,7 +11,7 @@ struct TabBarView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("Title")
+                Text("Cardápio")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
