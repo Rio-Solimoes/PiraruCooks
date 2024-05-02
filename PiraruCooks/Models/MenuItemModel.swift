@@ -8,14 +8,14 @@
 import Foundation
 import SwiftUI
 
-struct MenuItem: Codable {
+struct MenuItem: Codable, Hashable {
     var id: Int
     var name: String
     var detailText: String
     var price: Double
     var category: String
     var imageURL: URL
-    var image: Image? // Optional image property
+//    var image: Image? // Optional image property
 
     enum CodingKeys: String, CodingKey {
         case id

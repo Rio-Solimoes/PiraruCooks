@@ -91,9 +91,9 @@ class MenuController: ObservableObject {
 
             var fetchedMenuItems = menuResponse.items
 
-            for item in 0..<fetchedMenuItems.count {
-                fetchedMenuItems[item].image = try await fetchImage(from: fetchedMenuItems[item].imageURL)
-            }
+//            for item in 0..<fetchedMenuItems.count {
+//                fetchedMenuItems[item].image = try await fetchImage(from: fetchedMenuItems[item].imageURL)
+//            }
 
             return fetchedMenuItems
         } catch {

@@ -34,14 +34,14 @@ struct ListOfDishes: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
 
                             VStack(alignment: .leading) {
-                                Text(prato.nomeDoPrato)
+                                Text(prato.name)
                                     .font(.title3)
                                 Spacer()
-                                Text(prato.descriçãoDoPrato)
+                                Text(prato.detailText)
                                     .font(.caption)
                                     .fixedSize(horizontal: false, vertical: true)
                                 Spacer()
-                                Text("R$ \(prato.preço)")
+                                Text("R$ \(String(format: "%.2f", prato.price))")
                                     .font(.headline)
                             }
                             .foregroundStyle(.black)
