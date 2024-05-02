@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct MenuView: View {
+    @StateObject var menuController = MenuController.shared
     @StateObject var datas = MenuViewModel()
+    
     var body: some View {
         ScrollViewReader { value in
             ScrollView {

@@ -15,6 +15,33 @@ class MenuController: ObservableObject {
         case orderRequestFailed
         case imageDataMissing
     }
+    
+    @Published var categorias = [String]()
+    @Published var pratos = [MenuItem]()
+    
+    init() {
+        fetchInitialData()
+    }
+    
+    func fetchInitialData() {
+        Task {
+            do {
+                let fetchedCategories = try await fetchCategories()
+                
+                var fetchedPratos: [MenuItem] = []
+                for categoria in fetchedCategories {
+                    fetchedPratos += try await fetchMenuItems(forCategory: categoria)
+                }
+                
+                DispatchQueue.main.async {
+                    self.categorias = fetchedCategories
+                    self.pratos = fetchedPratos
+                }
+            } catch {
+                print("Error fetching initial data: \(error)")
+            }
+        }
+    }
 
     static let orderUpdatedNotification = Notification.Name("MenuController.orderUpdated")
     static let shared = MenuController()
@@ -64,8 +91,8 @@ class MenuController: ObservableObject {
 
             var fetchedMenuItems = menuResponse.items
 
-            for i in 0..<fetchedMenuItems.count {
-                fetchedMenuItems[i].image = try await fetchImage(from: fetchedMenuItems[i].imageURL)
+            for item in 0..<fetchedMenuItems.count {
+                fetchedMenuItems[item].image = try await fetchImage(from: fetchedMenuItems[item].imageURL)
             }
 
             return fetchedMenuItems
