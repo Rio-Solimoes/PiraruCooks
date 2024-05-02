@@ -10,14 +10,12 @@ import SwiftUI
 struct ScrollHorizontal: View {
     var categorias: [String]
     var value: SwiftUI.ScrollViewProxy
-    var ScrollToSobremesa: (() -> Void)? // Closure para ação do botão
-    var ScrollToSalgados: (() -> Void)?
-    
+
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 20) {
                 ForEach(categorias, id: \.self) {categoria in
-                    Button(categoria){
+                    Button(categoria) {
                         withAnimation {
                             value.scrollTo("\(categoria)Id", anchor: .top)
                         }
@@ -26,10 +24,5 @@ struct ScrollHorizontal: View {
             }
             .padding()
         }
-        
     }
 }
-
-//#Preview {
-//    ScrollHorizontal()
-//}

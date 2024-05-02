@@ -16,15 +16,14 @@ struct TabBarView: View {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 20)
-                
                 Circle()
                     .frame(width: 41, height: 41)
                     .foregroundColor(.blue)
                     .padding()
             }
-            
+
             Spacer()
-            
+
             TabView {
                 MenuView()
                     .tabItem {

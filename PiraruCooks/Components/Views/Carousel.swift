@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct Carrousel: View {
-    
+
     @State private var selectedTab = 0
-    
+
     var body: some View {
         TabView(selection: $selectedTab) {
             ForEach(0..<3) { index in

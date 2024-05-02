@@ -9,9 +9,7 @@ import SwiftUI
 
 struct MenuView: View {
     @StateObject var datas = MenuViewModel()
-    
     var body: some View {
-        
         ScrollViewReader { value in
             ScrollView {
                 VStack {
@@ -40,12 +38,8 @@ struct MenuView: View {
                 ListOfDishes(datas: datas)
             }
         }
-        
-        //.background(Color.green)
     }
 }
-
-
 #Preview {
     MenuView()
 }

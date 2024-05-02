@@ -8,30 +8,29 @@
 import SwiftUI
 
 struct ListOfDishes: View {
-    
     @ObservedObject var datas: MenuViewModel
-    
+
     var body: some View {
         VStack {
-            ForEach(datas.categorias, id: \.self){categoria in
-                HStack{
+            ForEach(datas.categorias, id: \.self) {categoria in
+                HStack {
                     Text(categoria)
                         .font(.title2)
                     Spacer()
                 }.padding(.horizontal, 24)
                     .id("\(categoria)Id")
-                ForEach(datas.pratos.filter({prato in prato.categoria == categoria}), id: \.self){prato in
+                ForEach(datas.pratos.filter({prato in prato.categoria == categoria}), id: \.self) {prato in
                     Button {
                         print("AAA")
                     } label: {
-                        HStack{
+                        HStack {
                             Image("tacaca")
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: getWidth() * 0.25 , height: getWidth() * 0.25)
+                                .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
-                            
-                            VStack(alignment: .leading){
+
+                            VStack(alignment: .leading) {
                                 Text(prato.nomeDoPrato)
                                     .font(.title3)
                                 Spacer()
@@ -54,7 +53,3 @@ struct ListOfDishes: View {
         }
     }
 }
-
-//#Preview {
-//    ListOfDishes()
-//}

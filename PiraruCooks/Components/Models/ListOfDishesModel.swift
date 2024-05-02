@@ -11,7 +11,7 @@ import Foundation
 class ListOfDishesModel {
     @ObservationIgnored
     var lastCategory = ""
-    
+
     func newCategory(currentCategory: String) -> String {
         print(lastCategory)
         print(currentCategory)
