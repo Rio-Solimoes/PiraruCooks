@@ -27,11 +27,19 @@ struct ListOfDishes: View {
                         print("AAA")
                     } label: {
                         HStack {
-                            Image("tacaca")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                            if let pratoImage = prato.image {
+                                Image(uiImage: pratoImage)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            } else {
+                                Image("tacaca")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            }
 
                             VStack(alignment: .leading) {
                                 Text(prato.name)
@@ -45,47 +53,20 @@ struct ListOfDishes: View {
                                     .font(.headline)
                             }
                             .foregroundStyle(.black)
-                                .multilineTextAlignment(.leading)
-                                .padding(.leading, 8)
-                                .frame(height: getWidth() * 0.20)
+                            .multilineTextAlignment(.leading)
+                            .padding(.leading, 8)
+                            .frame(height: getWidth() * 0.20)
                             Spacer()
-                        }.padding(.horizontal, 24)
-                            .padding(.vertical, 8)
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 8)
                     }
                 }
             }
         }
     }
-}
 
-//                    .id("\(categoria)Id")
-//                ForEach(datas.pratos.filter({prato in prato.categoria == categoria}), id: \.self) {prato in
-//                    Button {
-//                        print("AAA")
-//                    } label: {
-//                        HStack {
-//                            Image("tacaca")
-//                                .resizable()
-//                                .aspectRatio(contentMode: .fill)
-//                                .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
-//                                .clipShape(RoundedRectangle(cornerRadius: 10))
-//
-//                            VStack(alignment: .leading) {
-//                                Text(prato.nomeDoPrato)
-//                                    .font(.title3)
-//                                Spacer()
-//                                Text(prato.descriçãoDoPrato)
-//                                    .font(.caption)
-//                                    .fixedSize(horizontal: false, vertical: true)
-//                                Spacer()
-//                                Text("R$ \(prato.preço)")
-//                                    .font(.headline)
-//                            }.foregroundStyle(.black)
-//                                .multilineTextAlignment(.leading)
-//                                .padding(.leading, 8)
-//                                .frame(height: getWidth() * 0.20)
-//                            Spacer()
-//                        }.padding(.horizontal, 24)
-//                            .padding(.vertical, 8)
-//                    }
-//                }
+    func getWidth() -> CGFloat {
+        return UIScreen.main.bounds.width
+    }
+}

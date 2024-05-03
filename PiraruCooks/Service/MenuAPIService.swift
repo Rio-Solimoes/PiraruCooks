@@ -91,9 +91,9 @@ class MenuController: ObservableObject {
 
             var fetchedMenuItems = menuResponse.items
 
-//            for item in 0..<fetchedMenuItems.count {
-//                fetchedMenuItems[item].image = try await fetchImage(from: fetchedMenuItems[item].imageURL)
-//            }
+            for item in 0..<fetchedMenuItems.count {
+                fetchedMenuItems[item].image = try await fetchImage(from: fetchedMenuItems[item].imageURL)
+            }
 
             return fetchedMenuItems
         } catch {
@@ -103,22 +103,24 @@ class MenuController: ObservableObject {
         }
     }
 
-    func fetchImage(from url: URL) async throws -> Image {
+    func fetchImage(from url: URL) async throws -> UIImage {
         let (data, response) = try await URLSession.shared.data(from: url)
-
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
             throw MenuControllerError.imageDataMissing
         }
 
-        guard let uiImage = UIImage(data: data) else {
+        if httpResponse.statusCode != 200 {
+            print("Image fetch failed with status code: \(httpResponse.statusCode)")
             throw MenuControllerError.imageDataMissing
         }
 
-        // Ensure that the image is created on the main thread
-        return await withCheckedContinuation { continuation in
-            DispatchQueue.main.async {
-                continuation.resume(returning: Image(uiImage: uiImage))
-            }
+        if let image = UIImage(data: data) {
+            return image
+        } else {
+            print("Failed to create UIImage from data")
+            throw MenuControllerError.imageDataMissing
         }
     }
+
 }

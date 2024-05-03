@@ -15,7 +15,7 @@ struct MenuItem: Codable, Hashable {
     var price: Double
     var category: String
     var imageURL: URL
-//    var image: Image? // Optional image property
+    var image: UIImage? // Optional image property
 
     enum CodingKeys: String, CodingKey {
         case id
