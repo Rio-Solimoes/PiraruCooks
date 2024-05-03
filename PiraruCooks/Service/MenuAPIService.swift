@@ -27,12 +27,20 @@ class MenuController: ObservableObject {
         Task {
             do {
                 let fetchedCategories = try await fetchCategories()
-                
-                var fetchedPratos: [MenuItem] = []
-                for categoria in fetchedCategories {
-                    fetchedPratos += try await fetchMenuItems(forCategory: categoria)
+
+                let fetchedPratos = try await withThrowingTaskGroup(of: [MenuItem].self) { group -> [MenuItem] in
+                    for categoria in fetchedCategories {
+                        group.addTask {
+                            try await self.fetchMenuItems(forCategory: categoria)
+                        }
+                    }
+                    var fetchedPratos: [MenuItem] = []
+                    for try await pratos in group {
+                        fetchedPratos.append(contentsOf: pratos)
+                    }
+                    return fetchedPratos
                 }
-                
+
                 DispatchQueue.main.async {
                     self.categorias = fetchedCategories
                     self.pratos = fetchedPratos
