@@ -14,10 +14,10 @@ struct Carrousel: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             ForEach(0..<3) { index in
-                Rectangle()
-                    .fill(Color.blue)
-                    .frame(width: 382, height: 305)
-                    .cornerRadius(10)
+                Image("Carrousel\(index + 1)")
+                    .resizable()
+                    .frame(width: getWidth(), height: getHeight() * 0.35)
+                    .cornerRadius(3)
                     .tag(index)
             }
         }

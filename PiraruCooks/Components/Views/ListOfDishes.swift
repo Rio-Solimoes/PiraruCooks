@@ -15,38 +15,45 @@ struct ListOfDishes: View {
             ForEach(datas.categorias, id: \.self) {categoria in
                 HStack {
                     Text(categoria)
-                        .font(.title2)
+                        .font(.custom("KulimPark-SemiBold", size: 22, relativeTo: .title2))
                     Spacer()
-                }.padding(.horizontal, 24)
+                }
                     .id("\(categoria)Id")
                 ForEach(datas.pratos.filter({prato in prato.categoria == categoria}), id: \.self) {prato in
                     Button {
                         print("AAA")
                     } label: {
-                        HStack {
-                            Image("tacaca")
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-
-                            VStack(alignment: .leading) {
-                                Text(prato.nomeDoPrato)
-                                    .font(.title3)
-                                Spacer()
-                                Text(prato.descriçãoDoPrato)
-                                    .font(.caption)
-                                    .fixedSize(horizontal: false, vertical: true)
-                                Spacer()
-                                Text("R$ \(prato.preço)")
-                                    .font(.headline)
-                            }.foregroundStyle(.black)
+                        VStack {
+                            HStack {
+                                Image("tacaca")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                
+                                VStack(alignment: .leading) {
+                                    Text(prato.nomeDoPrato)
+                                        .font(.custom("KulimPark-SemiBold", size: 17, relativeTo: .body))
+                                    Spacer()
+                                    Text(prato.descriçãoDoPrato)
+                                        .font(.custom("KulimPark-Regular", size: 15, relativeTo: .body))
+                                        .lineLimit(2)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                    Spacer()
+                                    Text("R$ \(prato.preço)")
+                                        .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
+                                }
                                 .multilineTextAlignment(.leading)
-                                .padding(.leading, 8)
-                                .frame(height: getWidth() * 0.20)
-                            Spacer()
-                        }.padding(.horizontal, 24)
-                            .padding(.vertical, 8)
+                                .padding(.horizontal, 8)
+                                .frame(height: getWidth() * 0.25)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                            }
+                                .padding(.vertical, 8)
+                                .foregroundStyle(.black)
+                            Divider()
+                                .padding(.vertical, 8)
+                        }
                     }
                 }
             }
