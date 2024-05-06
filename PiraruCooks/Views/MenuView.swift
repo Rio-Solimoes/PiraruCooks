@@ -11,32 +11,49 @@ struct MenuView: View {
     @StateObject var menuController = MenuController.shared
     
     var body: some View {
-        ScrollViewReader { value in
-            ScrollView {
-                VStack {
-                    HStack {
-                        Image("Casa")
-                            .padding(.leading)
-                        VStack(alignment: .leading) {
-                            Text("Casa")
-                                .fontWeight(.bold)
-                            Text("Av. Alan Turing, 275")
+        NavigationStack {
+            ScrollViewReader { value in
+                ScrollView {
+                    VStack {
+                        Divider()
+                            .padding(.top, 16)
+                        NavigationLink {
+                            Text("Endereços")
+                                .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
+                        } label: {
+                            HStack {
+                                Image("Casa")
+                                    .padding(.horizontal, 8)
+                                VStack(alignment: .leading) {
+                                    Text("Casa")
+                                        .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
+                                    Text("Av. Alan Turing, 275")
+                                        .font(.custom("KulimPark-Light", size: 17, relativeTo: .body))
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .padding(.trailing)
+                            }
+                            .foregroundStyle(.black)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 20)
                         }
-                        Spacer()
+                        Divider()
+                            .padding(.bottom, 16)
+                        HStack {
+                            Text("Destaques")
+                                .font(.custom("KulimPark-SemiBold", size: 22, relativeTo: .title2))
+                            Spacer()
+                        }
+                        .padding(.horizontal, 20)
+                        Carrousel()
+                            .frame(height: getHeight() * 0.35)
+                        ScrollHorizontal(categorias: datas.categorias, value: value
+                        )
                     }
-                    HStack {
-                        Text("Title")
-                            .fontWeight(.semibold)
-                            .font(.title2)
-                            .padding()
-                        Spacer()
-                    }
-                    Carrousel()
-                        .frame(height: 305)
-                    ScrollHorizontal(categorias: menuController.categorias, value: value
-                    )
+                    ListOfDishes()
+                        .padding(.horizontal, 20)
                 }
-                ListOfDishes()
             }
         }
     }

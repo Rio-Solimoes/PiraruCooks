@@ -8,39 +8,54 @@
 import SwiftUI
 
 struct TabBarView: View {
+    @State private var selectedTab = "Cardápio"
+    
     var body: some View {
         VStack {
             HStack {
                 Text("Cardápio")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+                    .font(.custom("KulimPark-SemiBold", size: 34, relativeTo: .largeTitle))
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, 20)
-                Circle()
-                    .frame(width: 41, height: 41)
-                    .foregroundColor(.blue)
-                    .padding()
+                Image("Perfil")
+                    .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
             }
+            .padding(.horizontal, 20)
 
             Spacer()
 
-            TabView {
+            TabView(selection: $selectedTab) {
                 MenuView()
                     .tabItem {
-                        Image(systemName: "1.circle")
-                        Text("Menu")
+                        Image("Cardápio\(selectedTab == "Cardápio" ? "_Selecionado" : "")")
+                        Text("Cardápio")
+                            .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
                     }
-                Text("Second Tab")
-                    .tabItem {
-                        Image(systemName: "2.circle")
-                        Text("Pesquisar")
+                    .onTapGesture {
+                        selectedTab = "Cardápio"
                     }
-                Text("Third Tab")
+                    .tag("Cardápio")
+                Text("Buscar")
                     .tabItem {
-                        Image(systemName: "3.circle")
+                        Image("Buscar\(selectedTab == "Buscar" ? "_Selecionado" : "")")
+                        Text("Buscar")
+                            .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
+                    }
+                    .onTapGesture {
+                        selectedTab = "Buscar"
+                    }
+                    .tag("Buscar")
+                Text("Pedidos")
+                    .tabItem {
+                        Image("Pedidos\(selectedTab == "Pedidos" ? "_Selecionado" : "")")
                         Text("Pedidos")
+                            .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
                     }
+                    .onTapGesture {
+                        selectedTab = "Pedidos"
+                    }
+                    .tag("Pedidos")
             }
+            .accentColor(Color("Pink"))
         }
     }
 }

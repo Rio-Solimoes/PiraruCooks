@@ -15,7 +15,7 @@ struct ListOfDishes: View {
             ForEach(menuController.categorias, id: \.self) { categoria in
                 HStack {
                     Text(categoria)
-                        .font(.title2)
+                        .font(.custom("KulimPark-SemiBold", size: 22, relativeTo: .title2))
                     Spacer()
                 }
                 .padding(.horizontal, 24)
@@ -42,22 +42,25 @@ struct ListOfDishes: View {
 
                             VStack(alignment: .leading) {
                                 Text(prato.name)
-                                    .font(.title3)
+                                    .font(.custom("KulimPark-SemiBold", size: 17, relativeTo: .body))
                                 Spacer()
                                 Text(prato.detailText)
-                                    .font(.caption)
+                                    .font(.custom("KulimPark-Regular", size: 15, relativeTo: .body))
+                                    .lineLimit(2)
                                     .fixedSize(horizontal: false, vertical: true)
                                 Spacer()
                                 Text("R$ \(String(format: "%.2f", prato.price))")
-                                    .font(.headline)
+                                   .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
                             }
-                            .foregroundStyle(.black)
                             .multilineTextAlignment(.leading)
-                            .padding(.leading, 8)
-                            .frame(height: getWidth() * 0.20)
+                            .padding(.horizontal, 8)
+                            .frame(height: getWidth() * 0.25)
                             Spacer()
+                            Image(systemName: "chevron.right")
                         }
-                        .padding(.horizontal, 24)
+                        .padding(.vertical, 8)
+                        .foregroundStyle(.black)
+                        Divider()
                         .padding(.vertical, 8)
                     }
                 }
