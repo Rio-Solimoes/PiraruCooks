@@ -48,7 +48,7 @@ struct MenuView: View {
                         .padding(.horizontal, 20)
                         Carrousel()
                             .frame(height: getHeight() * 0.35)
-                        ScrollHorizontal(categorias: datas.categorias, value: value
+                        ScrollHorizontal(categorias: menuController.categorias, value: value
                         )
                     }
                     ListOfDishes()

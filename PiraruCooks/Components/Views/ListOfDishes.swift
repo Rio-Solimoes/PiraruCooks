@@ -18,7 +18,6 @@ struct ListOfDishes: View {
                         .font(.custom("KulimPark-SemiBold", size: 22, relativeTo: .title2))
                     Spacer()
                 }
-                .padding(.horizontal, 24)
                 .id("\(categoria)Id")
                 
                 ForEach(menuController.pratos.filter({prato in prato.category == categoria}), id: \.self) {prato in
