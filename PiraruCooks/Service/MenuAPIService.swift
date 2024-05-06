@@ -18,6 +18,15 @@ class MenuController: ObservableObject {
     
     @Published var categorias = [String]()
     @Published var pratos = [MenuItem]()
+    @Published var order = Order() {
+        didSet {
+            NotificationCenter.default.post(name: MenuController.orderUpdatedNotification, object: nil)
+        }
+    }
+    
+    static let orderUpdatedNotification = Notification.Name("MenuController.orderUpdated")
+    static let shared = MenuController()
+    let baseURL = URL(string: "http://localhost:8080/")!
     
     init() {
         fetchInitialData()
@@ -51,17 +60,6 @@ class MenuController: ObservableObject {
         }
     }
 
-    static let orderUpdatedNotification = Notification.Name("MenuController.orderUpdated")
-    static let shared = MenuController()
-
-    let baseURL = URL(string: "http://localhost:8080/")!
-
-    @Published var order = Order() {
-        didSet {
-            NotificationCenter.default.post(name: MenuController.orderUpdatedNotification, object: nil)
-        }
-    }
-
     func fetchCategories() async throws -> [String] {
         let categoriesURL = baseURL.appendingPathComponent("categories")
 
@@ -85,7 +83,6 @@ class MenuController: ObservableObject {
 
         let (data, response) = try await URLSession.shared.data(from: menuURL)
 
-        // Debug: Print the received JSON data
         let jsonString = String(data: data, encoding: .utf8)
         print("Received JSON data: \(jsonString ?? "")")
 
@@ -105,7 +102,6 @@ class MenuController: ObservableObject {
 
             return fetchedMenuItems
         } catch {
-            // Debug: Print any decoding errors
             print("Error decoding menu items: \(error)")
             throw error
         }

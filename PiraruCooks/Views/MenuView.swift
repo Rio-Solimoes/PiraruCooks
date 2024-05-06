@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MenuView: View {
     @StateObject var menuController = MenuController.shared
-    @StateObject var datas = MenuViewModel()
     
     var body: some View {
         ScrollViewReader { value in
@@ -34,14 +33,15 @@ struct MenuView: View {
                     }
                     Carrousel()
                         .frame(height: 305)
-                    ScrollHorizontal(categorias: datas.categorias, value: value
+                    ScrollHorizontal(categorias: menuController.categorias, value: value
                     )
                 }
-                ListOfDishes(datas: datas)
+                ListOfDishes()
             }
         }
     }
 }
+
 #Preview {
     MenuView()
 }

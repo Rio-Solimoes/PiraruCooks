@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ListOfDishes: View {
     @StateObject var menuController = MenuController.shared
-    @ObservedObject var datas: MenuViewModel
 
     var body: some View {
         VStack {
@@ -64,9 +63,5 @@ struct ListOfDishes: View {
                 }
             }
         }
-    }
-
-    func getWidth() -> CGFloat {
-        return UIScreen.main.bounds.width
     }
 }
