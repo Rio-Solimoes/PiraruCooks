@@ -1,18 +1,10 @@
-//
-//  Carousel.swift
-//  PiraruCooks
-//
-//  Created by Lucas Francisco on 29/04/24.
-//
-
 import SwiftUI
 
-struct Carrousel: View {
-
-    @State private var selectedTab = 0
+struct CarouselView: View {
+    @State var viewModel = CarouselViewModel()
 
     var body: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: $viewModel.selectedTab) {
             ForEach(0..<3) { index in
                 Image("Carrousel\(index + 1)")
                     .resizable()
@@ -27,5 +19,5 @@ struct Carrousel: View {
 }
 
 #Preview {
-    Carrousel()
+    CarouselView()
 }

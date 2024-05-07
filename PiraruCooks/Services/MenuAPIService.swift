@@ -8,7 +8,8 @@
 import Foundation
 import SwiftUI
 
-class MenuController: ObservableObject {
+@Observable
+class MenuController {
     enum MenuControllerError: Error, LocalizedError {
         case categoriesNotFound
         case menuItemsNotFound
@@ -16,9 +17,9 @@ class MenuController: ObservableObject {
         case imageDataMissing
     }
     
-    @Published var categorias = [String]()
-    @Published var pratos = [MenuItem]()
-    @Published var order = Order() {
+    var categories = [String]()
+    var dishes = [MenuItem]()
+    var order = Order() {
         didSet {
             NotificationCenter.default.post(name: MenuController.orderUpdatedNotification, object: nil)
         }
@@ -26,7 +27,7 @@ class MenuController: ObservableObject {
     
     static let orderUpdatedNotification = Notification.Name("MenuController.orderUpdated")
     static let shared = MenuController()
-    let baseURL = URL(string: "http://localhost:8080/")!
+    private let baseURL = URL(string: "http://localhost:8080/")!
     
     init() {
         fetchInitialData()
@@ -36,23 +37,36 @@ class MenuController: ObservableObject {
         Task {
             do {
                 let fetchedCategories = try await fetchCategories()
-
-                let fetchedPratos = try await withThrowingTaskGroup(of: [MenuItem].self) { group -> [MenuItem] in
-                    for categoria in fetchedCategories {
+                
+                // swiftlint:disable:next line_length
+                let fetchResults = try await withThrowingTaskGroup(of: [MenuItem].self) { group -> (fetchedPratos: [MenuItem], nonEmptyCategories: [String]) in
+                    for category in fetchedCategories {
                         group.addTask {
-                            try await self.fetchMenuItems(forCategory: categoria)
+                            try await self.fetchMenuItems(forCategory: category)
                         }
                     }
                     var fetchedPratos: [MenuItem] = []
+                    var nonEmptyCategories: [String] = []
                     for try await pratos in group {
-                        fetchedPratos.append(contentsOf: pratos)
+                        if let prato = pratos.first {
+                            nonEmptyCategories.append(prato.category)
+                            fetchedPratos.append(contentsOf: pratos)
+                        }
                     }
-                    return fetchedPratos
+                    return (fetchedPratos, nonEmptyCategories)
                 }
+                
+                let orderedNonEmptyCategories = fetchResults.nonEmptyCategories.sorted(by: {(categoryA, categoryB) in
+                    if let indexA = fetchedCategories.firstIndex(of: categoryA),
+                        let indexB = fetchedCategories.firstIndex(of: categoryB) {
+                        return indexA < indexB
+                    }
+                    return false
+                })
 
                 DispatchQueue.main.async {
-                    self.categorias = fetchedCategories
-                    self.pratos = fetchedPratos
+                    self.categories = orderedNonEmptyCategories
+                    self.dishes = fetchResults.fetchedPratos
                 }
             } catch {
                 print("Error fetching initial data: \(error)")
@@ -60,7 +74,7 @@ class MenuController: ObservableObject {
         }
     }
 
-    func fetchCategories() async throws -> [String] {
+    private func fetchCategories() async throws -> [String] {
         let categoriesURL = baseURL.appendingPathComponent("categories")
 
         let (data, response) = try await URLSession.shared.data(from: categoriesURL)
@@ -75,7 +89,7 @@ class MenuController: ObservableObject {
         return categoriesResponse.categories
     }
 
-    func fetchMenuItems(forCategory categoryName: String) async throws -> [MenuItem] {
+    private func fetchMenuItems(forCategory categoryName: String) async throws -> [MenuItem] {
         let baseMenuURL = baseURL.appendingPathComponent("menu")
         var components = URLComponents(url: baseMenuURL, resolvingAgainstBaseURL: true)!
         components.queryItems = [URLQueryItem(name: "category", value: categoryName)]
@@ -107,7 +121,7 @@ class MenuController: ObservableObject {
         }
     }
 
-    func fetchImage(from url: URL) async throws -> UIImage {
+    private func fetchImage(from url: URL) async throws -> UIImage {
         let (data, response) = try await URLSession.shared.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse else {
