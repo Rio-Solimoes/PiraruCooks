@@ -1,14 +1,7 @@
-//
-//  TabBarView.swift
-//  PiraruCooks
-//
-//  Created by Lucas Francisco on 29/04/24.
-//
-
 import SwiftUI
 
 struct TabBarView: View {
-    @State private var selectedTab = "Cardápio"
+    @State var viewModel = TabBarViewModel()
     
     var body: some View {
         VStack {
@@ -23,35 +16,35 @@ struct TabBarView: View {
 
             Spacer()
 
-            TabView(selection: $selectedTab) {
+            TabView(selection: $viewModel.selectedTab) {
                 MenuView()
                     .tabItem {
-                        Image("Cardápio\(selectedTab == "Cardápio" ? "_Selecionado" : "")")
+                        Image("Cardápio\(viewModel.selectedTab == "Cardápio" ? "_Selecionado" : "")")
                         Text("Cardápio")
                             .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
                     }
                     .onTapGesture {
-                        selectedTab = "Cardápio"
+                        viewModel.selectedTab = "Cardápio"
                     }
                     .tag("Cardápio")
                 Text("Buscar")
                     .tabItem {
-                        Image("Buscar\(selectedTab == "Buscar" ? "_Selecionado" : "")")
+                        Image("Buscar\(viewModel.selectedTab == "Buscar" ? "_Selecionado" : "")")
                         Text("Buscar")
                             .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
                     }
                     .onTapGesture {
-                        selectedTab = "Buscar"
+                        viewModel.selectedTab = "Buscar"
                     }
                     .tag("Buscar")
                 Text("Pedidos")
                     .tabItem {
-                        Image("Pedidos\(selectedTab == "Pedidos" ? "_Selecionado" : "")")
+                        Image("Pedidos\(viewModel.selectedTab == "Pedidos" ? "_Selecionado" : "")")
                         Text("Pedidos")
                             .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
                     }
                     .onTapGesture {
-                        selectedTab = "Pedidos"
+                        viewModel.selectedTab = "Pedidos"
                     }
                     .tag("Pedidos")
             }
