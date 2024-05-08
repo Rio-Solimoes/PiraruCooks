@@ -20,7 +20,7 @@ struct MenuDetailView: View {
                 }
             }
             
-            Image("tacaca")
+            Image(uiImage: selectedDish?.image ?? UIImage(named: "tacaca")!)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: getWidth() * 0.8, height: getWidth() * 0.9)
