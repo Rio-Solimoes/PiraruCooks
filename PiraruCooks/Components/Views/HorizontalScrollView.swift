@@ -2,11 +2,12 @@ import SwiftUI
 
 struct HorizontalScrollView: View {
     @State var viewModel: HorizontalScrollViewModel
+    @State var menuController = MenuController.shared
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: 0) {
-                ForEach(viewModel.categories, id: \.self) {category in
+                ForEach(menuController.categories, id: \.self) {category in
                     ZStack(alignment: .top) {
                         Color.white
                         Button {
