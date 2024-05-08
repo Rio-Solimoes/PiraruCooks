@@ -9,19 +9,20 @@ import SwiftUI
 
 struct ListOfDishes: View {
     @ObservedObject var datas: MenuViewModel
+    @State private var selectedDish: Prato?
 
     var body: some View {
         VStack {
-            ForEach(datas.categorias, id: \.self) {categoria in
+            ForEach(datas.categorias, id: \.self) { categoria in
                 HStack {
                     Text(categoria)
                         .font(.custom("KulimPark-SemiBold", size: 22, relativeTo: .title2))
                     Spacer()
                 }
-                    .id("\(categoria)Id")
-                ForEach(datas.pratos.filter({prato in prato.categoria == categoria}), id: \.self) {prato in
+                .id("\(categoria)Id")
+                ForEach(datas.pratos.filter({ prato in prato.categoria == categoria }), id: \.self) { prato in
                     Button {
-                        print("AAA")
+                        selectedDish = prato
                     } label: {
                         VStack {
                             HStack {
@@ -49,14 +50,19 @@ struct ListOfDishes: View {
                                 Spacer()
                                 Image(systemName: "chevron.right")
                             }
-                                .padding(.vertical, 8)
-                                .foregroundStyle(.black)
+                            .padding(.vertical, 8)
+                            .foregroundStyle(.black)
                             Divider()
                                 .padding(.vertical, 8)
                         }
                     }
                 }
             }
+        }
+        .sheet(isPresented: Binding<Bool>.constant(selectedDish != nil)) {
+            MenuDetailView(selectedDish: selectedDish, onClose: {
+                selectedDish = nil
+            })
         }
     }
 }
