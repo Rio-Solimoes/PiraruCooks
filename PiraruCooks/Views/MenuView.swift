@@ -43,7 +43,6 @@ struct MenuView: View {
                             .frame(height: getHeight() * 0.35)
                         HorizontalScrollView(
                             viewModel: HorizontalScrollViewModel(
-                                categories: menuController.categories,
                                 value: value)
                         )
                     }
