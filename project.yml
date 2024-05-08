@@ -22,6 +22,40 @@ targets:
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: YES
         UISupportedInterfaceOrientations~iphone:
-          [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+          [
+            UIInterfaceOrientationPortrait,
+            UIInterfaceOrientationLandscapeLeft,
+            UIInterfaceOrientationLandscapeRight,
+          ]
         UISupportedInterfaceOrientations~ipad:
-          [UIInterfaceOrientationPortrait, UIInterfaceOrientationPortraitUpsideDown, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+          [
+            UIInterfaceOrientationPortrait,
+            UIInterfaceOrientationPortraitUpsideDown,
+            UIInterfaceOrientationLandscapeLeft,
+            UIInterfaceOrientationLandscapeRight,
+          ]
+        UIAppFonts:
+          [
+            "KulimPark-ExtraLight.ttf",
+            "KulimPark-ExtraLightItalic.ttf",
+            "KulimPark-Light.ttf",
+            "KulimPark-LightItalic.ttf",
+            "KulimPark-Regular.ttf",
+            "KulimPark-Italic.ttf",
+            "KulimPark-SemiBold.ttf",
+            "KulimPark-SemiBoldItalic.ttf",
+            "KulimPark-Bold.ttf",
+            "KulimPark-BoldItalic.ttf",
+          ]
+    postCompileScripts:
+      - script: |
+          if [[ "$(uname -m)" == arm64 ]]; then
+              export PATH="/opt/homebrew/bin:$PATH"
+          fi
+
+          if which swiftlint > /dev/null; then
+            swiftlint .
+          else
+            echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+          fi
+        name: Run SwiftLint
