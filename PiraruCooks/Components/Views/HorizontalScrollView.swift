@@ -1,32 +1,23 @@
-//
-//  HorizontalScroll.swift
-//  PiraruCooks
-//
-//  Created by Lucas Francisco on 29/04/24.
-//
-
 import SwiftUI
 
-struct ScrollHorizontal: View {
-    var categorias: [String]
-    var value: SwiftUI.ScrollViewProxy
+struct HorizontalScrollView: View {
+    @State var viewModel: HorizontalScrollViewModel
+    @State var menuController = MenuController.shared
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: 0) {
-                ForEach(categorias, id: \.self) {categoria in
+                ForEach(menuController.categories, id: \.self) {category in
                     ZStack(alignment: .top) {
                         Color.white
                         Button {
-                            withAnimation {
-                                value.scrollTo("\(categoria)Id", anchor: .top)
-                            }
+                            viewModel.scrollToCategory(named: category)
                         } label: {
                             VStack {
                                 ZStack {
                                     Circle()
                                         .foregroundStyle(Color("Pink"))
-                                    Image(categoria)
+                                    Image(category)
                                         .resizable()
                                         .renderingMode(.template)
                                         .aspectRatio(contentMode: .fit)
@@ -34,7 +25,7 @@ struct ScrollHorizontal: View {
                                         .padding(10)
                                 }
                                 .frame(width: getWidth() * 0.15, height: getWidth() * 0.15)
-                                Text(categoria)
+                                Text(category)
                                     .font(.custom("KulimPark-Regular", size: 12, relativeTo: .caption))
                                     .lineLimit(2)
                                     .fixedSize(horizontal: false, vertical: true)
