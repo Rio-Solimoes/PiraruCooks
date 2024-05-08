@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MenuDetailView: View {
-    var selectedDish: Prato?
+    var selectedDish: MenuItem?
     var onClose: () -> Void
 
     var body: some View {
@@ -27,14 +27,13 @@ struct MenuDetailView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 10))
             
             VStack(alignment: .leading, spacing: 16) {
-                Text(selectedDish?.nomeDoPrato ?? "")
+                Text(selectedDish?.name ?? "")
                     .font(.custom("KulimPark-SemiBold", size: 22, relativeTo: .body))
-                Text(selectedDish?.descriçãoDoPrato ?? "")
+                Text(selectedDish?.detailText ?? "")
                     .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
-                Text("R$ \(selectedDish?.preço ?? 0)")
+                Text("R$ \(String(format: "%.2f", selectedDish?.price ?? 00.00))")
                     .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
             }
-    
             Spacer()
         }
         .padding()
@@ -46,6 +45,6 @@ struct ListOfDishes_Previews: PreviewProvider {
         let sampleDish = "Sample Dish"
         @State var selectedDish: String? = sampleDish
 
-        return ListOfDishes(datas: MenuViewModel())
+        return ListOfDishesView()
     }
 }

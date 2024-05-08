@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ListOfDishesView: View {
     @State var menuController = MenuController.shared
+    @State private var selectedDish: MenuItem?
     
     var body: some View {
         VStack {
@@ -16,6 +17,7 @@ struct ListOfDishesView: View {
                 ForEach(menuController.dishes.filter({dish in dish.category == category}), id: \.self) {dish in
                     Button {
                         print("AAA")
+                        selectedDish = dish
                     } label: {
                         VStack {
                             HStack {
@@ -59,6 +61,11 @@ struct ListOfDishesView: View {
                     }
                 }
             }
+        }
+        .sheet(isPresented: Binding<Bool>.constant(selectedDish != nil)) {
+            MenuDetailView(selectedDish: selectedDish, onClose: {
+                selectedDish = nil
+            })
         }
     }
 }
