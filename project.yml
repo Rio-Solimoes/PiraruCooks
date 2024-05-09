@@ -11,6 +11,12 @@ targets:
         MARKETING_VERSION: 1.0
     sources:
       - PiraruCooks
+    entitlements:
+      path: ./PiraruCooks/PiraruCooks.entitlements
+      properties:
+        aps-environment: "development"
+        com.apple.developer.icloud-container-identifiers: ["iCloud.pirarucooks"]
+        com.apple.developer.icloud-services: ["CloudKit"]
     info:
       path: ./PiraruCooks/Info.plist
       properties:
