@@ -11,7 +11,9 @@ import SwiftUI
 struct PiraruCooksApp: App {
     var body: some Scene {
         WindowGroup {
-            TabBarView()
+            NavigationStack {
+                TabBarView()
+            }
         }
     }
 }

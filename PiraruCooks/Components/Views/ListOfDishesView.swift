@@ -15,10 +15,7 @@ struct ListOfDishesView: View {
                 .id("\(category)Id")
                 
                 ForEach(menuController.dishes.filter({dish in dish.category == category}), id: \.self) {dish in
-                    Button {
-                        print("AAA")
-                        selectedDish = dish
-                    } label: {
+                    NavigationLink(destination: MenuDetailView(selectedDish: dish)) {
                         VStack {
                             HStack {
                                 if let dishImage = dish.image {
@@ -61,11 +58,6 @@ struct ListOfDishesView: View {
                     }
                 }
             }
-        }
-        .sheet(isPresented: Binding<Bool>.constant(selectedDish != nil)) {
-            MenuDetailView(selectedDish: selectedDish, onClose: {
-                selectedDish = nil
-            })
         }
     }
 }
