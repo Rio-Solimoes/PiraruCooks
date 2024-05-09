@@ -1,16 +1,8 @@
-//
-//  Menu.swift
-//  PiraruCooks
-//
-//  Created by Lucas Francisco on 29/04/24.
-//
-
 import SwiftUI
 
 struct MenuView: View {
-    @StateObject var datas = MenuViewModel()
     @StateObject var cloudKit = CloudKitModel()
-    
+    @State var menuController = MenuController.shared
     var body: some View {
         NavigationStack {
             ScrollViewReader { value in
@@ -48,15 +40,20 @@ struct MenuView: View {
                             Spacer()
                         }
                         .padding(.horizontal, 20)
-                        Carrousel()
+                        CarouselView()
                             .frame(height: getHeight() * 0.35)
-                        ScrollHorizontal(categorias: datas.categorias, value: value
+                        HorizontalScrollView(
+                            viewModel: HorizontalScrollViewModel(
+                                value: value)
                         )
                     }
-                    ListOfDishes(datas: datas)
+                    ListOfDishesView()
                         .padding(.horizontal, 20)
                 }
             }
+        }
+        .refreshable {
+            menuController.fetchInitialData()
         }
     }
 }
