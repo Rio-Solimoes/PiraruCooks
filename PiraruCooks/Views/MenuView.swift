@@ -9,12 +9,18 @@ import SwiftUI
 
 struct MenuView: View {
     @StateObject var datas = MenuViewModel()
+    @StateObject var cloudKit = CloudKitModel()
     
     var body: some View {
         NavigationStack {
             ScrollViewReader { value in
                 ScrollView {
                     VStack {
+                        
+                        Text("isSignedInToiCloud: \(cloudKit.isSignedInToiCloud.description)")
+                        Text("username: \(cloudKit.userName)")
+                        Text("permissionStatus:  \(cloudKit.permissionStatus.description)")
+                        
                         Divider()
                             .padding(.top, 16)
                         NavigationLink {
