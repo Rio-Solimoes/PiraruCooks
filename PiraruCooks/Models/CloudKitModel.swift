@@ -17,7 +17,7 @@ final class CloudKitModel: ObservableObject {
     init() {
         self.database = container.publicCloudDatabase
         getiCloudStatus()
-//        requestPermission()
+        requestPermission()
         fetchiCloudUserRecordID()
     }
     
@@ -50,15 +50,16 @@ final class CloudKitModel: ObservableObject {
         case iCloudAccountUnknown
     }
 
-//    func requestPermission(){
-//        self.container.requestApplicationPermission([.userDiscoverability]){ [weak self] returnedStatus, _ in
-//            DispatchQueue.main.async {[weak self] in
-//                if returnedStatus == .granted {
-//                    self?.permissionStatus = true
-//                }
-//            }
-//        }
-//    }
+    func requestPermission() {
+        self.container.requestApplicationPermission([.userDiscoverability]){ [weak self] returnedStatus, _ in
+            DispatchQueue.main.async {[weak self] in
+                if returnedStatus == .granted {
+                    self?.permissionStatus = true
+                    print("permissionStatus: \(String(describing: self?.permissionStatus.description))")
+                }
+            }
+        }
+    }
     
     func fetchiCloudUserRecordID() {
         container.fetchUserRecordID { [weak self] returnedID, _ in
@@ -75,6 +76,8 @@ final class CloudKitModel: ObservableObject {
             DispatchQueue.main.async { [weak self] in
                 if let name = returnIdentity?.userIdentity.nameComponents?.givenName {
                     self?.userName = name
+                    print("name: \(String(describing: self?.userName))")
+
                 }
             }
         }

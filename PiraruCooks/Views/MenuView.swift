@@ -17,10 +17,6 @@ struct MenuView: View {
                 ScrollView {
                     VStack {
                         
-                        Text("isSignedInToiCloud: \(cloudKit.isSignedInToiCloud.description)")
-                        Text("username: \(cloudKit.userName)")
-                        Text("permissionStatus:  \(cloudKit.permissionStatus.description)")
-                        
                         Divider()
                             .padding(.top, 16)
                         NavigationLink {
