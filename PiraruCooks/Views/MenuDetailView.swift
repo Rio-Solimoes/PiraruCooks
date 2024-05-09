@@ -67,17 +67,7 @@ struct MenuDetailView: View {
                 }
                 Spacer()
             }
-            .accentColor(Color("Pink"))
             .padding()
         }
-    }
-}
-
-struct ListOfDishes_Previews: PreviewProvider {
-    static var previews: some View {
-        let sampleDish = "Sample Dish"
-        @State var selectedDish: String? = sampleDish
-
-        return ListOfDishesView()
     }
 }

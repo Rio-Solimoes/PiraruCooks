@@ -48,7 +48,6 @@ struct TabBarView: View {
                     }
                     .tag("Pedidos")
             }
-            .accentColor(Color("Pink"))
         }
     }
 }

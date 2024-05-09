@@ -14,6 +14,7 @@ struct PiraruCooksApp: App {
             NavigationStack {
                 TabBarView()
             }
+            .accentColor(Color("Pink"))
         }
     }
 }
