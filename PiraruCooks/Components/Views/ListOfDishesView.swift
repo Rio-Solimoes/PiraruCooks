@@ -3,7 +3,8 @@ import SwiftUI
 struct ListOfDishesView: View {
     @State var menuController = MenuController.shared
     @State private var selectedDish: MenuItem?
-    
+    @State private var isHomePresented = false
+
     var body: some View {
         VStack {
             ForEach(menuController.categories, id: \.self) { category in
@@ -15,7 +16,10 @@ struct ListOfDishesView: View {
                 .id("\(category)Id")
                 
                 ForEach(menuController.dishes.filter({dish in dish.category == category}), id: \.self) {dish in
-                    NavigationLink(destination: MenuDetailView(selectedDish: dish)) {
+                    Button(action: {
+                        selectedDish = dish
+                        isHomePresented.toggle()
+                    }) {
                         VStack {
                             HStack {
                                 if let dishImage = dish.image {
@@ -58,6 +62,10 @@ struct ListOfDishesView: View {
                     }
                 }
             }
+        }
+        .fullScreenCover(isPresented: $isHomePresented) {
+            Home(selectedDish: selectedDish)
+                .edgesIgnoringSafeArea(.horizontal)
         }
     }
 }
