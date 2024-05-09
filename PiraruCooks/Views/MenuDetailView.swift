@@ -9,8 +9,9 @@ import SwiftUI
 
 struct MenuDetailView: View {
     @State var stepperValue: Int = 0
+    @State var textFieldText: String = ""
     var selectedDish: MenuItem?
-
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 32) {
@@ -45,9 +46,8 @@ struct MenuDetailView: View {
                         Spacer()
                         
                         VStack(spacing: 24) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(.gray.opacity(0.5))
-                                .frame(width: getWidth() * 0.9, height: getWidth() * 0.25)
+                            TextField("Type something here...", text: $textFieldText, axis: .vertical)
+                                .textFieldStyle(.roundedBorder)
                             
                             Button {
                                 // Action
