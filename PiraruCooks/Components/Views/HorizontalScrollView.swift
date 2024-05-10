@@ -26,7 +26,7 @@ struct HorizontalScrollView: View {
                                 }
                                 .frame(width: getWidth() * 0.15, height: getWidth() * 0.15)
                                 Text(category)
-                                    .font(.custom("KulimPark-Regular", size: 12, relativeTo: .caption))
+                                    .font(.caption)
                                     .lineLimit(2)
                                     .fixedSize(horizontal: false, vertical: true)
                                     .foregroundStyle(.black)
