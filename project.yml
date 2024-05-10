@@ -1,6 +1,10 @@
 name: PiraruCooks
 options:
   bundleIdPrefix: com.solimoes
+packages:
+  Parintins:
+    url: https://github.com/Rio-Solimoes/Parintins.git
+    branch: main
 targets:
   PiraruCooks:
     type: application
@@ -59,3 +63,5 @@ targets:
             echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
           fi
         name: Run SwiftLint
+    dependencies:
+      - package: Parintins

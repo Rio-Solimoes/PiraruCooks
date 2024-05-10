@@ -1,6 +1,8 @@
 import SwiftUI
+import Parintins
 
 struct MenuView: View {
+    @Environment(ThemeService.self) private var themeService
     @State var menuController = MenuController.shared
     
     var body: some View {
@@ -10,12 +12,27 @@ struct MenuView: View {
                     VStack {
                         Divider()
                             .padding(.top, 16)
+                        Button {
+                            themeService.selectedTheme = Themes.Garantido()
+                        } label: {
+                            Text("Garantido")
+                        }
+                        Button {
+                            themeService.selectedTheme = Themes.Caprichoso()
+                        } label: {
+                            Text("Caprichoso")
+                        }
+                        Button {
+                            themeService.selectedTheme = Themes.Parintins()
+                        } label: {
+                            Text("Parintins")
+                        }
                         NavigationLink {
                             Text("Endereços")
                                 .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
                         } label: {
                             HStack {
-                                Image("Casa")
+                                Shared.home.swiftUIImage
                                     .padding(.horizontal, 8)
                                 VStack(alignment: .leading) {
                                     Text("Casa")

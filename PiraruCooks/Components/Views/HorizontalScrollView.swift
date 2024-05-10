@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct HorizontalScrollView: View {
+    @Environment(ThemeService.self) private var themeService
     @State var viewModel: HorizontalScrollViewModel
     @State var menuController = MenuController.shared
 
@@ -9,20 +10,21 @@ struct HorizontalScrollView: View {
             HStack(alignment: .top, spacing: 0) {
                 ForEach(menuController.categories, id: \.self) {category in
                     ZStack(alignment: .top) {
-                        Color.white
                         Button {
                             viewModel.scrollToCategory(named: category)
                         } label: {
                             VStack {
                                 ZStack {
                                     Circle()
-                                        .foregroundStyle(Color("Pink"))
-                                    Image(category)
-                                        .resizable()
-                                        .renderingMode(.template)
-                                        .aspectRatio(contentMode: .fit)
-                                        .foregroundStyle(.white)
-                                        .padding(10)
+                                        .foregroundStyle(themeService.selectedTheme.primary.swiftUIColor)
+                                    if let image = viewModel.getImage(for: category) {
+                                        image
+                                            .resizable()
+                                            .renderingMode(.template)
+                                            .aspectRatio(contentMode: .fit)
+                                            .foregroundStyle(.white)
+                                            .padding(10)
+                                    }
                                 }
                                 .frame(width: getWidth() * 0.15, height: getWidth() * 0.15)
                                 Text(category)
