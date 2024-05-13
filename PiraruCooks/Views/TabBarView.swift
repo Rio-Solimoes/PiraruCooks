@@ -9,7 +9,7 @@ struct TabBarView: View {
         VStack {
             HStack {
                 Text("Cardápio")
-                    .font(.custom("KulimPark-SemiBold", size: 34, relativeTo: .largeTitle))
+                    .font(.largeTitle)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 themeManager.selectedTheme.profileDefault.swiftUIImage
                     .resizable()
@@ -28,7 +28,7 @@ struct TabBarView: View {
                             Shared.menu.swiftUIImage
                         }
                         Text("Cardápio")
-                            .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
+                            .font(.body)
                     }
                     .onTapGesture {
                         viewModel.selectedTab = "Cardápio"
@@ -42,7 +42,7 @@ struct TabBarView: View {
                             Shared.search.swiftUIImage
                         }
                         Text("Buscar")
-                            .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
+                            .font(.body)
                     }
                     .onTapGesture {
                         viewModel.selectedTab = "Buscar"
@@ -56,7 +56,7 @@ struct TabBarView: View {
                             Shared.orders.swiftUIImage
                         }
                         Text("Pedidos")
-                            .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
+                            .font(.body)
                     }
                     .onTapGesture {
                         viewModel.selectedTab = "Pedidos"
