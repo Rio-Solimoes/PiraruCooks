@@ -3,13 +3,14 @@ import Parintins
 
 struct MenuView: View {
     @EnvironmentObject private var themeManager: ThemeManager
+    @StateObject var cloudKit = CloudKitModel()
     @State var menuController = MenuController.shared
-    
     var body: some View {
         NavigationStack {
             ScrollViewReader { value in
                 ScrollView {
                     VStack {
+                        
                         Divider()
                             .padding(.top, 16)
                         NavigationLink {
