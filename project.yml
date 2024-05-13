@@ -1,6 +1,10 @@
 name: PiraruCooks
 options:
   bundleIdPrefix: com.solimoes
+packages:
+  Parintins:
+    url: https://github.com/Rio-Solimoes/Parintins.git
+    branch: main
 targets:
   PiraruCooks:
     type: application
@@ -11,6 +15,12 @@ targets:
         MARKETING_VERSION: 1.0
     sources:
       - PiraruCooks
+    entitlements:
+      path: ./PiraruCooks/PiraruCooks.entitlements
+      properties:
+        aps-environment: "development"
+        com.apple.developer.icloud-container-identifiers: ["iCloud.pirarucooks"]
+        com.apple.developer.icloud-services: ["CloudKit"]
     info:
       path: ./PiraruCooks/Info.plist
       properties:
@@ -24,15 +34,12 @@ targets:
         UISupportedInterfaceOrientations~iphone:
           [
             UIInterfaceOrientationPortrait,
-            UIInterfaceOrientationLandscapeLeft,
-            UIInterfaceOrientationLandscapeRight,
+            UIInterfaceOrientationPortraitUpsideDown,
           ]
         UISupportedInterfaceOrientations~ipad:
           [
             UIInterfaceOrientationPortrait,
             UIInterfaceOrientationPortraitUpsideDown,
-            UIInterfaceOrientationLandscapeLeft,
-            UIInterfaceOrientationLandscapeRight,
           ]
         UIAppFonts:
           [
@@ -59,3 +66,5 @@ targets:
             echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
           fi
         name: Run SwiftLint
+    dependencies:
+      - package: Parintins
