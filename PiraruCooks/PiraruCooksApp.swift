@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct PiraruCooksApp: App {
+    @StateObject var networkMonitor = NetworkMonitor()
+    
     var body: some Scene {
         WindowGroup {
             TabBarView()
+                .environmentObject(networkMonitor)
         }
     }
 }
