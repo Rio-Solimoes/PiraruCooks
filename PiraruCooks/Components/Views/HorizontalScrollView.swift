@@ -1,7 +1,8 @@
 import SwiftUI
+import Parintins
 
 struct HorizontalScrollView: View {
-    @Environment(ThemeService.self) private var themeService
+    @EnvironmentObject private var themeManager: ThemeManager
     @State var viewModel: HorizontalScrollViewModel
     @State var menuController = MenuController.shared
 
@@ -16,7 +17,7 @@ struct HorizontalScrollView: View {
                             VStack {
                                 ZStack {
                                     Circle()
-                                        .foregroundStyle(themeService.selectedTheme.primary.swiftUIColor)
+                                        .foregroundStyle(themeManager.selectedTheme.primary.swiftUIColor)
                                     if let image = viewModel.getImage(for: category) {
                                         image
                                             .resizable()

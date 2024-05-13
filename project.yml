@@ -28,15 +28,12 @@ targets:
         UISupportedInterfaceOrientations~iphone:
           [
             UIInterfaceOrientationPortrait,
-            UIInterfaceOrientationLandscapeLeft,
-            UIInterfaceOrientationLandscapeRight,
+            UIInterfaceOrientationPortraitUpsideDown,
           ]
         UISupportedInterfaceOrientations~ipad:
           [
             UIInterfaceOrientationPortrait,
             UIInterfaceOrientationPortraitUpsideDown,
-            UIInterfaceOrientationLandscapeLeft,
-            UIInterfaceOrientationLandscapeRight,
           ]
         UIAppFonts:
           [

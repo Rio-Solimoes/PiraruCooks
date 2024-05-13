@@ -6,16 +6,17 @@
 //
 
 import SwiftUI
+import Parintins
 
 @main
 struct PiraruCooksApp: App {
-    @State private var themeService = ThemeService()
+    @StateObject private var themeManager = ThemeManager.shared
     
     var body: some Scene {
         WindowGroup {
             TabBarView()
-                .environment(themeService)
-                .tint(themeService.selectedTheme.primary.swiftUIColor)
+                .environmentObject(themeManager)
+                .tint(themeManager.selectedTheme.primary.swiftUIColor)
         }
     }
 }

@@ -2,7 +2,7 @@ import SwiftUI
 import Parintins
 
 struct TabBarView: View {
-    @Environment(ThemeService.self) private var themeService
+    @EnvironmentObject private var themeManager: ThemeManager
     @State var viewModel = TabBarViewModel()
     
     var body: some View {
@@ -11,7 +11,7 @@ struct TabBarView: View {
                 Text("Cardápio")
                     .font(.custom("KulimPark-SemiBold", size: 34, relativeTo: .largeTitle))
                     .frame(maxWidth: .infinity, alignment: .leading)
-                themeService.selectedTheme.profileDefault.swiftUIImage
+                themeManager.selectedTheme.profileDefault.swiftUIImage
                     .resizable()
                     .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)                
             }
@@ -23,7 +23,7 @@ struct TabBarView: View {
                 MenuView()
                     .tabItem {
                         if viewModel.selectedTab == "Cardápio" {
-                            themeService.selectedTheme.menu.swiftUIImage
+                            themeManager.selectedTheme.menu.swiftUIImage
                         } else {
                             Shared.menu.swiftUIImage
                         }
@@ -37,7 +37,7 @@ struct TabBarView: View {
                 Text("Buscar")
                     .tabItem {
                         if viewModel.selectedTab == "Buscar" {
-                            themeService.selectedTheme.search.swiftUIImage
+                            themeManager.selectedTheme.search.swiftUIImage
                         } else {
                             Shared.search.swiftUIImage
                         }
@@ -51,7 +51,7 @@ struct TabBarView: View {
                 Text("Pedidos")
                     .tabItem {
                         if viewModel.selectedTab == "Pedidos" {
-                            themeService.selectedTheme.orders.swiftUIImage
+                            themeManager.selectedTheme.orders.swiftUIImage
                         } else {
                             Shared.orders.swiftUIImage
                         }
@@ -63,7 +63,14 @@ struct TabBarView: View {
                     }
                     .tag("Pedidos")
             }
-//            .accentColor(Color("Pink"))
+            .sheet(isPresented: $viewModel.showSelectTheme) {
+                SelectThemeView()
+            }
+            .onAppear {
+                if viewModel.dismissThemeSelection {
+                    themeManager.selectedTheme = Themes.Parintins.shared
+                }
+            }
         }
     }
 }
