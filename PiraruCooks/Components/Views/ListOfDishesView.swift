@@ -1,4 +1,5 @@
 import SwiftUI
+import Parintins
 
 struct ListOfDishesView: View {
     @State var menuController = MenuController.shared
@@ -26,7 +27,7 @@ struct ListOfDishesView: View {
                                         .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
                                         .clipShape(RoundedRectangle(cornerRadius: 10))
                                 } else {
-                                    Image(systemName: "fork.knife")
+                                    Shared.emptyDish.swiftUIImage
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
