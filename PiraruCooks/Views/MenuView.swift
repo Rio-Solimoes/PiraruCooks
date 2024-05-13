@@ -1,6 +1,8 @@
 import SwiftUI
+import Parintins
 
 struct MenuView: View {
+    @EnvironmentObject private var themeManager: ThemeManager
     @StateObject var cloudKit = CloudKitModel()
     @State var menuController = MenuController.shared
     var body: some View {
@@ -16,7 +18,7 @@ struct MenuView: View {
                                 .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
                         } label: {
                             HStack {
-                                Image("Casa")
+                                Shared.home.swiftUIImage
                                     .padding(.horizontal, 8)
                                 VStack(alignment: .leading) {
                                     Text("Casa")
