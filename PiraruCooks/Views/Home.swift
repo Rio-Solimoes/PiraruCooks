@@ -54,10 +54,9 @@ struct Home: View {
                 }
                 .edgesIgnoringSafeArea(.all)
                 .padding(.top, currentPaddingTop)
-                .onChange(of: isMenuDetailScrolling) { newValue in
+                .onChange(of: isMenuDetailScrolling) {
                     withAnimation(.easeInOut(duration: 0.5)) {
-                        print(newValue)
-                        if newValue == true {
+                        if isMenuDetailScrolling == true {
                             currentSpacing = 0
                             currentTrailingSpace = 0
                             currentPaddingTop = 0

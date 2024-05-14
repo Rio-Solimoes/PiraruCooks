@@ -90,7 +90,7 @@ struct MenuDetailView: View {
                 Color.clear.preference(key: ViewOffsetKey.self, value: -$0.frame(in: .named("scroll")).origin.y)
             }).onPreferenceChange(ViewOffsetKey.self) { currentOffset in
                 let offsetDifference: CGFloat = self.previousViewOffset - currentOffset
-                if ( abs(offsetDifference) > minimumOffset) {
+                if abs(offsetDifference) > minimumOffset {
                     print("offsetDiference: \(offsetDifference)")
                     print("previousViewOffsset: \(previousViewOffset)")
                     print("currentOffset: \(currentOffset)")

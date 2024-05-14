@@ -16,14 +16,14 @@ struct ListOfDishesView: View {
                 .id("\(category)Id")
                 
                 ForEach(menuController.dishes.filter({dish in dish.category == category}), id: \.self) {dish in
-                    Button(action: {
+                    Button {
                         selectedDish = dish
                         isHomePresented.toggle()
-                    }) {
+                    } label: {
                         VStack {
                             HStack {
-                                if let dishImage = dish.image {
-                                    Image(uiImage: dishImage)
+                                if dish.image != nil {
+                                    Image(uiImage: dish.image!)
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
@@ -46,7 +46,7 @@ struct ListOfDishesView: View {
                                         .fixedSize(horizontal: false, vertical: true)
                                     Spacer()
                                     Text("R$ \(String(format: "%.2f", dish.price))")
-                                       .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
+                                        .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
                                 }
                                 .multilineTextAlignment(.leading)
                                 .padding(.horizontal, 8)
@@ -57,7 +57,7 @@ struct ListOfDishesView: View {
                             .padding(.vertical, 8)
                             .foregroundStyle(.black)
                             Divider()
-                            .padding(.vertical, 8)
+                                .padding(.vertical, 8)
                         }
                     }
                 }
