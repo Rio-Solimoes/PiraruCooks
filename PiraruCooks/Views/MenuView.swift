@@ -10,7 +10,6 @@ struct MenuView: View {
             ScrollViewReader { value in
                 ScrollView {
                     VStack {
-                        
                         Divider()
                             .padding(.top, 16)
                         NavigationLink {

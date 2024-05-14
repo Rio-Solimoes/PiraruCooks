@@ -20,7 +20,7 @@ struct NoNetworkView: View {
                 .multilineTextAlignment(.center)
             
             Button("Ir para Ajustes") {
-                if let url = URL(string:"App-Prefs:root=WIFI") {
+                if let url = URL(string: "App-Prefs:root=WIFI") {
                   if UIApplication.shared.canOpenURL(url) {
                     if #available(iOS 10.0, *) {
                       UIApplication.shared.open(url, options: [:], completionHandler: nil)
