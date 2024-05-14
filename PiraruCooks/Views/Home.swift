@@ -42,7 +42,14 @@ struct Home: View {
                         MenuDetailView(selectedDish: dish, isMenuDetailScrolling: $isMenuDetailScrolling)
                             .background()
                             .frame(width: size.width)
-                            .cornerRadius(12)
+                            .clipShape(
+                                .rect(
+                                    topLeadingRadius: 12,
+                                    bottomLeadingRadius: 0,
+                                    bottomTrailingRadius: 0,
+                                    topTrailingRadius: 12
+                                )
+                            )
                     }
                 }
                 .edgesIgnoringSafeArea(.all)

@@ -64,8 +64,12 @@ struct ListOfDishesView: View {
             }
         }
         .fullScreenCover(isPresented: $isHomePresented) {
-            Home(selectedDish: selectedDish)
-                .edgesIgnoringSafeArea(.horizontal)
+            VStack {
+                Home(selectedDish: selectedDish)
+                    .presentationCornerRadius(0)
+            }
+            .presentationBackgroundInteraction(.enabled)
+            .bottomMaskForSheet()
         }
     }
 }
