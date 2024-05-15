@@ -39,7 +39,7 @@ struct Home: View {
                     GeometryReader { proxy in
                         let size = proxy.size
                         
-                        MenuDetailView(selectedDish: dish, isMenuDetailScrolling: $isMenuDetailScrolling)
+                        MenuDetailView(isMenuDetailScrolling: $isMenuDetailScrolling, selectedDish: dish)
                             .background()
                             .frame(width: size.width)
                             .clipShape(
