@@ -21,19 +21,15 @@ struct MenuDetailView: View {
     }
 
     var body: some View {
-        ZStack {
-            VStack(spacing: viewModel.currentSpacing) {
-                carouselView()
-                .edgesIgnoringSafeArea(.all)
-                .padding(.top, viewModel.currentPaddingTop)
-                .onChange(of: viewModel.isMenuDetailScrolling) {
-                    viewModel.handleScrollingChange()
-                }
+        VStack(spacing: viewModel.currentSpacing) {
+            carouselView()
+            .edgesIgnoringSafeArea(.all)
+            .padding(.top, viewModel.currentPaddingTop)
+            .onChange(of: viewModel.isMenuDetailScrolling) {
+                viewModel.handleScrollingChange()
             }
-            .frame(maxHeight: .infinity, alignment: .top)
         }
-        .onAppear(perform: viewModel.animateBackground)
-        .background(Color.black.opacity(viewModel.showBackground ? 0.6 : 0))
+        .frame(maxHeight: .infinity, alignment: .top)
     }
     
     private func carouselView() -> some View {

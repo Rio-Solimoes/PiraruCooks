@@ -65,12 +65,15 @@ struct ListOfDishesView: View {
             }
         }
         .fullScreenCover(isPresented: $isHomePresented) {
-            VStack {
-                MenuDetailView(selectedDish: $selectedDish)
-                    .presentationCornerRadius(0)
+            ZStack {
+                VStack {
+                    MenuDetailView(selectedDish: $selectedDish)
+                        .presentationCornerRadius(0)
+                }
+                .presentationBackgroundInteraction(.enabled)
+                .bottomMaskForSheet()
             }
-            .presentationBackgroundInteraction(.enabled)
-            .bottomMaskForSheet()
+            .presentationBackground(.black.opacity(0.4))
         }
     }
 }

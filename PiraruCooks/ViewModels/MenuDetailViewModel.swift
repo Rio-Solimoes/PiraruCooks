@@ -9,12 +9,10 @@ import SwiftUI
 
 @Observable
 class MenuDetailViewModel {
-    var showBackground = false
     var isMenuDetailScrolling = false
     var currentIndex: Int = 0
-    var isAnimating = false
-    var currentSpacing: CGFloat = 6
-    var currentTrailingSpace: CGFloat = 36
+    var currentSpacing: CGFloat = 12
+    var currentTrailingSpace: CGFloat = 66
     var currentPaddingTop: CGFloat = 15
     
     func handleScrollingChange() {
@@ -24,16 +22,10 @@ class MenuDetailViewModel {
                 currentTrailingSpace = 0
                 currentPaddingTop = 0
             } else {
-                currentSpacing = 6
-                currentTrailingSpace = 36
+                currentSpacing = 12
+                currentTrailingSpace = 66
                 currentPaddingTop = 15
             }
-        }
-    }
-    
-    func animateBackground() {
-        withAnimation(.easeInOut(duration: 0.4)) {
-            showBackground = true
         }
     }
 }
