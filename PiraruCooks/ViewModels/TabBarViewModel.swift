@@ -3,7 +3,7 @@ import Parintins
 
 @Observable
 class TabBarViewModel {
-    private let daysBeforeFestivalToSelectTheme = 50
+    private let daysBeforeFestivalToSelectTheme = 15
     private let daysAfterFestivalToSelectTheme = 5
     var selectedTab = "Cardápio"
     var showSelectTheme: Bool = false

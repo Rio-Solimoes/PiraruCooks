@@ -10,6 +10,7 @@ struct ListOfDishesView: View {
                 HStack {
                     Text(category)
                         .font(.title2)
+                        .fontWeight(.semibold)
                     Spacer()
                 }
                 .id("\(category)Id")
@@ -36,15 +37,17 @@ struct ListOfDishesView: View {
 
                                 VStack(alignment: .leading) {
                                     Text(dish.name)
-                                        .font(.title3)
+                                        .font(.body)
+                                        .fontWeight(.semibold)
+                                        .fixedSize(horizontal: false, vertical: true)
                                     Spacer()
                                     Text(dish.detailText)
-                                        .font(.body)
+                                        .font(.subheadline)
                                         .lineLimit(2)
                                         .fixedSize(horizontal: false, vertical: true)
                                     Spacer()
                                     Text("R$ \(String(format: "%.2f", dish.price))")
-                                        .font(.body)
+                                        .font(.subheadline)
                                 }
                                 .multilineTextAlignment(.leading)
                                 .padding(.horizontal, 8)

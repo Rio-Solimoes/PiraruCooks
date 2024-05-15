@@ -21,49 +21,30 @@ struct MenuView: View {
                                 .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
                         }
                         .padding(.horizontal, 20)
-  
                         VStack {
-                            Divider()
-                                .padding(.top, 8)
                             NavigationLink {
                                 Text("Endereços")
                                     .font(.body)
                             } label: {
-                                HStack {
-                                    Shared.home.swiftUIImage
-                                        .padding(.horizontal, 8)
-                                    VStack(alignment: .leading) {
-                                        Text("Casa")
-                                            .font(.body)
-                                        Text("Av. Alan Turing, 275")
-                                            .font(.body)
-                                    }
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .padding(.trailing)
-                                }
-                                .foregroundStyle(.black)
-                                .padding(.vertical, 8)
-                                .padding(.horizontal, 20)
+                                AddressCardView()
                             }
-                            Divider()
-                                .padding(.bottom, 16)
+                            .padding(.bottom, 16)
                             HStack {
                                 Text("Destaques")
                                     .font(.title2)
                                     .fontWeight(.semibold)
                                 Spacer()
                             }
-                            .padding(.horizontal, 20)
+                            .padding(.horizontal, 16)
                             CarouselView()
-                                .frame(height: getHeight() * 0.35)
+                                .frame(height: getHeight() * 0.23)
                             HorizontalScrollView(
                                 viewModel: HorizontalScrollViewModel(
                                     value: value)
                             )
                         }
                         ListOfDishesView()
-                            .padding(.horizontal, 20)
+                            .padding(.horizontal, 16)
                     }
                     .onScroll(coordinateSpace: "scroll", upTriggerOffset: 50, downTriggerOffset: 5,
                               upAction: { viewModel.showNavigationBar = false },
