@@ -6,7 +6,7 @@ struct MenuView: View {
     @StateObject var cloudKit = CloudKitModel()
     @State var menuController = MenuController.shared
     var body: some View {
-
+        
         ScrollViewReader { value in
             ScrollView {
                 VStack {
@@ -40,23 +40,20 @@ struct MenuView: View {
                             .font(.title2)
                         Spacer()
                     }
-                .padding(.horizontal, 20)
-                CarouselView()
-                    .frame(height: getHeight() * 0.35)
-                HorizontalScrollView(
-                    viewModel: HorizontalScrollViewModel(
-                        value: value)
-                )
+                    .padding(.horizontal, 20)
+                    CarouselView()
+                        .frame(height: getHeight() * 0.35)
+                    HorizontalScrollView(
+                        viewModel: HorizontalScrollViewModel(
+                            value: value)
+                    )
+                }
+                ListOfDishesView()
+                    .padding(.horizontal, 20)
             }
-            ListOfDishesView()
-                .padding(.horizontal, 20)
-        }
-        .refreshable {
-            menuController.fetchInitialData()
+            .refreshable {
+                menuController.fetchInitialData()
+            }
         }
     }
-}
-
-#Preview {
-    MenuView()
 }
