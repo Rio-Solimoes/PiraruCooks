@@ -66,6 +66,8 @@ struct TabBarView: View {
     }
 }
 
-#Preview {
-    TabBarView().environmentObject(NetworkMonitor())
-}
+    /*
+     #Preview {
+     TabBarView().environmentObject(NetworkMonitor())
+     }
+     */
