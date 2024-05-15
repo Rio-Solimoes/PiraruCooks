@@ -4,10 +4,7 @@ import Parintins
 struct MenuView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @StateObject var cloudKit = CloudKitModel()
-    @State var menuController = MenuController.shared
-    @State var showNavigationBar = false
-    @State var previousScrollOffset: CGFloat = 0
-    let minimumOffset: CGFloat = 16
+    @State var viewModel = MenuViewModel()
     
     var body: some View {
         NavigationStack {
@@ -68,43 +65,20 @@ struct MenuView: View {
                         ListOfDishesView()
                             .padding(.horizontal, 20)
                     }
-                    .background(GeometryReader {
-                        Color.clear.preference(key: ViewOffsetKey.self, value: -$0.frame(in: .named("scroll")).origin.y)
-                    }).onPreferenceChange(ViewOffsetKey.self) { currentOffset in
-                        let offsetDifference: CGFloat = self.previousScrollOffset - currentOffset
-                        if abs(offsetDifference) > minimumOffset {
-                            if offsetDifference > 0 {
-                                print("Is scrolling up toward top.")
-                                if currentOffset < 50 {
-                                    showNavigationBar = false
-                                }
-                            } else {
-                                print("Is scrolling down toward bottom.")
-                                if currentOffset > 5 {
-                                    showNavigationBar = true
-                                }
-                            }
-                            self.previousScrollOffset = currentOffset
-                        }
-                    }
+                    .onScroll(coordinateSpace: "scroll", upTriggerOffset: 50, downTriggerOffset: 5,
+                              upAction: { viewModel.showNavigationBar = false },
+                              downAction: { viewModel.showNavigationBar = true }
+                    )
                 }.coordinateSpace(name: "scroll")
             }
             .navigationTitle("Cardápio")
             .toolbarTitleDisplayMode(.inline)
-            .toolbar(showNavigationBar ? .visible : .hidden, for: .navigationBar)
+            .toolbar(viewModel.showNavigationBar ? .visible : .hidden, for: .navigationBar)
         }
         .refreshable {
-            menuController.fetchInitialData()
-            showNavigationBar = false
+            viewModel.refreshData()
+            viewModel.showNavigationBar = false
         }
-    }
-}
-
-struct ViewOffsetKey: PreferenceKey {
-    typealias Value = CGFloat
-    static var defaultValue = CGFloat.zero
-    static func reduce(value: inout Value, nextValue: () -> Value) {
-        value += nextValue()
     }
 }
 
