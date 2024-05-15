@@ -65,7 +65,7 @@ struct ListOfDishesView: View {
         }
         .fullScreenCover(isPresented: $isHomePresented) {
             VStack {
-                Home(selectedDish: selectedDish)
+                MenuDetailView(selectedDish: selectedDish)
                     .presentationCornerRadius(0)
             }
             .presentationBackgroundInteraction(.enabled)

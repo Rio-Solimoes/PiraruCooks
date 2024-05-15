@@ -2,7 +2,7 @@
 //  SnapCarouselView.swift
 //  PiraruCooks
 //
-//  Created by Larissa Fazolin on 09/05/24.
+//  Created by Larissa Fazolin on 14/05/24.
 //
 
 import SwiftUI
@@ -16,7 +16,7 @@ struct SnapCarouselView<Content: View, T: Identifiable>: View {
     @Binding var index: Int
     var initialIndex: Int
     
-    init(spacing: CGFloat = 15, 
+    init(spacing: CGFloat = 15,
          trailingSpace: CGFloat = 100,
          index: Binding<Int>,
          initialIndex: Int,
@@ -88,6 +88,6 @@ struct SnapCarouselView<Content: View, T: Identifiable>: View {
 
 struct SnapCarousel_Previews: PreviewProvider {
     static var previews: some View {
-        Home()
+        MenuDetailView()
     }
 }

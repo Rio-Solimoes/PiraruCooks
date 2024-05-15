@@ -9,29 +9,31 @@ import SwiftUI
 
 @Observable
 class MenuDetailViewModel {
-    var previousViewOffset: CGFloat = 0
-    var stepperValue: Int = 0
-    var textFieldText: String = ""
-    let minimumOffset: CGFloat = 16
-}
-
-// Collects and pass the total offset of a view
-struct ViewOffsetKey: PreferenceKey {
-    typealias Value = CGFloat
-    static var defaultValue = CGFloat.zero
-    static func reduce(value: inout Value, nextValue: () -> Value) {
-        value += nextValue()
+    var showBackground = false
+    var isMenuDetailScrolling = false
+    var currentIndex: Int = 0
+    var isAnimating = false
+    var currentSpacing: CGFloat = 6
+    var currentTrailingSpace: CGFloat = 36
+    var currentPaddingTop: CGFloat = 15
+    
+    func handleScrollingChange() {
+        withAnimation(.easeInOut(duration: 0.5)) {
+            if isMenuDetailScrolling {
+                currentSpacing = 0
+                currentTrailingSpace = 0
+                currentPaddingTop = 0
+            } else {
+                currentSpacing = 6
+                currentTrailingSpace = 36
+                currentPaddingTop = 15
+            }
+        }
     }
-}
-
-struct BouncesModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .onAppear {
-                UIScrollView.appearance().bounces = false
-            }
-            .onDisappear {
-                UIScrollView.appearance().bounces = true
-            }
+    
+    func animateBackground() {
+        withAnimation(.easeInOut(duration: 0.4)) {
+            showBackground = true
+        }
     }
 }
