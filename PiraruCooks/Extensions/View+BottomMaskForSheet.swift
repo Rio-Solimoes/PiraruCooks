@@ -1,24 +1,24 @@
 //
-//  BottomSheetHelper.swift
+//  View+BottomMaskForSheet.swift
 //  PiraruCooks
 //
-//  Created by Larissa Fazolin on 14/05/24.
+//  Created by Larissa Fazolin on 15/05/24.
 //
 
 import SwiftUI
 
 extension View {
     @ViewBuilder
-    // Default tab bar height = 49
+
     func bottomMaskForSheet(_ height: CGFloat = 49) -> some View {
         self
             .background(SheetRootViewFinder(height: height))
     }
 }
 
-// Helpers
 private struct SheetRootViewFinder: UIViewRepresentable {
     var height: CGFloat
+    
     func makeCoordinator() -> Coordinator {
         return Coordinator()
     }
@@ -33,7 +33,8 @@ private struct SheetRootViewFinder: UIViewRepresentable {
             
             if let rootView = uiView.viewBeforeWindow {
                 let safeArea = rootView.safeAreaInsets
-                // Updating its height so that it will create a empty space in the bottom
+                
+                // Updating its height so that it will create an empty space in the bottom
                 rootView.frame = .init(
                     origin: .zero,
                     size: .init(
@@ -44,7 +45,6 @@ private struct SheetRootViewFinder: UIViewRepresentable {
                 
                 rootView.clipsToBounds = true
                 for view in rootView.subviews {
-                    // Removing shadows
                     view.layer.shadowColor = UIColor.clear.cgColor
                     
                     if view.layer.animationKeys() != nil {
@@ -61,7 +61,6 @@ private struct SheetRootViewFinder: UIViewRepresentable {
     }
     
     class Coordinator: NSObject {
-        // Status
         var isMasked: Bool = false
     }
 }
