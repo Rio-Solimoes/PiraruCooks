@@ -1,4 +1,5 @@
 import SwiftUI
+import Parintins
 
 struct ListOfDishesView: View {
     @State var menuController = MenuController.shared
@@ -10,7 +11,7 @@ struct ListOfDishesView: View {
             ForEach(menuController.categories, id: \.self) { category in
                 HStack {
                     Text(category)
-                        .font(.custom("KulimPark-SemiBold", size: 22, relativeTo: .title2))
+                        .font(.title2)
                     Spacer()
                 }
                 .id("\(category)Id")
@@ -29,7 +30,7 @@ struct ListOfDishesView: View {
                                         .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
                                         .clipShape(RoundedRectangle(cornerRadius: 10))
                                 } else {
-                                    Image("tacaca")
+                                    Shared.emptyDish.swiftUIImage
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
@@ -38,15 +39,15 @@ struct ListOfDishesView: View {
 
                                 VStack(alignment: .leading) {
                                     Text(dish.name)
-                                        .font(.custom("KulimPark-SemiBold", size: 17, relativeTo: .body))
+                                        .font(.title3)
                                     Spacer()
                                     Text(dish.detailText)
-                                        .font(.custom("KulimPark-Regular", size: 15, relativeTo: .body))
+                                        .font(.body)
                                         .lineLimit(2)
                                         .fixedSize(horizontal: false, vertical: true)
                                     Spacer()
                                     Text("R$ \(String(format: "%.2f", dish.price))")
-                                        .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
+                                        .font(.body)
                                 }
                                 .multilineTextAlignment(.leading)
                                 .padding(.horizontal, 8)

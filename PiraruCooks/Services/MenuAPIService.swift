@@ -39,21 +39,21 @@ class MenuController {
                 let fetchedCategories = try await fetchCategories()
                 
                 // swiftlint:disable:next line_length
-                let fetchResults = try await withThrowingTaskGroup(of: [MenuItem].self) { group -> (fetchedPratos: [MenuItem], nonEmptyCategories: [String]) in
+                let fetchResults = try await withThrowingTaskGroup(of: [MenuItem].self) { group -> (fetchedDishes: [MenuItem], nonEmptyCategories: [String]) in
                     for category in fetchedCategories {
                         group.addTask {
                             try await self.fetchMenuItems(forCategory: category)
                         }
                     }
-                    var fetchedPratos: [MenuItem] = []
+                    var fetchedDishes: [MenuItem] = []
                     var nonEmptyCategories: [String] = []
-                    for try await pratos in group {
-                        if let prato = pratos.first {
-                            nonEmptyCategories.append(prato.category)
-                            fetchedPratos.append(contentsOf: pratos)
+                    for try await dishes in group {
+                        if let dish = dishes.first {
+                            nonEmptyCategories.append(dish.category)
+                            fetchedDishes.append(contentsOf: dishes)
                         }
                     }
-                    return (fetchedPratos, nonEmptyCategories)
+                    return (fetchedDishes, nonEmptyCategories)
                 }
                 
                 let orderedNonEmptyCategories = fetchResults.nonEmptyCategories.sorted(by: {(categoryA, categoryB) in
@@ -66,7 +66,7 @@ class MenuController {
 
                 DispatchQueue.main.async {
                     self.categories = orderedNonEmptyCategories
-                    self.dishes = fetchResults.fetchedPratos
+                    self.dishes = fetchResults.fetchedDishes
                 }
             } catch {
                 print("Error fetching initial data: \(error)")

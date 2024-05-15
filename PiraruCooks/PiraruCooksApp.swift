@@ -6,15 +6,21 @@
 //
 
 import SwiftUI
+import Parintins
 
 @main
 struct PiraruCooksApp: App {
+    @StateObject private var themeManager = ThemeManager.shared
+    @StateObject var networkMonitor = NetworkMonitor()
+
     var body: some Scene {
         WindowGroup {
             NavigationStack {
                 TabBarView()
+                    .environmentObject(networkMonitor)
+                    .environmentObject(themeManager)
+                    .tint(themeManager.selectedTheme.primary.swiftUIColor)
             }
-            .accentColor(Color("Pink"))
         }
     }
 }

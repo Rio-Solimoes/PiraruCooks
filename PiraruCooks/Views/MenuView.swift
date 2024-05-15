@@ -1,9 +1,12 @@
 import SwiftUI
+import Parintins
 
 struct MenuView: View {
+    @EnvironmentObject private var themeManager: ThemeManager
+    @StateObject var cloudKit = CloudKitModel()
     @State var menuController = MenuController.shared
-    
     var body: some View {
+
         ScrollViewReader { value in
             ScrollView {
                 VStack {
@@ -11,16 +14,16 @@ struct MenuView: View {
                         .padding(.top, 16)
                     NavigationLink {
                         Text("Endereços")
-                            .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
+                            .font(.body)
                     } label: {
                         HStack {
-                            Image("Casa")
+                            Shared.home.swiftUIImage
                                 .padding(.horizontal, 8)
                             VStack(alignment: .leading) {
                                 Text("Casa")
-                                    .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
+                                    .font(.body)
                                 Text("Av. Alan Turing, 275")
-                                    .font(.custom("KulimPark-Light", size: 17, relativeTo: .body))
+                                    .font(.body)
                             }
                             Spacer()
                             Image(systemName: "chevron.right")
@@ -34,20 +37,19 @@ struct MenuView: View {
                         .padding(.bottom, 16)
                     HStack {
                         Text("Destaques")
-                            .font(.custom("KulimPark-SemiBold", size: 22, relativeTo: .title2))
+                            .font(.title2)
                         Spacer()
                     }
-                    .padding(.horizontal, 20)
-                    CarouselView()
-                        .frame(height: getHeight() * 0.35)
-                    HorizontalScrollView(
-                        viewModel: HorizontalScrollViewModel(
-                            value: value)
-                    )
-                }
-                ListOfDishesView()
-                    .padding(.horizontal, 20)
+                .padding(.horizontal, 20)
+                CarouselView()
+                    .frame(height: getHeight() * 0.35)
+                HorizontalScrollView(
+                    viewModel: HorizontalScrollViewModel(
+                        value: value)
+                )
             }
+            ListOfDishesView()
+                .padding(.horizontal, 20)
         }
         .refreshable {
             menuController.fetchInitialData()
