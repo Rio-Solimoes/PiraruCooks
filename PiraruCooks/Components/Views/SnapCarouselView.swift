@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct SnapCarouselView<Content: View, T: Identifiable>: View {
+    @Binding var index: Int
     var content: (T) -> Content
     var list: [T]
-    
     var spacing: CGFloat
     var trailingSpace: CGFloat
-    @Binding var index: Int
     var initialIndex: Int
-    
+
+    @GestureState private var offset: CGFloat = 0
+    @State private var currentIndex: Int = 0
+
     init(spacing: CGFloat = 15,
          trailingSpace: CGFloat = 100,
          index: Binding<Int>,
@@ -30,53 +32,20 @@ struct SnapCarouselView<Content: View, T: Identifiable>: View {
         self.content = content
     }
 
-    @GestureState var offset: CGFloat = 0
-    @State var currentIndex: Int = 0
-    
     var body: some View {
-        
         GeometryReader { proxy in
-            
             let width = proxy.size.width - (trailingSpace - spacing)
-            let adjustMentWidth = (trailingSpace / 2) - spacing
-            
+            let adjustmentWidth = (trailingSpace / 2) - spacing
+
             HStack(spacing: spacing) {
                 ForEach(list) { item in
-                    
                     content(item)
                         .frame(width: proxy.size.width - trailingSpace)
                 }
             }
             .padding(.horizontal, spacing)
-            .offset(x: (CGFloat(currentIndex) * -width) + (adjustMentWidth) + offset)
-            .gesture(
-                DragGesture()
-                    .updating($offset, body: { value, out, _ in
-                        out = value.translation.width
-                    })
-                    .onEnded({ value in
-                        
-                        // Updating current index
-                        let offsetX = value.translation.width
-                        let progress = -offsetX / width
-                        let roundIndex = progress.rounded()
-                        
-                        // Setting min
-                        currentIndex = max(min(currentIndex + Int(roundIndex), list.count - 1), 0)
-                        
-                        // Updating current index
-                        currentIndex = index
-                    })
-                    .onChanged({ value in
-
-                        let offsetX = value.translation.width
-                        let progress = -offsetX / width
-                        let roundIndex = progress.rounded()
-                        
-                        // Setting min
-                        index = max(min(currentIndex + Int(roundIndex), list.count - 1), 0)
-                    })
-            )
+            .offset(x: calculateOffset(width: width, adjustmentWidth: adjustmentWidth))
+            .gesture(dragGesture(width: width))
             .onAppear {
                 currentIndex = initialIndex
                 index = initialIndex
@@ -84,10 +53,36 @@ struct SnapCarouselView<Content: View, T: Identifiable>: View {
         }
         .animation(.easeInOut, value: offset == 0)
     }
-}
 
-struct SnapCarousel_Previews: PreviewProvider {
-    static var previews: some View {
-        MenuDetailView()
+    private func calculateOffset(width: CGFloat, adjustmentWidth: CGFloat) -> CGFloat {
+        return (CGFloat(currentIndex) * -width) + adjustmentWidth + offset
+    }
+
+    private func dragGesture(width: CGFloat) -> some Gesture {
+        DragGesture()
+            .updating($offset) { value, out, _ in
+                out = value.translation.width
+            }
+            .onEnded { value in
+                updateIndex(onEnd: value, width: width)
+            }
+            .onChanged { value in
+                updateIndex(onChange: value, width: width)
+            }
+    }
+
+    private func updateIndex(onEnd value: DragGesture.Value, width: CGFloat) {
+        let offsetX = value.translation.width
+        let progress = -offsetX / width
+        let roundIndex = progress.rounded()
+        currentIndex = max(min(currentIndex + Int(roundIndex), list.count - 1), 0)
+        index = currentIndex
+    }
+
+    private func updateIndex(onChange value: DragGesture.Value, width: CGFloat) {
+        let offsetX = value.translation.width
+        let progress = -offsetX / width
+        let roundIndex = progress.rounded()
+        index = max(min(currentIndex + Int(roundIndex), list.count - 1), 0)
     }
 }

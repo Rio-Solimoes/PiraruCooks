@@ -11,7 +11,7 @@ struct MenuDetailView: View {
     @State var viewModel = MenuDetailViewModel()
     @State private var menuController = MenuController.shared
     
-    var selectedDish: MenuItem?
+    @Binding var selectedDish: MenuItem?
     var initialIndex: Int {
         if let id = selectedDish?.id {
             return id - 1
@@ -60,8 +60,4 @@ struct MenuDetailView: View {
             }
         }
     }
-}
-
-#Preview {
-    MenuDetailView()
 }
