@@ -14,7 +14,8 @@ struct NoNetworkView: View {
                 .font(.title2)
                 .fontWeight(.bold)
             
-            Text("O iPhone não está conectado à internet.\nPara conectá-lo, desative o Modo Avião ou conecte-se a uma rede Wi-Fi.")
+            Text("O iPhone não está conectado à internet.\n")
+            Text("Para conectá-lo, desative o Modo Avião ou conecte-se a uma rede Wi-Fi.")
                 .font(.footnote)
                 .padding(.horizontal, 40)
                 .multilineTextAlignment(.center)
