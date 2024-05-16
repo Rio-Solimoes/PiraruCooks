@@ -4,66 +4,90 @@ import Parintins
 struct MenuView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @StateObject var cloudKit = CloudKitModel()
-    @State var menuController = MenuController.shared
+    @State var viewModel = MenuViewModel()
+    @State private var isHomePresented = false
+    
     var body: some View {
-        
-        ScrollViewReader { value in
-            ScrollView {
-                VStack {
-                    Divider()
-                        .padding(.top, 16)
-                    NavigationLink {
-                        Text("Endereços")
-                            .font(.body)
-                    } label: {
+        NavigationStack {
+            ScrollViewReader { value in
+                ScrollView {
+                    LazyVStack {
                         HStack {
-                            Shared.home.swiftUIImage
-                                .padding(.horizontal, 8)
-                            VStack(alignment: .leading) {
-                                Text("Casa")
-                                    .font(.body)
-                                Text("Av. Alan Turing, 275")
-                                    .font(.body)
-                            }
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .padding(.trailing)
+                            Text("Cardápio")
+                                .font(.largeTitle)
+                                .fontWeight(.semibold)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            themeManager.selectedTheme.profileDefault.swiftUIImage
+                                .resizable()
+                                .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
                         }
                         .foregroundStyle(.black)
                         .padding(.vertical, 8)
                         .padding(.horizontal, 20)
+                        VStack {
+                            NavigationLink {
+                                Text("Endereços")
+                                    .font(.body)
+                            } label: {
+                                AddressCardView()
+                            }
+                            .padding(.bottom, 16)
+                            HStack {
+                                Text("Destaques")
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                Spacer()
+                            }
+                            .padding(.horizontal, 16)
+                            CarouselView()
+                                .frame(height: getHeight() * 0.23)
+                            HorizontalScrollView(
+                                viewModel: HorizontalScrollViewModel(
+                                    value: value)
+                            )
+                        }
+                        ListOfDishesView(isHomePresented: $isHomePresented)
+                            .padding(.horizontal, 16)
                     }
-                    Divider()
-                        .padding(.bottom, 16)
-                    HStack {
-                        Text("Destaques")
-                            .font(.title2)
-                        Spacer()
-                    }
-                    .padding(.horizontal, 20)
-                    CarouselView()
-                        .frame(height: getHeight() * 0.35)
-                    HorizontalScrollView(
-                        viewModel: HorizontalScrollViewModel(
-                            value: value)
+                    .onScroll(coordinateSpace: "scroll", upTriggerOffset: 50, downTriggerOffset: 5,
+                              upAction: { viewModel.showNavigationBar = false },
+                              downAction: { viewModel.showNavigationBar = true }
                     )
+                    .background(alignment: .top) {
+                        if themeManager.selectedTheme.userDefaultsValue != "Parintins" {
+                            LinearGradient(
+                                gradient: Gradient(
+                                    stops: [
+                                        .init(
+                                            color: (themeManager.selectedTheme.primary.swiftUIColor)
+                                                .opacity(0.3),
+                                            location: 0.0
+                                        ),
+                                        .init(
+                                            color: (themeManager.selectedTheme.tertiary.swiftUIColor)
+                                                .opacity(0.2),
+                                            location: 1.0
+                                        )
+                                    ]
+                                ),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                            .frame(width: getWidth() * 1.13, height: getHeight() * 0.24)
+                            .offset(x: -(getWidth() * 0.025), y: -(getHeight() * 0.1))
+                            .blur(radius: 8)
+                        }
+                    }
                 }
-                ListOfDishesView()
-                    .padding(.horizontal, 20)
+                .coordinateSpace(name: "scroll")
             }
-            .background {
-                LinearGradient(gradient: Gradient(colors:
-                    [themeManager.selectedTheme.primary.swiftUIColor,
-                    themeManager.selectedTheme.secondary.swiftUIColor]),
-                               startPoint: .topLeading, endPoint: .init(x: 1.0, y: 0.5))
-                .frame(width: 445, height: 153)
-                .offset(x: 0, y: -400)
-                .blur(radius: 120)
-            }
-            .refreshable {
-                menuController.fetchInitialData()
-            }
+            .navigationTitle("Cardápio")
+            .toolbarTitleDisplayMode(.inline)
+            .toolbar(viewModel.showNavigationBar ? .visible : .hidden, for: .navigationBar)
         }
-        .edgesIgnoringSafeArea(.top)
+        .refreshable {
+            viewModel.refreshData()
+            viewModel.showNavigationBar = false
+        }
     }
 }

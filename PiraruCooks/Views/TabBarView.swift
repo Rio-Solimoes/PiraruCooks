@@ -7,63 +7,52 @@ struct TabBarView: View {
     @EnvironmentObject var networkMonitor: NetworkMonitor
     
     var body: some View {
-        VStack {
-            if networkMonitor.isConnected {
-                TabView(selection: $viewModel.selectedTab) {
-                    MenuView()
-                        .tabItem {
-                            if viewModel.selectedTab == "Cardápio" {
-                                themeManager.selectedTheme.menu.swiftUIImage
-                            } else {
-                                Shared.menu.swiftUIImage
-                            }
-                            Text("Cardápio")
-                                .font(.body)
+        if networkMonitor.isConnected {                
+            TabView(selection: $viewModel.selectedTab) {
+                MenuView()
+                    .tabItem {
+                        if viewModel.selectedTab == "Cardápio" {
+                            themeManager.selectedTheme.menu.swiftUIImage
+                        } else {
+                            Shared.Images.menu.swiftUIImage
                         }
-                        .onTapGesture {
-                            viewModel.selectedTab = "Cardápio"
-                        }
-                        .tag("Cardápio")
-                    Text("Buscar")
-                        .tabItem {
-                            if viewModel.selectedTab == "Buscar" {
-                                themeManager.selectedTheme.search.swiftUIImage
-                            } else {
-                                Shared.search.swiftUIImage
-                            }
-                            Text("Buscar")
-                                .font(.body)
-                        }
-                        .onTapGesture {
-                            viewModel.selectedTab = "Buscar"
-                        }
-                        .tag("Buscar")
-                    Text("Pedidos")
-                        .tabItem {
-                            if viewModel.selectedTab == "Pedidos" {
-                                themeManager.selectedTheme.orders.swiftUIImage
-                            } else {
-                                Shared.orders.swiftUIImage
-                            }
-                            Text("Pedidos")
-                                .font(.body)
-                        }
-                        .onTapGesture {
-                            viewModel.selectedTab = "Pedidos"
-                        }
-                        .tag("Pedidos")
-                }
-                .sheet(isPresented: $viewModel.showSelectTheme) {
-                    SelectThemeView()
-                }
-                .onAppear {
-                    if viewModel.dismissThemeSelection {
-                        themeManager.selectedTheme = Themes.Parintins.shared
+                        Text("Cardápio")
+                            .font(.body)
                     }
-                }
-            } else {
-                NoNetworkView()
+                    .tag("Cardápio")
+                Text("Buscar")
+                    .tabItem {
+                        if viewModel.selectedTab == "Buscar" {
+                            themeManager.selectedTheme.search.swiftUIImage
+                        } else {
+                            Shared.Images.search.swiftUIImage
+                        }
+                        Text("Buscar")
+                            .font(.body)
+                    }
+                    .tag("Buscar")
+                Text("Pedidos")
+                    .tabItem {
+                        if viewModel.selectedTab == "Pedidos" {
+                            themeManager.selectedTheme.orders.swiftUIImage
+                        } else {
+                            Shared.Images.orders.swiftUIImage
+                        }
+                        Text("Pedidos")
+                            .font(.body)
+                    }
+                    .tag("Pedidos")
             }
+            .sheet(isPresented: $viewModel.showSelectTheme) {
+                SelectThemeView()
+            }
+            .onAppear {
+                if viewModel.dismissThemeSelection {
+                    themeManager.selectedTheme = Themes.Parintins.shared
+                }
+            }
+        } else {
+            NoNetworkView()
         }
     }
 }

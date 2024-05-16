@@ -12,14 +12,14 @@ class HorizontalScrollViewModel {
     
     func getImage(for category: String) -> Image? {
         switch category {
-        case "Entradas": return Shared.entrees.swiftUIImage
-        case "Caldos e Sopas": return Shared.brothsAndSoups.swiftUIImage
-        case "Bebidas": return Shared.drinks.swiftUIImage
-        case "Sobremesas": return Shared.desserts.swiftUIImage
-        case "Peixes": return Shared.fishes.swiftUIImage
-        case "Frutos do Mar": return Shared.seafood.swiftUIImage
-        case "Guarnições": return Shared.garnishes.swiftUIImage
-        case "Saladas": return Shared.salads.swiftUIImage
+        case "Entradas": return Shared.Images.entrees.swiftUIImage
+        case "Caldos e Sopas": return Shared.Images.brothsAndSoups.swiftUIImage
+        case "Bebidas": return Shared.Images.drinks.swiftUIImage
+        case "Sobremesas": return Shared.Images.desserts.swiftUIImage
+        case "Peixes": return Shared.Images.fishes.swiftUIImage
+        case "Frutos do Mar": return Shared.Images.seafood.swiftUIImage
+        case "Guarnições": return Shared.Images.garnishes.swiftUIImage
+        case "Saladas": return Shared.Images.salads.swiftUIImage
         default: return nil
         }
     }

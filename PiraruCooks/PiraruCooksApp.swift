@@ -15,12 +15,10 @@ struct PiraruCooksApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                TabBarView()
-                    .environmentObject(networkMonitor)
-                    .environmentObject(themeManager)
-                    .tint(themeManager.selectedTheme.primary.swiftUIColor)
-            }
+            TabBarView()
+                .environmentObject(networkMonitor)
+                .environmentObject(themeManager)
+                .tint(themeManager.selectedTheme.primary.swiftUIColor)
         }
     }
 }

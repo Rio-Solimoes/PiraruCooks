@@ -4,7 +4,7 @@ import Parintins
 struct ListOfDishesView: View {
     @State var menuController = MenuController.shared
     @State private var selectedDish: MenuItem?
-    @State private var isHomePresented = false
+    @Binding var isHomePresented: Bool
 
     var body: some View {
         VStack {
@@ -12,6 +12,7 @@ struct ListOfDishesView: View {
                 HStack {
                     Text(category)
                         .font(.title2)
+                        .fontWeight(.semibold)
                     Spacer()
                 }
                 .id("\(category)Id")
@@ -30,7 +31,7 @@ struct ListOfDishesView: View {
                                         .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
                                         .clipShape(RoundedRectangle(cornerRadius: 10))
                                 } else {
-                                    Shared.emptyDish.swiftUIImage
+                                    Shared.Images.emptyDish.swiftUIImage
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
@@ -39,15 +40,17 @@ struct ListOfDishesView: View {
 
                                 VStack(alignment: .leading) {
                                     Text(dish.name)
-                                        .font(.title3)
+                                        .font(.body)
+                                        .fontWeight(.semibold)
+                                        .fixedSize(horizontal: false, vertical: true)
                                     Spacer()
                                     Text(dish.detailText)
-                                        .font(.body)
+                                        .font(.subheadline)
                                         .lineLimit(2)
                                         .fixedSize(horizontal: false, vertical: true)
                                     Spacer()
                                     Text("R$ \(replaceDotWithComma(String(format: "%.2f", dish.price)))")
-                                        .font(.body)
+                                        .font(.subheadline)
                                 }
                                 .multilineTextAlignment(.leading)
                                 .padding(.horizontal, 8)
@@ -73,7 +76,7 @@ struct ListOfDishesView: View {
                 .presentationBackgroundInteraction(.enabled)
                 .bottomMaskForSheet()
             }
-            .presentationBackground(Shared.GrayColors.darkGray.swiftUIColor.opacity(0.6))
+            .presentationBackground(Shared.Colors.darkGray.swiftUIColor.opacity(0.6))
         }
     }
 }
