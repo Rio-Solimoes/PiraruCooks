@@ -14,6 +14,12 @@ class DishesDetailViewModel {
     var textFieldText: String = ""
     var isSaved: Bool = false
     let minimumOffset: CGFloat = 16
+    
+    var scrollOffsetPreference: some View {
+        GeometryReader { geometry in
+            Color.clear.preference(key: ViewOffsetKey.self, value: -geometry.frame(in: .named("scroll")).origin.y)
+        }
+    }
 }
 
 // Collects and pass the total offset of a view

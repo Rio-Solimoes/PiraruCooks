@@ -32,7 +32,7 @@ struct DishesDetailView: View {
             .padding()
             .padding(.horizontal, 8)
             .padding(.bottom)
-            .background(scrollOffsetPreference)
+            .background(viewModel.scrollOffsetPreference)
             .onPreferenceChange(ViewOffsetKey.self, perform: handlePreferenceChange)
         }
         .modifier(BouncesModifier())
@@ -222,12 +222,6 @@ struct DishesDetailView: View {
             RoundedRectangle(cornerRadius: 10)
                 .fill(Shared.GrayColors.lightGray.swiftUIColor)
         )
-    }
-
-    private var scrollOffsetPreference: some View {
-        GeometryReader { geometry in
-            Color.clear.preference(key: ViewOffsetKey.self, value: -geometry.frame(in: .named("scroll")).origin.y)
-        }
     }
     
     // Identifies the position on which the view is being scrolled
