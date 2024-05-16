@@ -53,7 +53,17 @@ struct MenuView: View {
             }
             .refreshable {
                 menuController.fetchInitialData()
+                .background {
+                    LinearGradient(gradient: Gradient(colors:
+                        [themeManager.selectedTheme.primary.swiftUIColor,
+                        themeManager.selectedTheme.secondary.swiftUIColor]),
+                                   startPoint: .topLeading, endPoint: .init(x: 1.0, y: 0.5))
+                    .frame(width: 445, height: 153)
+                    .offset(x: 0, y: -400)
+                    .blur(radius: 120)
+                }
             }
         }
+        .edgesIgnoringSafeArea(.top)
     }
 }
