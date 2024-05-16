@@ -51,14 +51,16 @@ struct MenuView: View {
                     ListOfDishesView()
                         .padding(.horizontal, 20)
                 }
+          //      themeManager.selectedTheme.userDefaultsValue = 
                 .background {
-                    LinearGradient(gradient: Gradient(colors:
-                        [themeManager.selectedTheme.primary.swiftUIColor,
-                        themeManager.selectedTheme.secondary.swiftUIColor]),
-                                   startPoint: .topLeading, endPoint: .init(x: 1.0, y: 0.5))
-                    .frame(width: 445, height: 153)
-                    .offset(x: 0, y: -400)
-                    .blur(radius: 120)
+                    LinearGradient(gradient: Gradient(
+                        stops: [
+                            .init(color: (themeManager.selectedTheme.primary.swiftUIColor).opacity(0.3), location: 0.0),
+                            .init(color: (themeManager.selectedTheme.secondary.swiftUIColor).opacity(0.2), location: 1.0)]),
+                                   startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .frame(width: 445, height: 204)
+                    .offset(x: -21, y: -370)
+                    .blur(radius: 8.0)
                 }
             }
         }
