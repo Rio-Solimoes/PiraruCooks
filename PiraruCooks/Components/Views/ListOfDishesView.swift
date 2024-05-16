@@ -46,7 +46,7 @@ struct ListOfDishesView: View {
                                         .lineLimit(2)
                                         .fixedSize(horizontal: false, vertical: true)
                                     Spacer()
-                                    Text("R$ \(String(format: "%.2f", dish.price))")
+                                    Text("R$ \(replaceDotWithComma(String(format: "%.2f", dish.price)))")
                                         .font(.body)
                                 }
                                 .multilineTextAlignment(.leading)
@@ -73,7 +73,7 @@ struct ListOfDishesView: View {
                 .presentationBackgroundInteraction(.enabled)
                 .bottomMaskForSheet()
             }
-            .presentationBackground(.black.opacity(0.4))
+            .presentationBackground(Shared.GrayColors.darkGray.swiftUIColor.opacity(0.6))
         }
     }
 }

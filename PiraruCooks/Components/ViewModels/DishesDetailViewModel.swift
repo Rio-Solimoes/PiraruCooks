@@ -12,6 +12,7 @@ class DishesDetailViewModel {
     var previousViewOffset: CGFloat = 0
     var stepperValue: Int = 0
     var textFieldText: String = ""
+    var isSaved: Bool = false
     let minimumOffset: CGFloat = 16
 }
 

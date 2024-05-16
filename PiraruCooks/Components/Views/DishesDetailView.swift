@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import Parintins
+import Combine
 
 struct DishesDetailView: View {
+    @EnvironmentObject private var themeManager: ThemeManager
     @Environment(\.presentationMode) var presentationMode
     @State var viewModel = DishesDetailViewModel()
     @Binding var isMenuDetailScrolling: Bool
@@ -15,14 +18,19 @@ struct DishesDetailView: View {
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 32) {
+            VStack(spacing: 24) {
                 closeButton
                 dishImage
                 dishInformation
                 orderInformation
                 addOrderButton
+                
+                Divider()
+                
+                customerRating
             }
             .padding()
+            .padding(.horizontal, 8)
             .padding(.bottom)
             .background(scrollOffsetPreference)
             .onPreferenceChange(ViewOffsetKey.self, perform: handlePreferenceChange)
@@ -31,76 +39,191 @@ struct DishesDetailView: View {
         .coordinateSpace(name: "scroll")
     }
     
+    // MARK: View Components
     private var closeButton: some View {
         HStack {
             Spacer()
-            Button("Close") {
+            Button {
                 presentationMode.wrappedValue.dismiss()
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: getWidth() * 0.07, height: getHeight() * 0.02)
+                    .foregroundColor(Shared.GrayColors.mediumGray.swiftUIColor)
             }
         }
+        .padding(.trailing, -8)
     }
     
     private var dishImage: some View {
-        Image(uiImage: selectedDish?.image ?? UIImage(named: "tacaca")!)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(width: getWidth() * 0.8, height: getWidth() * 0.9)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+        ZStack {
+            GeometryReader { geometry in
+                Image(uiImage: selectedDish?.image ?? UIImage(named: "tacaca")!)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: geometry.size.width, height: getHeight() * 0.4)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .clipped()
+                
+                LinearGradient(
+                    gradient: Gradient(stops: [
+                        .init(color: .clear, location: 0.8),
+                        .init(color: .white.opacity(0.4), location: 0.85),
+                        .init(color: .white.opacity(0.6), location: 0.9),
+                        .init(color: .white.opacity(0.8), location: 0.95),
+                        .init(color: .white, location: 1)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(width: geometry.size.width, height: getHeight() * 0.4)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
+            .frame(height: getHeight() * 0.4)
+        }
     }
     
     private var dishInformation: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                dishCategory
+                Spacer()
+                saveDishButton
+            }
+            .padding(.bottom, 8)
+            
             Text(selectedDish?.name ?? "")
-                .font(.custom("KulimPark-SemiBold", size: 22, relativeTo: .body))
+                .font(.title2)
+                .fontWeight(.semibold)
             Text(selectedDish?.detailText ?? "")
-                .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
-                .fixedSize(horizontal: false, vertical: true)
-            Text("R$ \(String(format: "%.2f", selectedDish?.price ?? 00.00))")
-                .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
-
-            Divider()
+            Text("R$ \(replaceDotWithComma(String(format: "%.2f", selectedDish?.price ?? 00.00)))")
+                .padding(.top, 8)
         }
     }
     
     private var orderInformation: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("Quantidade:")
-                    .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
                 Spacer()
                 Stepper(value: $viewModel.stepperValue, in: 0...Int.max) {
                     Text("\(viewModel.stepperValue)")
                 }
             }
-            Text("Obs:")
-            HStack {
-                Spacer()
-
-                VStack(spacing: 24) {
-                    TextField("Type something here...", text: $viewModel.textFieldText, axis: .vertical)
-                        .textFieldStyle(.roundedBorder)
-                        .frame(width: getWidth() * 0.5, height: getWidth() * 0.5)
-                }
-                Spacer()
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Shared.GrayColors.mediumGray.swiftUIColor)
+            )
+            
+            TextField("Observação", text: $viewModel.textFieldText) {
+                UIApplication.shared.endEditing()
             }
+                .padding()
+                .padding(.bottom)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Shared.GrayColors.mediumGray.swiftUIColor)
+                )
         }
     }
-    
+
     private var addOrderButton: some View {
         Button {
             // Action
         } label: {
-            Text("Adicionar aos pedidos")
-                .font(.custom("KulimPark-Regular", size: 15, relativeTo: .body))
-                .foregroundColor(viewModel.stepperValue > 0 ? .white : .black.opacity(0.5))
+            Text("Adicionar | R$ \(formattedPrice)")
+                .frame(maxWidth: .infinity)
                 .padding()
+                .fontWeight(.semibold)
+                .foregroundStyle(buttonForegroundColor)
                 .background(
                     RoundedRectangle(cornerRadius: 13)
-                        .foregroundColor(viewModel.stepperValue > 0 ? .accentColor : .gray.opacity(0.5))
+                        .foregroundColor(buttonBackgroundColor)
                 )
+                .padding(.horizontal, 16)
+        }
+    }
+
+    private var customerRating: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Avaliação dos Clientes")
+                .font(.title2)
+                .fontWeight(.semibold)
+            
+            placeholderCustomerReview
         }
     }
     
+    // MARK: Helpers
+    private var dishCategory: some View {
+        Text(selectedDish?.category ?? "")
+            .padding(6)
+            .fontWeight(.semibold)
+            .foregroundStyle(themeManager.selectedTheme.primary.swiftUIColor)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(themeManager.selectedTheme.primary.swiftUIColor, lineWidth: 1)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(themeManager.selectedTheme.secondary.swiftUIColor)
+                    )
+            )
+    }
+    
+    private var saveDishButton: some View {
+        Button {
+            viewModel.isSaved.toggle()
+        } label: {
+            Image(systemName: viewModel.isSaved ? "bookmark.circle.fill" : "bookmark.circle")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: getWidth() * 0.07, height: getHeight() * 0.02)
+                .foregroundStyle(themeManager.selectedTheme.primary.swiftUIColor)
+        }
+    }
+    
+    private var formattedPrice: String {
+        let price = (selectedDish?.price ?? 00.00) * Double(viewModel.stepperValue)
+        return replaceDotWithComma(String(format: "%.2f", price))
+    }
+
+    private var buttonForegroundColor: Color {
+        viewModel.stepperValue > 0 ? .white : Shared.GrayColors.darkGray.swiftUIColor
+    }
+
+    private var buttonBackgroundColor: Color {
+        viewModel.stepperValue > 0
+            ? themeManager.selectedTheme.primary.swiftUIColor
+            : Shared.GrayColors.mediumGray.swiftUIColor
+    }
+    
+    private var placeholderCustomerReview: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Ótimo")
+                .fontWeight(.semibold)
+            Text("Amei esse prato principal!!")
+            
+            HStack(spacing: 2) {
+                ForEach(0..<5, id: \.self) { _ in
+                    Image(systemName: "star.fill")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: getWidth() * 0.04)
+                        .foregroundStyle(Shared.GrayColors.darkGray.swiftUIColor)
+                }
+            }
+
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Shared.GrayColors.lightGray.swiftUIColor)
+        )
+    }
+
     private var scrollOffsetPreference: some View {
         GeometryReader { geometry in
             Color.clear.preference(key: ViewOffsetKey.self, value: -geometry.frame(in: .named("scroll")).origin.y)
