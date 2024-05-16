@@ -5,6 +5,7 @@ struct MenuView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @StateObject var cloudKit = CloudKitModel()
     @State var viewModel = MenuViewModel()
+    @State private var isHomePresented = false
     
     var body: some View {
         NavigationStack {
@@ -45,7 +46,7 @@ struct MenuView: View {
                                     value: value)
                             )
                         }
-                        ListOfDishesView()
+                        ListOfDishesView(isHomePresented: $isHomePresented)
                             .padding(.horizontal, 16)
                     }
                     .onScroll(coordinateSpace: "scroll", upTriggerOffset: 50, downTriggerOffset: 5,
@@ -53,19 +54,30 @@ struct MenuView: View {
                               downAction: { viewModel.showNavigationBar = true }
                     )
                     .background(alignment: .top) {
-                        LinearGradient(
-                            colors: [
-                                themeManager.selectedTheme.primary.swiftUIColor,
-                                themeManager.selectedTheme.secondary.swiftUIColor
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: UnitPoint(x: 1, y: 0.5)
-                        )
-                        .frame(width: getWidth() * 1.13, height: getHeight() * 0.18)
-                        .blur(radius: 120)
+                        if themeManager.selectedTheme.userDefaultsValue != "Parintins" {
+                            LinearGradient(
+                                gradient: Gradient(
+                                    stops: [
+                                        .init(
+                                            color: (themeManager.selectedTheme.primary.swiftUIColor)
+                                                .opacity(0.3),
+                                            location: 0.0
+                                        ),
+                                        .init(
+                                            color: (themeManager.selectedTheme.tertiary.swiftUIColor)
+                                                .opacity(0.2),
+                                            location: 1.0
+                                        )
+                                    ]
+                                ),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                            .frame(width: getWidth() * 1.13, height: getHeight() * 0.24)
+                            .offset(x: -(getWidth() * 0.025), y: -(getHeight() * 0.1))
+                            .blur(radius: 8)
+                        }
                     }
-                    ListOfDishesView()
-                        .padding(.horizontal, 20)
                 }
                 .coordinateSpace(name: "scroll")
             }
@@ -77,6 +89,5 @@ struct MenuView: View {
             viewModel.refreshData()
             viewModel.showNavigationBar = false
         }
-        .edgesIgnoringSafeArea(.top)
     }
 }

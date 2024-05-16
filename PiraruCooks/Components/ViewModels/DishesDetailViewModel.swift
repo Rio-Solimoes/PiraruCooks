@@ -22,15 +22,6 @@ class DishesDetailViewModel {
     }
 }
 
-// Collects and pass the total offset of a view
-struct ViewOffsetKey: PreferenceKey {
-    typealias Value = CGFloat
-    static var defaultValue = CGFloat.zero
-    static func reduce(value: inout Value, nextValue: () -> Value) {
-        value += nextValue()
-    }
-}
-
 struct BouncesModifier: ViewModifier {
     func body(content: Content) -> some View {
         content

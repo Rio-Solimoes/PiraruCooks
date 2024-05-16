@@ -50,7 +50,7 @@ struct DishesDetailView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: getWidth() * 0.07, height: getHeight() * 0.02)
-                    .foregroundColor(Shared.GrayColors.mediumGray.swiftUIColor)
+                    .foregroundColor(Shared.Colors.mediumGray.swiftUIColor)
             }
         }
         .padding(.trailing, -8)
@@ -114,7 +114,7 @@ struct DishesDetailView: View {
             .padding()
             .background(
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(Shared.GrayColors.mediumGray.swiftUIColor)
+                    .stroke(Shared.Colors.mediumGray.swiftUIColor)
             )
             
             TextField("Observação", text: $viewModel.textFieldText) {
@@ -124,7 +124,7 @@ struct DishesDetailView: View {
                 .padding(.bottom)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(Shared.GrayColors.mediumGray.swiftUIColor)
+                        .stroke(Shared.Colors.mediumGray.swiftUIColor)
                 )
         }
     }
@@ -190,13 +190,13 @@ struct DishesDetailView: View {
     }
 
     private var buttonForegroundColor: Color {
-        viewModel.stepperValue > 0 ? .white : Shared.GrayColors.darkGray.swiftUIColor
+        viewModel.stepperValue > 0 ? .white : Shared.Colors.darkGray.swiftUIColor
     }
 
     private var buttonBackgroundColor: Color {
         viewModel.stepperValue > 0
             ? themeManager.selectedTheme.primary.swiftUIColor
-            : Shared.GrayColors.mediumGray.swiftUIColor
+            : Shared.Colors.mediumGray.swiftUIColor
     }
     
     private var placeholderCustomerReview: some View {
@@ -211,7 +211,7 @@ struct DishesDetailView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: getWidth() * 0.04)
-                        .foregroundStyle(Shared.GrayColors.darkGray.swiftUIColor)
+                        .foregroundStyle(Shared.Colors.darkGray.swiftUIColor)
                 }
             }
 
@@ -220,7 +220,7 @@ struct DishesDetailView: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(Shared.GrayColors.lightGray.swiftUIColor)
+                .fill(Shared.Colors.lightGray.swiftUIColor)
         )
     }
     

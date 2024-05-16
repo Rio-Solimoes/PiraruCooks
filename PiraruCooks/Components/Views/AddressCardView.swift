@@ -4,7 +4,7 @@ import Parintins
 struct AddressCardView: View {
     var body: some View {
         HStack {
-            Shared.home.swiftUIImage
+            Shared.Images.home.swiftUIImage
                 .padding(.horizontal, 8)
             VStack(alignment: .leading) {
                 Text("Casa")

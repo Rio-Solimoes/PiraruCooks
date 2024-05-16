@@ -1,4 +1,5 @@
 import SwiftUI
+import Parintins
 
 struct HighlightCardView: View {
     @State var viewModel: HighlightCardViewModel
@@ -26,8 +27,8 @@ struct HighlightCardView: View {
                 .background {
                     LinearGradient(
                         colors: [
-                            Color("gradient").opacity(0.68),
-                            Color("gradient")
+                            Shared.Colors.highlightGradient.swiftUIColor.opacity(0.68),
+                            Shared.Colors.highlightGradient.swiftUIColor
                         ],
                         startPoint: .top,
                         endPoint: UnitPoint(x: 0.5, y: 0.3)

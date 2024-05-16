@@ -14,7 +14,7 @@ struct TabBarView: View {
                         if viewModel.selectedTab == "Cardápio" {
                             themeManager.selectedTheme.menu.swiftUIImage
                         } else {
-                            Shared.menu.swiftUIImage
+                            Shared.Images.menu.swiftUIImage
                         }
                         Text("Cardápio")
                             .font(.body)
@@ -25,7 +25,7 @@ struct TabBarView: View {
                         if viewModel.selectedTab == "Buscar" {
                             themeManager.selectedTheme.search.swiftUIImage
                         } else {
-                            Shared.search.swiftUIImage
+                            Shared.Images.search.swiftUIImage
                         }
                         Text("Buscar")
                             .font(.body)
@@ -36,7 +36,7 @@ struct TabBarView: View {
                         if viewModel.selectedTab == "Pedidos" {
                             themeManager.selectedTheme.orders.swiftUIImage
                         } else {
-                            Shared.orders.swiftUIImage
+                            Shared.Images.orders.swiftUIImage
                         }
                         Text("Pedidos")
                             .font(.body)
