@@ -20,6 +20,8 @@ struct MenuView: View {
                                 .resizable()
                                 .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
                         }
+                        .foregroundStyle(.black)
+                        .padding(.vertical, 8)
                         .padding(.horizontal, 20)
                         VStack {
                             NavigationLink {
@@ -77,8 +79,4 @@ struct MenuView: View {
         }
         .edgesIgnoringSafeArea(.top)
     }
-}
-
-#Preview {
-    MenuView()
 }

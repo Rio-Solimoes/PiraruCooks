@@ -10,15 +10,17 @@ import Parintins
 
 @main
 struct PiraruCooksApp: App {
-        @StateObject private var themeManager = ThemeManager.shared
-        @StateObject var networkMonitor = NetworkMonitor()
+    @StateObject private var themeManager = ThemeManager.shared
+    @StateObject var networkMonitor = NetworkMonitor()
 
     var body: some Scene {
         WindowGroup {
-            TabBarView()
-                .environmentObject(networkMonitor)
-                .environmentObject(themeManager)
-                .tint(themeManager.selectedTheme.primary.swiftUIColor)
+            NavigationStack {
+                TabBarView()
+                    .environmentObject(networkMonitor)
+                    .environmentObject(themeManager)
+                    .tint(themeManager.selectedTheme.primary.swiftUIColor)
+            }
         }
     }
 }
