@@ -50,19 +50,22 @@ struct MenuView: View {
                               upAction: { viewModel.showNavigationBar = false },
                               downAction: { viewModel.showNavigationBar = true }
                     )
+                    .background(alignment: .top) {
+                        LinearGradient(
+                            colors: [
+                                themeManager.selectedTheme.primary.swiftUIColor,
+                                themeManager.selectedTheme.secondary.swiftUIColor
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: UnitPoint(x: 1, y: 0.5)
+                        )
+                        .frame(width: getWidth() * 1.13, height: getHeight() * 0.18)
+                        .blur(radius: 120)
+                    }
                     ListOfDishesView()
                         .padding(.horizontal, 20)
                 }
                 .coordinateSpace(name: "scroll")
-                .background {
-                    LinearGradient(gradient: Gradient(colors:
-                        [themeManager.selectedTheme.primary.swiftUIColor,
-                        themeManager.selectedTheme.secondary.swiftUIColor]),
-                                   startPoint: .topLeading, endPoint: .init(x: 1.0, y: 0.5))
-                    .frame(width: 445, height: 153)
-                    .offset(x: 0, y: -400)
-                    .blur(radius: 120)
-                }
             }
             .navigationTitle("Cardápio")
             .toolbarTitleDisplayMode(.inline)

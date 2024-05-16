@@ -19,9 +19,6 @@ struct TabBarView: View {
                         Text("Cardápio")
                             .font(.body)
                     }
-                    .onTapGesture {
-                        viewModel.selectedTab = "Cardápio"
-                    }
                     .tag("Cardápio")
                 Text("Buscar")
                     .tabItem {
@@ -33,9 +30,6 @@ struct TabBarView: View {
                         Text("Buscar")
                             .font(.body)
                     }
-                    .onTapGesture {
-                        viewModel.selectedTab = "Buscar"
-                    }
                     .tag("Buscar")
                 Text("Pedidos")
                     .tabItem {
@@ -46,9 +40,6 @@ struct TabBarView: View {
                         }
                         Text("Pedidos")
                             .font(.body)
-                    }
-                    .onTapGesture {
-                        viewModel.selectedTab = "Pedidos"
                     }
                     .tag("Pedidos")
             }

@@ -30,7 +30,8 @@ struct HighlightCardView: View {
                             Color("gradient")
                         ],
                         startPoint: .top,
-                        endPoint: UnitPoint(x: 0.5, y: 0.3))
+                        endPoint: UnitPoint(x: 0.5, y: 0.3)
+                    )
                 }
             }
         }
