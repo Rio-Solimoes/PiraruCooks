@@ -42,5 +42,10 @@ struct HorizontalScrollView: View {
             .padding(.vertical)
             .padding(.horizontal, 4)
         }
+        .onAppear {
+            if let initialCategory = viewModel.initialCategory {
+                viewModel.scrollToCategoryNoAnimation(named: initialCategory)
+            }
+        }
     }
 }

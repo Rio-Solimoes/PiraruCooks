@@ -5,9 +5,11 @@ import Parintins
 @Observable
 class HorizontalScrollViewModel {
     let value: ScrollViewProxy
+    var initialCategory: String?
     
-    init(value: ScrollViewProxy) {
+    init(value: ScrollViewProxy, initialCategory: String? = nil) {
         self.value = value
+        self.initialCategory = initialCategory
     }
     
     func getImage(for category: String) -> Image? {
@@ -28,5 +30,10 @@ class HorizontalScrollViewModel {
         withAnimation {
             value.scrollTo("\(category)Id", anchor: .top)
         }
+    }
+    
+    func scrollToCategoryNoAnimation(named category: String) {
+        value.scrollTo("\(category)Id", anchor: .top)
+        
     }
 }
