@@ -11,7 +11,7 @@ struct MenuView: View {
         NavigationStack {
             ScrollViewReader { value in
                 ScrollView {
-                    LazyVStack {
+                    LazyVStack(pinnedViews: [.sectionHeaders]) {
                         HStack {
                             Text("Cardápio")
                                 .font(.largeTitle)
@@ -41,18 +41,31 @@ struct MenuView: View {
                             .padding(.horizontal, 16)
                             CarouselView()
                                 .frame(height: getHeight() * 0.23)
+                        }
+                        Section {
+                            ListOfDishesView(isHomePresented: $isHomePresented)
+                                .padding(.horizontal, 16)
+                        } header: {
                             HorizontalScrollView(
                                 viewModel: HorizontalScrollViewModel(
                                     value: value)
                             )
+                            .background {
+                                Color.white
+                            }
                         }
-                        ListOfDishesView(isHomePresented: $isHomePresented)
-                            .padding(.horizontal, 16)
                     }
-                    .onScroll(coordinateSpace: "scroll", upTriggerOffset: 50, downTriggerOffset: 5,
-                              upAction: { viewModel.showNavigationBar = false },
-                              downAction: { viewModel.showNavigationBar = true }
-                    )
+                    .onScroll(coordinateSpace: "scroll") { direction, offset in
+                        if direction == .up {
+                            if offset < 50 {
+                                viewModel.showNavigationBar = false
+                            }
+                        } else {
+                            if offset > 5 {
+                                viewModel.showNavigationBar = true
+                            }
+                        }
+                    }
                     .background(alignment: .top) {
                         if themeManager.selectedTheme.userDefaultsValue != "Parintins" {
                             LinearGradient(

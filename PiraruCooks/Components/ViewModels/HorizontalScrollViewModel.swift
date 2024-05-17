@@ -26,7 +26,7 @@ class HorizontalScrollViewModel {
     
     func scrollToCategory(named category: String) {
         withAnimation {
-            value.scrollTo("\(category)Id", anchor: .top)
+            value.scrollTo("\(category)Id", anchor: UnitPoint(x: 0, y: 0.25))
         }
     }
 }
