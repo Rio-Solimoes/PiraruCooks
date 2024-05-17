@@ -9,24 +9,24 @@ struct ListOfDishesView: View {
 
     var body: some View {
         LazyVStack {
-            ForEach(menuController.categories, id: \.self) { category in
+            ForEach(menuController.categories.indices, id: \.self) { index in
                 HStack {
-                    Text(category)
+                    Text(menuController.categories[index])
                         .font(.title2)
                         .fontWeight(.semibold)
                     Spacer()
                 }
-                .id("\(category)Id")
+                .id("\(menuController.categories[index])Id")
                 .onAppear {
-                    currentShownCategory = category
+                    currentShownCategory = menuController.categories[max(0, index - 1)]
                 }
                 .onDisappear {
-                    if currentShownCategory == category {
-                        currentShownCategory = ""
-                    }
+//                    if currentShownCategory == menuController.categories[index] {
+//                        currentShownCategory = ""
+//                    }
                 }
                 
-                ForEach(menuController.dishes.filter({dish in dish.category == category}), id: \.self) {dish in
+                ForEach(menuController.dishes.filter({dish in dish.category == menuController.categories[index]}), id: \.self) {dish in
                     Button {
                         selectedDish = dish
                         isHomePresented.toggle()
