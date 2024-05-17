@@ -11,8 +11,9 @@ struct SelectThemeView: View {
                 .fontWeight(.semibold)
                 .padding(.bottom, 8)
             Text("Escolha o seu boi favorito e aproveite o festival no seu estilo!")
+                .fixedSize(horizontal: false, vertical: true)
                 .multilineTextAlignment(.center)
-                .padding(.bottom, 36)
+                .padding(.bottom, 28)
             HStack(spacing: 12) {
                 Button {
                     themeManager.selectedTheme = Themes.Garantido.shared
@@ -51,7 +52,7 @@ struct SelectThemeView: View {
                     )
                 }
             }
-                .padding(.bottom, 48)
+                .padding(.bottom, 40)
             ButtonView(viewModel: ButtonViewModel(
                 text: "Confirmar",
                 action: { dismiss() },
