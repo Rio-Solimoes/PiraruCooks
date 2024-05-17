@@ -3,6 +3,7 @@ import Parintins
 
 struct HorizontalScrollView: View {
     @EnvironmentObject private var themeManager: ThemeManager
+    @State var menuViewModel: MenuViewModel
     @State var viewModel: HorizontalScrollViewModel
     @State var menuController = MenuController.shared
 
@@ -16,8 +17,13 @@ struct HorizontalScrollView: View {
                         } label: {
                             VStack {
                                 ZStack {
-                                    Circle()
-                                        .foregroundStyle(themeManager.selectedTheme.primary.swiftUIColor)
+                                    if menuViewModel.currentShownCategory == category {
+                                        Circle()
+                                            .foregroundStyle(themeManager.selectedTheme.primary.swiftUIColor)
+                                    } else {
+                                        Circle()
+                                            .foregroundStyle(.black)
+                                    }
                                     if let image = viewModel.getImage(for: category) {
                                         image
                                             .resizable()

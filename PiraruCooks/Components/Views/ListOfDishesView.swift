@@ -5,9 +5,10 @@ struct ListOfDishesView: View {
     @State var menuController = MenuController.shared
     @State private var selectedDish: MenuItem?
     @Binding var isHomePresented: Bool
+    @Binding var currentShownCategory: String
 
     var body: some View {
-        VStack {
+        LazyVStack {
             ForEach(menuController.categories, id: \.self) { category in
                 HStack {
                     Text(category)
@@ -16,6 +17,14 @@ struct ListOfDishesView: View {
                     Spacer()
                 }
                 .id("\(category)Id")
+                .onAppear {
+                    currentShownCategory = category
+                }
+                .onDisappear {
+                    if currentShownCategory == category {
+                        currentShownCategory = ""
+                    }
+                }
                 
                 ForEach(menuController.dishes.filter({dish in dish.category == category}), id: \.self) {dish in
                     Button {

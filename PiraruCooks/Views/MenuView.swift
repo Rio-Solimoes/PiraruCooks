@@ -43,10 +43,14 @@ struct MenuView: View {
                                 .frame(height: getHeight() * 0.23)
                         }
                         Section {
-                            ListOfDishesView(isHomePresented: $isHomePresented)
+                            ListOfDishesView(
+                                isHomePresented: $isHomePresented,
+                                currentShownCategory: $viewModel.currentShownCategory
+                            )
                                 .padding(.horizontal, 16)
                         } header: {
                             HorizontalScrollView(
+                                menuViewModel: viewModel,
                                 viewModel: HorizontalScrollViewModel(
                                     value: value)
                             )
