@@ -12,6 +12,7 @@ import Combine
 struct DishesDetailView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var tabBarViewModel: TabBarViewModel
     @State var viewModel = DishesDetailViewModel()
     @Binding var isMenuDetailScrolling: Bool
     var selectedDish: MenuItem?
@@ -29,6 +30,9 @@ struct DishesDetailView: View {
                 
                 customerRating
             }
+            .onAppear {
+                tabBarViewModel.isDishesDetailPresented = true
+            }
             .padding()
             .padding(.horizontal, 8)
             .padding(.bottom)
@@ -37,6 +41,11 @@ struct DishesDetailView: View {
         }
         .modifier(BouncesModifier())
         .coordinateSpace(name: "scroll")
+        .onChange(of: tabBarViewModel.isDishesDetailPresented) {
+            if !tabBarViewModel.isDishesDetailPresented {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
     
     // MARK: View Components
@@ -164,7 +173,7 @@ struct DishesDetailView: View {
             .foregroundStyle(themeManager.selectedTheme.primary.swiftUIColor)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(themeManager.selectedTheme.primary.swiftUIColor, lineWidth: 1)
+                    .stroke(.clear, lineWidth: 1)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
                             .fill(themeManager.selectedTheme.secondary.swiftUIColor)
@@ -230,7 +239,7 @@ struct DishesDetailView: View {
         if abs(offsetDifference) > viewModel.minimumOffset {
             if offsetDifference < 0 {
                 isMenuDetailScrolling = true
-            } else if offsetDifference > 20 {
+            } else if offsetDifference > 25 {
                 isMenuDetailScrolling = false
             }
             self.viewModel.previousViewOffset = currentOffset
