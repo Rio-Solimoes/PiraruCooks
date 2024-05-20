@@ -51,7 +51,7 @@ final class CloudKitModel: ObservableObject {
     }
 
     func requestPermission() {
-        self.container.requestApplicationPermission([.userDiscoverability]){ [weak self] returnedStatus, _ in
+        self.container.requestApplicationPermission([.userDiscoverability]) { [weak self] returnedStatus, _ in
             DispatchQueue.main.async {[weak self] in
                 if returnedStatus == .granted {
                     self?.permissionStatus = true

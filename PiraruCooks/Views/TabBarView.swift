@@ -1,58 +1,64 @@
 import SwiftUI
+import Parintins
 
 struct TabBarView: View {
+    @EnvironmentObject private var themeManager: ThemeManager
     @State var viewModel = TabBarViewModel()
+    @EnvironmentObject var networkMonitor: NetworkMonitor
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("Cardápio")
-                    .font(.custom("KulimPark-SemiBold", size: 34, relativeTo: .largeTitle))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Image("Perfil")
-                    .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
-            }
-            .padding(.horizontal, 20)
-
-            Spacer()
-
+        if networkMonitor.isConnected {                
             TabView(selection: $viewModel.selectedTab) {
                 MenuView()
                     .tabItem {
-                        Image("Cardápio\(viewModel.selectedTab == "Cardápio" ? "_Selecionado" : "")")
+                        if viewModel.selectedTab == "Cardápio" {
+                            themeManager.selectedTheme.menu.swiftUIImage
+                        } else {
+                            Shared.Images.menu.swiftUIImage
+                        }
                         Text("Cardápio")
-                            .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
-                    }
-                    .onTapGesture {
-                        viewModel.selectedTab = "Cardápio"
+                            .font(.body)
                     }
                     .tag("Cardápio")
                 Text("Buscar")
                     .tabItem {
-                        Image("Buscar\(viewModel.selectedTab == "Buscar" ? "_Selecionado" : "")")
+                        if viewModel.selectedTab == "Buscar" {
+                            themeManager.selectedTheme.search.swiftUIImage
+                        } else {
+                            Shared.Images.search.swiftUIImage
+                        }
                         Text("Buscar")
-                            .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
-                    }
-                    .onTapGesture {
-                        viewModel.selectedTab = "Buscar"
+                            .font(.body)
                     }
                     .tag("Buscar")
                 Text("Pedidos")
                     .tabItem {
-                        Image("Pedidos\(viewModel.selectedTab == "Pedidos" ? "_Selecionado" : "")")
+                        if viewModel.selectedTab == "Pedidos" {
+                            themeManager.selectedTheme.orders.swiftUIImage
+                        } else {
+                            Shared.Images.orders.swiftUIImage
+                        }
                         Text("Pedidos")
-                            .font(.custom("KulimPark-Regular", size: 17, relativeTo: .body))
-                    }
-                    .onTapGesture {
-                        viewModel.selectedTab = "Pedidos"
+                            .font(.body)
                     }
                     .tag("Pedidos")
             }
-            .accentColor(Color("Pink"))
+            .sheet(isPresented: $viewModel.showSelectTheme) {
+                SelectThemeView()
+            }
+            .onAppear {
+                if viewModel.dismissThemeSelection {
+                    themeManager.selectedTheme = Themes.Parintins.shared
+                }
+            }
+        } else {
+            NoNetworkView()
         }
     }
 }
 
-#Preview {
-    TabBarView()
-}
+    /*
+     #Preview {
+     TabBarView().environmentObject(NetworkMonitor())
+     }
+     */

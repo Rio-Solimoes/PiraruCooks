@@ -2,5 +2,6 @@ import Foundation
 
 @Observable
 class CarouselViewModel {
-    var selectedTab = 0
+    var index = 0
+    var currentIndex = 0
 }
