@@ -2,12 +2,13 @@ import Foundation
 import Parintins
 
 @Observable
-class TabBarViewModel {
+class TabBarViewModel: ObservableObject {
     private let daysBeforeFestivalToSelectTheme = 50
     private let daysAfterFestivalToSelectTheme = 5
     var selectedTab = "Cardápio"
     var showSelectTheme: Bool = false
     var dismissThemeSelection: Bool = false
+    var isDishesDetailPresented: Bool = false
     
     init() {
         guard let parintinsFestivalDate = TabBarViewModel.getParintinsFestivalDate(),

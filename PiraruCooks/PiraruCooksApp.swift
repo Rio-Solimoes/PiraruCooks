@@ -12,12 +12,14 @@ import Parintins
 struct PiraruCooksApp: App {
     @StateObject private var themeManager = ThemeManager.shared
     @StateObject var networkMonitor = NetworkMonitor()
+    @StateObject private var tabBarViewModel = TabBarViewModel()
 
     var body: some Scene {
         WindowGroup {
             TabBarView()
                 .environmentObject(networkMonitor)
                 .environmentObject(themeManager)
+                .environmentObject(tabBarViewModel)
                 .tint(themeManager.selectedTheme.primary.swiftUIColor)
         }
     }

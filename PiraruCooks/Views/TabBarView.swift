@@ -3,15 +3,16 @@ import Parintins
 
 struct TabBarView: View {
     @EnvironmentObject private var themeManager: ThemeManager
-    @State var viewModel = TabBarViewModel()
+    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var tabBarViewModel: TabBarViewModel
     @EnvironmentObject var networkMonitor: NetworkMonitor
     
     var body: some View {
         if networkMonitor.isConnected {                
-            TabView(selection: $viewModel.selectedTab) {
+            TabView(selection: $tabBarViewModel.selectedTab) {
                 MenuView()
                     .tabItem {
-                        if viewModel.selectedTab == "Cardápio" {
+                        if tabBarViewModel.selectedTab == "Cardápio" {
                             themeManager.selectedTheme.menu.swiftUIImage
                         } else {
                             Shared.Images.menu.swiftUIImage
@@ -22,7 +23,7 @@ struct TabBarView: View {
                     .tag("Cardápio")
                 Text("Buscar")
                     .tabItem {
-                        if viewModel.selectedTab == "Buscar" {
+                        if tabBarViewModel.selectedTab == "Buscar" {
                             themeManager.selectedTheme.search.swiftUIImage
                         } else {
                             Shared.Images.search.swiftUIImage
@@ -33,7 +34,7 @@ struct TabBarView: View {
                     .tag("Buscar")
                 Text("Pedidos")
                     .tabItem {
-                        if viewModel.selectedTab == "Pedidos" {
+                        if tabBarViewModel.selectedTab == "Pedidos" {
                             themeManager.selectedTheme.orders.swiftUIImage
                         } else {
                             Shared.Images.orders.swiftUIImage
@@ -43,11 +44,15 @@ struct TabBarView: View {
                     }
                     .tag("Pedidos")
             }
-            .sheet(isPresented: $viewModel.showSelectTheme) {
+            .onChange(of: tabBarViewModel.selectedTab) {
+                tabBarViewModel.isDishesDetailPresented = false
+                presentationMode.wrappedValue.dismiss()
+            }
+            .sheet(isPresented: $tabBarViewModel.showSelectTheme) {
                 SelectThemeView()
             }
             .onAppear {
-                if viewModel.dismissThemeSelection {
+                if tabBarViewModel.dismissThemeSelection {
                     themeManager.selectedTheme = Themes.Parintins.shared
                 }
             }
