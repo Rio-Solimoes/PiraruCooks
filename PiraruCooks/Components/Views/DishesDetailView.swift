@@ -239,7 +239,7 @@ struct DishesDetailView: View {
         if abs(offsetDifference) > viewModel.minimumOffset {
             if offsetDifference < 0 {
                 isMenuDetailScrolling = true
-            } else if offsetDifference > 20 {
+            } else if offsetDifference > 25 {
                 isMenuDetailScrolling = false
             }
             self.viewModel.previousViewOffset = currentOffset
