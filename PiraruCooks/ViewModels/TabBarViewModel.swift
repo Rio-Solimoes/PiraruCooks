@@ -10,6 +10,7 @@ class TabBarViewModel {
     var selectedTab = "Cardápio"
     var showSelectTheme: Bool = false
     var dismissThemeSelection: Bool = false
+    var isDishesDetailPresented: Bool = false
     
     init() {
         guard let parintinsFestivalStartDate = TabBarViewModel.getParintinsFestivalStartDate(),
