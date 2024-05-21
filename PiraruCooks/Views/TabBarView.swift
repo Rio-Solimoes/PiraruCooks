@@ -6,6 +6,7 @@ struct TabBarView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var tabBarViewModel: TabBarViewModel
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @State private var isHomePresented = false
     
     var body: some View {
         if networkMonitor.isConnected {                
@@ -21,7 +22,7 @@ struct TabBarView: View {
                             .font(.body)
                     }
                     .tag("Cardápio")
-                SearchView()
+                SearchView(isHomePresented: $isHomePresented)
                     .tabItem {
                         if tabBarViewModel.selectedTab == "Buscar" {
                             themeManager.selectedTheme.search.swiftUIImage

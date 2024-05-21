@@ -16,11 +16,14 @@ struct DishesDetailView: View {
     @State var viewModel = DishesDetailViewModel()
     @Binding var isMenuDetailScrolling: Bool
     var selectedDish: MenuItem?
-    
+    var showCloseButton: Bool
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 24) {
-                closeButton
+                if showCloseButton {
+                    closeButton
+                }
                 dishImage
                 dishInformation
                 orderInformation
@@ -68,13 +71,22 @@ struct DishesDetailView: View {
     private var dishImage: some View {
         ZStack {
             GeometryReader { geometry in
-                Image(uiImage: selectedDish?.image ?? UIImage(named: "tacaca")!)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: geometry.size.width, height: getHeight() * 0.4)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .clipped()
-                
+                if let image = selectedDish?.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geometry.size.width, height: getHeight() * 0.4)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .clipped()
+                } else {
+                    Shared.Images.emptyDish.swiftUIImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geometry.size.width, height: getHeight() * 0.4)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .clipped()
+                }
+
                 LinearGradient(
                     gradient: Gradient(stops: [
                         .init(color: .clear, location: 0.8),
