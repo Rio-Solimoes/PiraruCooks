@@ -50,6 +50,7 @@ struct TabBarView: View {
             }
             .sheet(isPresented: $tabBarViewModel.showSelectTheme) {
                 SelectThemeView()
+                    .presentationDetents([.medium])
             }
             .onAppear {
                 if tabBarViewModel.dismissThemeSelection {
