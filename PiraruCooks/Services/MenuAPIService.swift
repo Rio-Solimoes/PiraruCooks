@@ -69,7 +69,7 @@ class MenuController {
                     self.dishes = fetchResults.fetchedDishes
                 }
             } catch {
-                print("Error fetching initial data: \(error)")
+                //print("Error fetching initial data: \(error)")
             }
         }
     }
@@ -98,7 +98,7 @@ class MenuController {
         let (data, response) = try await URLSession.shared.data(from: menuURL)
 
         let jsonString = String(data: data, encoding: .utf8)
-        print("Received JSON data: \(jsonString ?? "")")
+        //print("Received JSON data: \(jsonString ?? "")")
 
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             throw MenuControllerError.menuItemsNotFound
@@ -116,7 +116,7 @@ class MenuController {
 
             return fetchedMenuItems
         } catch {
-            print("Error decoding menu items: \(error)")
+            //print("Error decoding menu items: \(error)")
             throw error
         }
     }
@@ -129,14 +129,14 @@ class MenuController {
         }
 
         if httpResponse.statusCode != 200 {
-            print("Image fetch failed with status code: \(httpResponse.statusCode)")
+            //print("Image fetch failed with status code: \(httpResponse.statusCode)")
             throw MenuControllerError.imageDataMissing
         }
 
         if let image = UIImage(data: data) {
             return image
         } else {
-            print("Failed to create UIImage from data")
+            //print("Failed to create UIImage from data")
             throw MenuControllerError.imageDataMissing
         }
     }

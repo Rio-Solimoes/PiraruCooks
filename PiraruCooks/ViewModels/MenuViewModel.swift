@@ -5,11 +5,7 @@ import SwiftUI
 class MenuViewModel {
     let menuController = MenuController.shared
     var showNavigationBar = false
-    var currentShownCategory: String = "" {
-        didSet {
-            print(currentShownCategory)
-        }
-    }
+    var currentShownCategory: String = "Entradas"
     
     func refreshData() {
         menuController.fetchInitialData()
