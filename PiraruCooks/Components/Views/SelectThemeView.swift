@@ -13,7 +13,7 @@ struct SelectThemeView: View {
                 .multilineTextAlignment(.center)
             Text("Escolha seu boi preferido e desfrute dos sabores amazônicos!")
                 .multilineTextAlignment(.center)
-                .padding(.bottom, 36)
+                .padding(.bottom, 28)
             HStack(spacing: 12) {
                 Button {
                     themeManager.selectedTheme = Themes.Garantido.shared
@@ -52,7 +52,7 @@ struct SelectThemeView: View {
                     )
                 }
             }
-                .padding(.bottom, 48)
+                .padding(.bottom, 40)
             ButtonView(viewModel: ButtonViewModel(
                 text: "Confirmar",
                 action: { dismiss() },
