@@ -21,7 +21,7 @@ struct TabBarView: View {
                             .font(.body)
                     }
                     .tag("Cardápio")
-                Text("Buscar")
+                SearchView()
                     .tabItem {
                         if tabBarViewModel.selectedTab == "Buscar" {
                             themeManager.selectedTheme.search.swiftUIImage
