@@ -66,6 +66,7 @@ final class CloudKitModel: ObservableObject {
             DispatchQueue.main.async { [weak self] in
                 if let id = returnedID {
                     self?.discoveredCloudUser(id: id)
+                    print(id)
                 }
             }
         }
@@ -83,4 +84,30 @@ final class CloudKitModel: ObservableObject {
         }
     }
     
+    func isThereAdress() -> Bool {
+        let adress = CKRecord(recordType: "User")
+        
+        if nil == nil {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    private func addItem(name: String) {
+        let newFruit = CKRecord(recordType: "Fruits")
+        newFruit["name"] = name
+        saveItem(record: newFruit)
+    }
+    
+    private func saveItem(record: CKRecord) {
+        database.save(record) { [weak self] returnedRecord, returnedError in
+            print("Record: \(String(describing: returnedRecord))")
+            print("Error: \(String(describing: returnedError))")
+        }
+    }
+    
+    func fetchItems(){
+        database.
+    }
 }

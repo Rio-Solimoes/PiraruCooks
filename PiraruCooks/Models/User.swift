@@ -12,19 +12,16 @@ struct User: CKRecordValueProtocol {
     let id: UUID
     let name: String?
     let adress: String?
-    let userPhoto: CKAsset?
     
-    init(id: UUID, name: String?, adress: String?, userPhoto: CKAsset?) {
+    init(id: UUID, name: String?, adress: String?) {
         self.id = id
         self.name = name
         self.adress = adress
-        self.userPhoto = userPhoto
     }
     
     init() {
         self.id = UUID()
         self.name = ""
         self.adress = ""
-        self.userPhoto = nil
     }
 }

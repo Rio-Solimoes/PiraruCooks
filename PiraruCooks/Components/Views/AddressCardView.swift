@@ -2,16 +2,22 @@ import SwiftUI
 import Parintins
 
 struct AddressCardView: View {
+    @State var isThereAdress = false
     var body: some View {
         HStack {
             Shared.Images.home.swiftUIImage
                 .padding(.horizontal, 8)
+            
             VStack(alignment: .leading) {
-                Text("Casa")
-                    .font(.body)
-                Text("Av. Alan Turing, 275")
-                    .font(.footnote)
-                    .fontWeight(.light)
+                if isThereAdress {
+                    Text("Casa")
+                        .font(.body)
+                    Text("Av. Alan Turing, 275")
+                        .font(.footnote)
+                        .fontWeight(.light)
+                } else {
+                    Text("Adicione um endereço")
+                }
             }
             Spacer()
             Image(systemName: "chevron.right")
