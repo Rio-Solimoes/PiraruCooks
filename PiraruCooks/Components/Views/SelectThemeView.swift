@@ -7,10 +7,11 @@ struct SelectThemeView: View {
     
     var body: some View {
         VStack {
-            Text("O Festival de Parintins está chegando!")
+            Text("Os temas do Festival de Parintins já estão disponíveis")
                 .fontWeight(.semibold)
                 .padding(.bottom, 8)
-            Text("Escolha o seu boi favorito e aproveite o festival no seu estilo!")
+                .multilineTextAlignment(.center)
+            Text("Escolha seu boi preferido e desfrute dos sabores amazônicos!")
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 36)
             HStack(spacing: 12) {
