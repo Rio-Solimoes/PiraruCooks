@@ -9,48 +9,29 @@ import SwiftUI
 import Parintins
 
 struct SearchView: View {
-    @State var menuController = MenuController.shared
-    @State var viewModel = MenuDetailViewModel()
-    @State var searchTerm = ""
+    @State var menuViewModel = MenuDetailViewModel()
+    @State var searchViewModel = SearchViewModel()
     @State private var selectedDish: MenuItem?
     @Binding var isHomePresented: Bool
-    
-    var filteredDishes: [MenuItem] {
-        guard !searchTerm.isEmpty else { return Array(menuController.dishes.prefix(3)) }
-        return Array(menuController.dishes
-            .filter { $0.name.normalized().localizedCaseInsensitiveContains(searchTerm) })
-    }
-    
-    var sectionHeaderTitle: String {
-        return searchTerm.isEmpty ? "Descubra" : "Principais Resultados"
-    }
 
     var body: some View {
         NavigationStack {
-            if filteredDishes.isEmpty {
-                VStack {
-                    Spacer()
-                    Image(systemName: "magnifyingglass")
-                        .font(.title)
-                        .foregroundStyle(Shared.Colors.mediumGray.swiftUIColor)
-                        .padding(.vertical, 8)
-                    Text("Nenhum resultado")
-                        .font(.title2)
-                    Spacer()
-                }
-                .fontWeight(.semibold)
+            if searchViewModel.filteredDishes.isEmpty {
+                emptyState
             } else {
                 List {
                     Section(header:
-                        Text(sectionHeaderTitle)
+                        Text(searchViewModel.sectionHeaderTitle)
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundColor(.black)
                     ) {
-                        ForEach(filteredDishes, id: \.id) { dish in
+                        ForEach(searchViewModel.filteredDishes, id: \.id) { dish in
                             NavigationLink(
-                                destination: DishesDetailView(isMenuDetailScrolling: $viewModel.isMenuDetailScrolling,
-                                                              selectedDish: dish, showCloseButton: false)) {
+                                destination: DishesDetailView(
+                                    isMenuDetailScrolling: $menuViewModel.isMenuDetailScrolling,
+                                    selectedDish: dish, showCloseButton: false)) {
+                                        
                                 HStack {
                                     if let dishImage = dish.image {
                                         Image(uiImage: dishImage)
@@ -81,6 +62,7 @@ struct SearchView: View {
                                     .padding(8)
                                     .multilineTextAlignment(.leading)
                                 }
+                                        
                             }
                         }
                     }
@@ -89,8 +71,22 @@ struct SearchView: View {
                 .toolbarTitleDisplayMode(.inlineLarge)
             }
         }
-        .searchable(text: $searchTerm, prompt: "Pratos & Bebidas")
+        .searchable(text: $searchViewModel.searchTerm, prompt: "Pratos & Bebidas")
         .listStyle(.inset)
         .padding()
+    }
+    
+    private var emptyState: some View {
+        VStack {
+            Spacer()
+            Image(systemName: "magnifyingglass")
+                .font(.title)
+                .foregroundStyle(Shared.Colors.mediumGray.swiftUIColor)
+                .padding(.vertical, 8)
+            Text("Nenhum resultado")
+                .font(.title2)
+            Spacer()
+        }
+        .fontWeight(.semibold)
     }
 }
