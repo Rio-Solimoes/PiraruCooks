@@ -31,7 +31,7 @@ struct TabBarView: View {
                             .font(.body)
                     }
                     .tag("Buscar")
-                Text("Pedidos")
+                CartView()
                     .tabItem {
                         if viewModel.selectedTab == "Pedidos" {
                             themeManager.selectedTheme.orders.swiftUIImage

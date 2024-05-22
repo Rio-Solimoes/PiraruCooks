@@ -133,15 +133,16 @@ struct DishesDetailView: View {
     private var addOrderButton: some View {
         Button {
             // Action
-            for i in 0..<viewModel.stepperValue {
-                menuController.order.menuItems.append(selectedDish!)
+            for _ in 0..<viewModel.stepperValue {
+                menuController.order.menuItems[selectedDish!, default: 0] += 1
             }
             print("CHEGUEI AQUI")
             print(menuController.order.menuItems)
             var priceCart: Double = 0.0
             for itemInCart in menuController.order.menuItems {
-                priceCart += itemInCart.price
+                priceCart += itemInCart.key.price * Double(itemInCart.value)
             }
+            menuController.order.price = priceCart
             print("Teste de preço: ", priceCart)
             
         } label: {
