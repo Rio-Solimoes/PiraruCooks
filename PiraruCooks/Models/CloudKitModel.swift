@@ -8,10 +8,11 @@ final class CloudKitModel: ObservableObject {
     @Published var error: String = ""
     @Published var userName: String = ""
     @Published var permissionStatus: Bool = false
+    var userRecordName = ""
     
-    @Published var user: [User] = []
+    @Published var user: [Account] = []
     
-    let container = CKContainer.init(identifier: "iCloud.pirarucooks")
+    let container = CKContainer.init(identifier: "iCloud.pirarucooksapp")
     let database: CKDatabase
     
     init() {
@@ -19,12 +20,16 @@ final class CloudKitModel: ObservableObject {
         getiCloudStatus()
         requestPermission()
         fetchiCloudUserRecordID()
+
     }
     
     private func getiCloudStatus() {
         
         CKContainer.default().accountStatus { [weak self] returnedStatus, _  in
-  
+            
+            print("STatus")
+            print(returnedStatus)
+            
             DispatchQueue.main.async { [weak self] in
                 
                 switch returnedStatus {
@@ -49,7 +54,7 @@ final class CloudKitModel: ObservableObject {
         case iCloudAccountRestricted
         case iCloudAccountUnknown
     }
-
+    
     func requestPermission() {
         self.container.requestApplicationPermission([.userDiscoverability]) { [weak self] returnedStatus, _ in
             DispatchQueue.main.async {[weak self] in
@@ -66,7 +71,10 @@ final class CloudKitModel: ObservableObject {
             DispatchQueue.main.async { [weak self] in
                 if let id = returnedID {
                     self?.discoveredCloudUser(id: id)
-                    print(id)
+                    print("UserRecordID: \(id)")
+                    self?.userRecordName =  id.recordName
+                    
+                    self?.addItem(userRecordName: id.recordName)
                 }
             }
         }
@@ -78,26 +86,15 @@ final class CloudKitModel: ObservableObject {
                 if let name = returnIdentity?.userIdentity.nameComponents?.givenName {
                     self?.userName = name
                     print("name: \(String(describing: self?.userName))")
-
                 }
             }
         }
     }
     
-    func isThereAdress() -> Bool {
-        let adress = CKRecord(recordType: "User")
-        
-        if nil == nil {
-            return false
-        } else {
-            return true
-        }
-    }
-    
-    private func addItem(name: String) {
-        let newFruit = CKRecord(recordType: "Fruits")
-        newFruit["name"] = name
-        saveItem(record: newFruit)
+    private func addItem(userRecordName: String) {
+        let newUserRecordName = CKRecord(recordType: "Account")
+        newUserRecordName["recordName"] = userRecordName
+        saveItem(record: newUserRecordName)
     }
     
     private func saveItem(record: CKRecord) {
@@ -105,9 +102,5 @@ final class CloudKitModel: ObservableObject {
             print("Record: \(String(describing: returnedRecord))")
             print("Error: \(String(describing: returnedError))")
         }
-    }
-    
-    func fetchItems(){
-        database.
     }
 }
