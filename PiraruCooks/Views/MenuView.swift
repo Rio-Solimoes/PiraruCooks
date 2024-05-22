@@ -70,6 +70,12 @@ struct MenuView: View {
                             }
                         }
                     }
+                    .onDidScroll {
+                        if let category = viewModel.selectedCategory {
+                            viewModel.currentShownCategory = category
+                            viewModel.selectedCategory = nil
+                        }
+                    }
                     .background(alignment: .top) {
                         if themeManager.selectedTheme.userDefaultsValue != "Parintins" {
                             LinearGradient(
