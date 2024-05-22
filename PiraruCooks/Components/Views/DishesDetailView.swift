@@ -12,7 +12,7 @@ import Combine
 struct DishesDetailView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var tabBarViewModel: TabBarViewModel
+    @Environment(TabBarViewModel.self) var tabBarViewModel
     @State var viewModel = DishesDetailViewModel()
     @Binding var isMenuDetailScrolling: Bool
     var selectedDish: MenuItem?
