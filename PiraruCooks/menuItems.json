@@ -1,0 +1,128 @@
+[
+ {
+  "id": 1,
+  "name": "Tapioca de Tucumã",
+  "description": "Deliciosa tapioca recheada com tucumã, uma fruta típica da região amazônica.",
+  "price": 15,
+  "category": "Entradas",
+  "estimated_prep_time": 10,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 2,
+  "name": "Pirarucu Grelhado",
+  "description": "Pirarucu grelhado com legumes da estação, feijão manteiguinha, creme especial e farofa de especiarias amazônicas.",
+  "price": 30,
+  "category": "Peixes",
+  "estimated_prep_time": 20,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 3,
+  "name": "Lombo de tambaqui",
+  "description": "Lombo de tambaqui grelhado, castanhas frescas, abacaxi grelhado com gotas de mel, macaxeira prensada com queijo e aioli de tucumã.",
+  "price": 25,
+  "category": "Peixes",
+  "estimated_prep_time": 25,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 4,
+  "name": "Caldeirada Tambaqui",
+  "description": "Caldeirada de tambaqui preparada com tomate, pimentão, cebola e cheiro-verde.",
+  "price": 35,
+  "category": "Peixes",
+  "estimated_prep_time": 40,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 5,
+  "name": "Tambaqui Assado",
+  "description": "Tambaqui assado na brasa, temperado com ervas e acompanhado de vinagrete.",
+  "price": 40,
+  "category": "Peixes",
+  "estimated_prep_time": 50,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 6,
+  "name": "Farofa de banana",
+  "description": "Farofa crocante feita com banana-da-terra.",
+  "price": 8,
+  "category": "Guarnições",
+  "estimated_prep_time": 15,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 7,
+  "name": "Tacacá",
+  "description": "Sopa quente feita com tucupi, jambu, goma de mandioca e camarões.",
+  "price": 20,
+  "category": "Caldos e Sopas",
+  "estimated_prep_time": 30,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 8,
+  "name": "Água",
+  "description": "Água mineral natural.",
+  "price": 5,
+  "category": "Bebidas",
+  "estimated_prep_time": 0,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 9,
+  "name": "Suco de graviola",
+  "description": "Suco natural de graviola.",
+  "price": 10,
+  "category": "Bebidas",
+  "estimated_prep_time": 5,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 10,
+  "name": "Suco de cupuaçu",
+  "description": "Suco refrescante de cupuaçu.",
+  "price": 10,
+  "category": "Bebidas",
+  "estimated_prep_time": 5,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 11,
+  "name": "Suco de taperebá",
+  "description": "Suco natural de taperebá.",
+  "price": 10,
+  "category": "Bebidas",
+  "estimated_prep_time": 5,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 12,
+  "name": "Suco de Açaí",
+  "description": "Suco energizante de açaí.",
+  "price": 12,
+  "category": "Bebidas",
+  "estimated_prep_time": 5,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 13,
+  "name": "Pudim de leite condensado com cumaru",
+  "description": "Pudim tradicional de leite condensado com um toque especial de cumaru.",
+  "price": 10,
+  "category": "Sobremesas",
+  "estimated_prep_time": 45,
+  "image_url": "emptyDish"
+ },
+ {
+  "id": 14,
+  "name": "Torta de cupuaçu",
+  "description": "Torta cremosa de cupuaçu com uma generosa cobertura de chocolate.",
+  "price": 25,
+  "category": "Sobremesas",
+  "estimated_prep_time": 60,
+  "image_url": "emptyDish"
+ }
+]

@@ -26,11 +26,19 @@ class MenuController {
     }
     
     static let orderUpdatedNotification = Notification.Name("MenuController.orderUpdated")
-    static let shared = MenuController()
+    static let shared = MenuController(mocked: true)
     private let baseURL = URL(string: "http://localhost:8080/")!
     
     init() {
         fetchInitialData()
+    }
+    
+    init(mocked: Bool = false) {
+        if mocked {
+            fetchMockedData()
+        } else {
+            fetchInitialData()
+        }
     }
     
     func fetchInitialData() {
@@ -141,4 +149,30 @@ class MenuController {
         }
     }
 
+    func fetchMockedData() {
+        guard let menuItemsUrl = Bundle.main.url(forResource: "menuItems", withExtension: "json") else {
+            print("categories JSON not found")
+            return
+        }
+        do {
+            let menuItemsData = try Data(contentsOf: menuItemsUrl)
+            let menuItems = try JSONDecoder().decode([MenuItem].self, from: menuItemsData)
+            var categories = [String]()
+            menuItems.forEach({ dish in
+                if !categories.contains(where: { category in category == dish.category }) {
+                    categories.append(dish.category)
+                }
+            })
+            self.categories = categories.sorted(by: {(categoryA, categoryB) in
+                if let indexA = categories.firstIndex(of: categoryA),
+                    let indexB = categories.firstIndex(of: categoryB) {
+                    return indexA < indexB
+                }
+                return false
+            })
+            self.dishes = menuItems
+        } catch {
+            print("Error loading JSON:", error)
+        }
+    }
 }
