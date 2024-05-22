@@ -37,7 +37,6 @@ struct DishesDetailView: View {
                 tabBarViewModel.isDishesDetailPresented = true
             }
             .padding()
-            .padding(.horizontal, 8)
             .padding(.bottom)
             .background(viewModel.scrollOffsetPreference)
             .onPreferenceChange(ViewOffsetKey.self, perform: handlePreferenceChange)
