@@ -20,6 +20,10 @@ struct SearchView: View {
         return Array(menuController.dishes
             .filter { $0.name.normalized().localizedCaseInsensitiveContains(searchTerm) })
     }
+    
+    var sectionHeaderTitle: String {
+        return searchTerm.isEmpty ? "Descubra" : "Principais Resultados"
+    }
 
     var body: some View {
         NavigationStack {
@@ -38,7 +42,7 @@ struct SearchView: View {
             } else {
                 List {
                     Section(header:
-                        Text("Descubra")
+                        Text(sectionHeaderTitle)
                             .font(.title2)
                             .fontWeight(.semibold)
                             .foregroundColor(.black)
