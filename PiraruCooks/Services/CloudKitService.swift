@@ -20,18 +20,13 @@ final class CloudKitModel: ObservableObject {
         getiCloudStatus()
         requestPermission()
         fetchiCloudUserRecordID()
-
     }
     
     private func getiCloudStatus() {
-        
         CKContainer.default().accountStatus { [weak self] returnedStatus, _  in
-            
-            print("STatus")
-            print(returnedStatus)
+            print("status: \(returnedStatus)")
             
             DispatchQueue.main.async { [weak self] in
-                
                 switch returnedStatus {
                 case .available:
                     self?.isSignedInToiCloud = true
@@ -46,13 +41,6 @@ final class CloudKitModel: ObservableObject {
                 }
             }
         }
-    }
-    
-    enum CloudKitError: String, LocalizedError {
-        case iCloudAccountNotFound
-        case iCloudAccountNotDetermined
-        case iCloudAccountRestricted
-        case iCloudAccountUnknown
     }
     
     func requestPermission() {
@@ -73,7 +61,6 @@ final class CloudKitModel: ObservableObject {
                     self?.discoveredCloudUser(id: id)
                     print("UserRecordID: \(id)")
                     self?.userRecordName =  id.recordName
-                    
                     self?.addItem(userRecordName: id.recordName)
                 }
             }
@@ -83,8 +70,9 @@ final class CloudKitModel: ObservableObject {
     func discoveredCloudUser(id: CKRecord.ID) {
         self.container.fetchShareParticipant(withUserRecordID: id) { [weak self] returnIdentity, _ in
             DispatchQueue.main.async { [weak self] in
-                if let name = returnIdentity?.userIdentity.nameComponents?.givenName {
-                    self?.userName = name
+                if let name = returnIdentity?.userIdentity.nameComponents?.givenName,
+                   let familyName = returnIdentity?.userIdentity.nameComponents?.familyName{
+                    self?.userName = "\(name) \(familyName)"
                     print("name: \(String(describing: self?.userName))")
                 }
             }
@@ -104,3 +92,12 @@ final class CloudKitModel: ObservableObject {
         }
     }
 }
+
+enum CloudKitError: String, LocalizedError {
+    case iCloudAccountNotFound
+    case iCloudAccountNotDetermined
+    case iCloudAccountRestricted
+    case iCloudAccountUnknown
+}
+
+//TO DO: checar se o usuario ja esta adiciona a base de dados, caso n esteja adicionalo
