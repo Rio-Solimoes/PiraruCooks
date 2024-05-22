@@ -17,7 +17,7 @@ struct CarouselView: View {
                     HighlightCardView(viewModel: HighlightCardViewModel(
                         image: Image("Carrousel2"),
                         title: "Clima de festival",
-                        description: "Escolha o seu boi favorito e aproveite o festival no seu estilo!"
+                        description: "Escolha seu boi favorito e explore os sabores autênticos da Amazônia!"
                     ))
                 }
             }

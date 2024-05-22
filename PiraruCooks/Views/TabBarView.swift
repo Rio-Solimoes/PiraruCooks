@@ -4,12 +4,13 @@ import Parintins
 struct TabBarView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var tabBarViewModel: TabBarViewModel
+    @Environment(TabBarViewModel.self) var tabBarViewModel
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @State private var isHomePresented = false
     
     var body: some View {
-        if networkMonitor.isConnected {                
+        @Bindable var tabBarViewModel = tabBarViewModel
+        if networkMonitor.isConnected {
             TabView(selection: $tabBarViewModel.selectedTab) {
                 MenuView()
                     .tabItem {
@@ -51,6 +52,7 @@ struct TabBarView: View {
             }
             .sheet(isPresented: $tabBarViewModel.showSelectTheme) {
                 SelectThemeView()
+                    .presentationDetents([.medium])
             }
             .onAppear {
                 if tabBarViewModel.dismissThemeSelection {
