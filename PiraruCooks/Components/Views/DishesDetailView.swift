@@ -247,10 +247,11 @@ struct DishesDetailView: View {
     // Identifies the position on which the view is being scrolled
     func handlePreferenceChange(currentOffset: CGFloat) {
         let offsetDifference: CGFloat = viewModel.previousViewOffset - currentOffset
+        print(offsetDifference)
         if abs(offsetDifference) > viewModel.minimumOffset {
             if offsetDifference < 0 {
                 isMenuDetailScrolling = true
-            } else if offsetDifference > 25 {
+            } else if offsetDifference > 30 {
                 isMenuDetailScrolling = false
             }
             self.viewModel.previousViewOffset = currentOffset
