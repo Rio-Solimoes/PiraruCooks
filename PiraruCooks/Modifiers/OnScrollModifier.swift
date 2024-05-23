@@ -42,18 +42,27 @@ struct OnScrollModifier: ViewModifier {
     }
     
     func performWillScrollActions() {
-        if !isScrolling {
-            isScrolling = true
-            if !OnScrollModifier.enabledActions.contains(.willScroll) {
+        if !OnScrollModifier.enabledActions.contains(.willScroll) {
+            return
+        }
+        OnScrollModifier.onWillScrollActions.forEach({ onWillScrollModifier in
+            guard let action = onWillScrollModifier.action else {
                 return
             }
-            OnScrollModifier.onWillScrollActions.forEach({ onWillScrollModifier in
-                guard let action = onWillScrollModifier.action else {
-                    return
-                }
-                action()
-            })
+            action()
+        })
+    }
+    
+    func performDidScrollActions() {
+        if !OnScrollModifier.enabledActions.contains(.didScroll) {
+            return
         }
+        OnScrollModifier.onDidScrollActions.forEach({ onDidScrollModifier in
+            guard let action = onDidScrollModifier.action else {
+                return
+            }
+            action()
+        })
     }
     
     func performScrollPositionActions(currentOffset: CGFloat, scrollDirection: ScrollDirection, viewHeight: CGFloat) {
@@ -99,7 +108,10 @@ struct OnScrollModifier: ViewModifier {
                 if isInitCall {
                     return
                 }
-                performWillScrollActions()
+                if !isScrolling {
+                    isScrolling = true
+                    performWillScrollActions()
+                }
                 OnScrollModifier.startedScrolling = true
                 let offsetDifference: CGFloat = previousScrollOffset - currentOffset
                 var scrollDirection: ScrollDirection = .down
@@ -141,15 +153,7 @@ struct OnScrollModifier: ViewModifier {
                         }
                     }
                 })
-                if !OnScrollModifier.enabledActions.contains(.didScroll) {
-                    return
-                }
-                OnScrollModifier.onDidScrollActions.forEach({ onDidScrollModifier in
-                    guard let action = onDidScrollModifier.action else {
-                        return
-                    }
-                    action()
-                })
+                performDidScrollActions()
             }
     }
 }
