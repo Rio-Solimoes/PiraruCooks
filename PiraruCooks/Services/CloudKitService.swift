@@ -19,7 +19,7 @@ final class CloudKitModel: ObservableObject {
         self.database = container.publicCloudDatabase
         getiCloudStatus()
         requestPermission()
-        fetchiCloudUserRecordID()
+        fetchiCloudUserRecordNameAndSaveOnDatabase()
     }
     
     private func getiCloudStatus() {
@@ -54,38 +54,48 @@ final class CloudKitModel: ObservableObject {
         }
     }
     
-    func fetchiCloudUserRecordID() {
+    //find userId
+    func fetchiCloudUserRecordNameAndSaveOnDatabase() {
         container.fetchUserRecordID { [weak self] returnedID, _ in
             DispatchQueue.main.async { [weak self] in
                 if let id = returnedID {
-                    self?.discoveredCloudUser(id: id)
-                    print("UserRecordID: \(id)")
-                    self?.userRecordName =  id.recordName
-                    self?.addItem(userRecordName: id.recordName)
+                    self?.addNewUser(id: id)
                 }
             }
         }
     }
     
-    func discoveredCloudUser(id: CKRecord.ID) {
+    //add userId and userName to database
+    private func addNewUser(id: CKRecord.ID) {
+        let newUserRecordName = CKRecord(recordType: "Account")
+        newUserRecordName["recordName"] = id.recordName
+        saveItem(record: newUserRecordName)
+        
         self.container.fetchShareParticipant(withUserRecordID: id) { [weak self] returnIdentity, _ in
             DispatchQueue.main.async { [weak self] in
                 if let name = returnIdentity?.userIdentity.nameComponents?.givenName,
-                   let familyName = returnIdentity?.userIdentity.nameComponents?.familyName{
-                    self?.userName = "\(name) \(familyName)"
-                    print("name: \(String(describing: self?.userName))")
+                   let familyName = returnIdentity?.userIdentity.nameComponents?.familyName {
+                    let userName = "\(name) \(familyName)"
+                    newUserRecordName["name"] = userName
+                    self!.saveItem(record: newUserRecordName)
                 }
             }
         }
     }
     
-    private func addItem(userRecordName: String) {
-        let newUserRecordName = CKRecord(recordType: "Account")
-        newUserRecordName["recordName"] = userRecordName
-        saveItem(record: newUserRecordName)
-    }
+//        private func userIsOnDatabase(userRecordName: String) async -> CKRecord? {
+//            let predicate = NSPredicate(format: "recordName == %@", userRecordName)
+//            let query = CKQuery(recordType: "Account", predicate: predicate)
+//    
+//            do {
+//                let result = try await database.records(matching: query)
+//                result.matchResults
+//            } catch {
+//    
+//            }
+//        }
     
-    private func saveItem(record: CKRecord) {
+    func saveItem(record: CKRecord) {
         database.save(record) { [weak self] returnedRecord, returnedError in
             print("Record: \(String(describing: returnedRecord))")
             print("Error: \(String(describing: returnedError))")
@@ -99,5 +109,3 @@ enum CloudKitError: String, LocalizedError {
     case iCloudAccountRestricted
     case iCloudAccountUnknown
 }
-
-//TO DO: checar se o usuario ja esta adiciona a base de dados, caso n esteja adicionalo
