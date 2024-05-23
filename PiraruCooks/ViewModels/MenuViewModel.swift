@@ -6,7 +6,8 @@ class MenuViewModel {
     let menuController = MenuController.shared
     var showNavigationBar = false
     var currentShownCategory: String = "Entradas"
-    var selectedCategory: String?
+    var willScrollToCategory: Bool = false
+    var isScrollingToCategory: Bool = false
     
     func refreshData() {
         menuController.fetchInitialData()

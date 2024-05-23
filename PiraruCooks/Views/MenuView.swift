@@ -70,10 +70,18 @@ struct MenuView: View {
                             }
                         }
                     }
+                    .onWillScroll {
+                        if viewModel.willScrollToCategory && !viewModel.isScrollingToCategory {
+                            viewModel.willScrollToCategory = false
+                            viewModel.isScrollingToCategory = true
+                        } else if !viewModel.willScrollToCategory && viewModel.isScrollingToCategory {
+                            viewModel.isScrollingToCategory = false
+                            enableScrollAction(types: [.scrollPosition])
+                        }
+                    }
                     .onDidScroll {
-                        if let category = viewModel.selectedCategory {
-                            viewModel.currentShownCategory = category
-                            viewModel.selectedCategory = nil
+                        if viewModel.isScrollingToCategory {
+                            enableScrollAction(types: [.scrollPosition])
                         }
                     }
                     .background(alignment: .top) {

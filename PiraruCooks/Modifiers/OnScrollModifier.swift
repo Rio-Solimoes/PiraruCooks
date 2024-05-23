@@ -7,6 +7,12 @@ enum ScrollDirection {
     case up
     case down
 }
+
+enum ScrollAction {
+    case scrollPosition
+    case didScroll
+    case willScroll
+}
 // swiftlint:enable identifier_name
 
 struct OnScrollModifier: ViewModifier {
@@ -14,9 +20,10 @@ struct OnScrollModifier: ViewModifier {
     static var onDidScrollActions: [OnDidScrollModifier] = []
     static var onWillScrollActions: [OnWillScrollModifier] = []
     static var startedScrolling: Bool = false
+    static var enabledActions: Set<ScrollAction> = [.scrollPosition, .didScroll, .willScroll]
     
     @State var previousScrollOffset: CGFloat = 0
-    @State static var previousScrollOffsetPublished: CurrentValueSubject<CGFloat, Never> = CurrentValueSubject<CGFloat, Never>(0)
+    @State static var previousScrollOffsetPublished = CurrentValueSubject<CGFloat, Never>(0)
     @State var isScrolling = false
     @State var isInitCall = true
     
@@ -37,6 +44,9 @@ struct OnScrollModifier: ViewModifier {
     func performWillScrollActions() {
         if !isScrolling {
             isScrolling = true
+            if !OnScrollModifier.enabledActions.contains(.willScroll) {
+                return
+            }
             OnScrollModifier.onWillScrollActions.forEach({ onWillScrollModifier in
                 guard let action = onWillScrollModifier.action else {
                     return
@@ -47,6 +57,9 @@ struct OnScrollModifier: ViewModifier {
     }
     
     func performScrollPositionActions(currentOffset: CGFloat, scrollDirection: ScrollDirection, viewHeight: CGFloat) {
+        if !OnScrollModifier.enabledActions.contains(.scrollPosition) {
+            return
+        }
         OnScrollModifier.onScrollPositionActions.forEach({ onScrollPositionModifier in
             if !onScrollPositionModifier.isAppearing {
                 return
@@ -128,6 +141,9 @@ struct OnScrollModifier: ViewModifier {
                         }
                     }
                 })
+                if !OnScrollModifier.enabledActions.contains(.didScroll) {
+                    return
+                }
                 OnScrollModifier.onDidScrollActions.forEach({ onDidScrollModifier in
                     guard let action = onDidScrollModifier.action else {
                         return
@@ -151,6 +167,18 @@ extension View {
                 action: action
             )
         )
+    }
+    
+    func enableScrollAction(types: [ScrollAction]) {
+        for type in types {
+            OnScrollModifier.enabledActions.insert(type)
+        }
+    }
+    
+    func disableScrollActions(types: [ScrollAction]) {
+        for type in types {
+            OnScrollModifier.enabledActions.remove(type)
+        }
     }
 }
 

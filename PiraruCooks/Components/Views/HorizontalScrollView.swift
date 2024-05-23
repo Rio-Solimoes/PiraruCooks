@@ -14,7 +14,9 @@ struct HorizontalScrollView: View {
                     ZStack(alignment: .top) {
                         Button {
                             viewModel.scrollToCategory(named: category)
-                            menuViewModel.selectedCategory = category
+                            menuViewModel.currentShownCategory = category
+                            menuViewModel.willScrollToCategory = true
+                            disableScrollActions(types: [.scrollPosition])
                         } label: {
                             VStack {
                                 ZStack {
