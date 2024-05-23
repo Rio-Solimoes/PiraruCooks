@@ -90,7 +90,10 @@ struct OnScrollModifier: ViewModifier {
                 if offsetDifference > 0 {
                     scrollDirection = .up
                 }
-                performScrollPositionActions(currentOffset: currentOffset, scrollDirection: scrollDirection, viewHeight: content.getHeight())
+                performScrollPositionActions(
+                    currentOffset: currentOffset,
+                    scrollDirection: scrollDirection,
+                    viewHeight: content.getHeight())
                 guard let action = action else {
                     return
                 }

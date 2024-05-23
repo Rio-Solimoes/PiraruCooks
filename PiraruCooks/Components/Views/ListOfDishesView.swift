@@ -17,7 +17,7 @@ struct ListOfDishesView: View {
                     Spacer()
                 }
                 .id("\(category)Id")
-                .onScrollPosition(0.72) {
+                .onScrollPosition(0.7) {
                     currentShownCategory = category
                 }
                 ForEach(menuController.dishes.filter({ dish in dish.category == category

@@ -3,8 +3,8 @@ import SwiftUI
 
 struct OnScrollPositionModifier: ViewModifier {
     @State var id: String = UUID().uuidString
-    @State var currentPosition: CGFloat = 0
     @State var triggeredGoingDown: Bool = false
+    @State var isAppearing: Bool = false
     @State var appearingPosition: CGFloat?
     
     let targetPosition: CGFloat
@@ -21,15 +21,26 @@ struct OnScrollPositionModifier: ViewModifier {
                 Color.clear
                     .onAppear {
                         if !OnScrollModifier.startedScrolling {
-                            appearingPosition = geometry.frame(in: .global).maxY - content.getHeight()
+                            appearingPosition = geometry.frame(in: .global).origin.y - content.getHeight()
+                        }
+                    }
+                    .onReceive(OnScrollModifier.previousScrollOffsetPublished
+                        .debounce(for: .seconds(0.2), scheduler: DispatchQueue.main)
+                        .eraseToAnyPublisher()
+                    ) { _ in
+                        if isAppearing {
+                            appearingPosition = OnScrollModifier.previousScrollOffsetPublished.value +
+                            (geometry.frame(in: .global).maxY - content.getHeight())
                         }
                     }
             })
             .onAppear {
+                isAppearing = true
                 OnScrollModifier.onScrollPositionActions.append(self)
             }
             .onDisappear {
-//                appearingPosition = nil
+                appearingPosition = nil
+                isAppearing = false
                 OnScrollModifier.onScrollPositionActions.removeAll(
                     where: { onScrollPositionModifier in
                         onScrollPositionModifier.id == self.id
