@@ -26,8 +26,7 @@ struct MenuView: View {
                         .padding(.horizontal, 20)
                         VStack {
                             NavigationLink {
-                                Text("Endereços")
-                                    .font(.body)
+                                AddressView()
                             } label: {
                                 AddressCardView()
                             }
