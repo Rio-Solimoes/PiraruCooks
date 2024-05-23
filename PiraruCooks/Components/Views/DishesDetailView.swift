@@ -16,6 +16,8 @@ struct DishesDetailView: View {
     @State var viewModel = DishesDetailViewModel()
     @Binding var isMenuDetailScrolling: Bool
     var selectedDish: MenuItem?
+    @State var menuController = MenuController.shared
+    
     var showCloseButton: Bool
 
     var body: some View {
@@ -152,6 +154,18 @@ struct DishesDetailView: View {
     private var addOrderButton: some View {
         Button {
             // Action
+            for _ in 0..<viewModel.stepperValue {
+                menuController.order.menuItems[selectedDish!, default: 0] += 1
+            }
+            print("CHEGUEI AQUI")
+            print(menuController.order.menuItems)
+            var priceCart: Double = 0.0
+            for itemInCart in menuController.order.menuItems {
+                priceCart += itemInCart.key.price * Double(itemInCart.value)
+            }
+            menuController.order.price = priceCart
+            print("Teste de preço: ", priceCart)
+            
         } label: {
             Text("Adicionar | R$ \(formattedPrice)")
                 .frame(maxWidth: .infinity)
