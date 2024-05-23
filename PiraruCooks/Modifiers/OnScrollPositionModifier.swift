@@ -36,15 +36,23 @@ struct OnScrollPositionModifier: ViewModifier {
             })
             .onAppear {
                 isAppearing = true
-                OnScrollModifier.onScrollPositionActions.append(self)
+                if !OnScrollModifier.onScrollPositionActions.contains(where: { onScrollPositionModifier in
+                    onScrollPositionModifier.id == self.id
+                }) {
+                    OnScrollModifier.onScrollPositionActions.append(self)
+                }
             }
             .onDisappear {
                 appearingPosition = nil
                 isAppearing = false
-                OnScrollModifier.onScrollPositionActions.removeAll(
-                    where: { onScrollPositionModifier in
-                        onScrollPositionModifier.id == self.id
-                    })
+                if let appearingPosition = appearingPosition {
+                    let offsetDifference = OnScrollModifier.previousScrollOffsetPublished.value - appearingPosition
+                    if offsetDifference > 0 {
+                        triggeredGoingDown = false
+                    } else {
+                        triggeredGoingDown = true
+                    }
+                }
             }
     }
 }

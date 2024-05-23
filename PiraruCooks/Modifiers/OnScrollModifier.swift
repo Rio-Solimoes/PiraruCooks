@@ -48,6 +48,9 @@ struct OnScrollModifier: ViewModifier {
     
     func performScrollPositionActions(currentOffset: CGFloat, scrollDirection: ScrollDirection, viewHeight: CGFloat) {
         OnScrollModifier.onScrollPositionActions.forEach({ onScrollPositionModifier in
+            if !onScrollPositionModifier.isAppearing {
+                return
+            }
             guard let action = onScrollPositionModifier.action else {
                 return
             }
@@ -112,6 +115,19 @@ struct OnScrollModifier: ViewModifier {
                     return
                 }
                 isScrolling = false
+                let firstAppearingIndex = OnScrollModifier.onScrollPositionActions.firstIndex(where: { $0.isAppearing })
+                OnScrollModifier.onScrollPositionActions.enumerated().forEach({ index, onScrollPositionModifier in
+                    guard let firstAppearingIndex = firstAppearingIndex else {
+                        return
+                    }
+                    if !onScrollPositionModifier.isAppearing {
+                        if index < firstAppearingIndex {
+                            onScrollPositionModifier.triggeredGoingDown = true
+                        } else {
+                            onScrollPositionModifier.triggeredGoingDown = false
+                        }
+                    }
+                })
                 OnScrollModifier.onDidScrollActions.forEach({ onDidScrollModifier in
                     guard let action = onDidScrollModifier.action else {
                         return
