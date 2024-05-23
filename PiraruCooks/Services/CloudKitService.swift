@@ -6,10 +6,7 @@ final class CloudKitModel: ObservableObject {
     
     @Published var isSignedInToiCloud: Bool = false
     @Published var error: String = ""
-    @Published var userName: String = ""
-    @Published var permissionStatus: Bool = false
-    var userRecordName = ""
-    
+    @Published var permissionStatus: Bool = false    
     @Published var user: [Account] = []
     
     let container = CKContainer.init(identifier: "iCloud.pirarucooksapp")
@@ -83,17 +80,22 @@ final class CloudKitModel: ObservableObject {
         }
     }
     
-//        private func userIsOnDatabase(userRecordName: String) async -> CKRecord? {
-//            let predicate = NSPredicate(format: "recordName == %@", userRecordName)
-//            let query = CKQuery(recordType: "Account", predicate: predicate)
-//    
-//            do {
-//                let result = try await database.records(matching: query)
-//                result.matchResults
-//            } catch {
-//    
-//            }
-//        }
+    private func getUserInfo(userRecordName: String) async -> CKRecord? {
+        let predicate = NSPredicate(format: "recordName == %@", userRecordName)
+        let query = CKQuery(recordType: "Account", predicate: predicate)
+        
+        do {
+            let resultRecords = try await database.records(matching: query)
+            if !resultRecords.matchResults.isEmpty {
+                return try resultRecords.matchResults.first?.1.get()
+            } else {
+                return nil
+            }
+        } catch {
+            print("Preciso tratar o erro \(error)")
+            return nil
+        }
+    }
     
     func saveItem(record: CKRecord) {
         database.save(record) { [weak self] returnedRecord, returnedError in
