@@ -14,13 +14,11 @@ struct OnScrollModifier: ViewModifier {
     static var onDidScrollActions: [OnDidScrollModifier] = []
     static var onWillScrollActions: [OnWillScrollModifier] = []
     static var startedScrolling: Bool = false
-    static var isScrollingTo: Bool = false
     
     @State var previousScrollOffset: CGFloat = 0
     @State static var previousScrollOffsetPublished: CurrentValueSubject<CGFloat, Never> = CurrentValueSubject<CGFloat, Never>(0)
     @State var isScrolling = false
     @State var isInitCall = true
-    @State static var lastScrollDirection: ScrollDirection = .down
     
     let coordinateSpace: String
     let minOffset: CGFloat
@@ -36,21 +34,42 @@ struct OnScrollModifier: ViewModifier {
         self.action = action
     }
     
-    static func updateOnScrollPositionModifier(_ onScrollPositionModifier: OnScrollPositionModifier,
-                                        viewHeight: CGFloat,
-                                        geometry: GeometryProxy
-    ) {
-        if onScrollPositionModifier.isAppearing && OnScrollModifier.isScrollingTo {
-            onScrollPositionModifier.appearingPosition = geometry.frame(in: .global).maxY + OnScrollModifier.previousScrollOffsetPublished.value - viewHeight
+    func performWillScrollActions() {
+        if !isScrolling {
+            isScrolling = true
+            OnScrollModifier.onWillScrollActions.forEach({ onWillScrollModifier in
+                guard let action = onWillScrollModifier.action else {
+                    return
+                }
+                action()
+            })
         }
     }
     
-    static func updateTriggeredGoingDown(for onScrollPositionModifier: OnScrollPositionModifier) {
-        if lastScrollDirection == .down {
-            onScrollPositionModifier.triggeredGoingDown = true
-        } else if lastScrollDirection == .up {
-            onScrollPositionModifier.triggeredGoingDown = false
-        }
+    func performScrollPositionActions(currentOffset: CGFloat, scrollDirection: ScrollDirection, viewHeight: CGFloat) {
+        OnScrollModifier.onScrollPositionActions.forEach({ onScrollPositionModifier in
+            guard let action = onScrollPositionModifier.action else {
+                return
+            }
+            var appearingPosition: CGFloat = 1000000000
+            if let position = onScrollPositionModifier.appearingPosition {
+                appearingPosition = position
+            } else {
+                let adjustAppearingPosition = scrollDirection == .down ? 0 : viewHeight
+                appearingPosition = currentOffset - adjustAppearingPosition
+                onScrollPositionModifier.appearingPosition = appearingPosition
+            }
+            let offsetDifference = currentOffset - appearingPosition
+            if scrollDirection == .down && !onScrollPositionModifier.triggeredGoingDown &&
+                offsetDifference > onScrollPositionModifier.targetPosition {
+                onScrollPositionModifier.triggeredGoingDown = true
+                action()
+            } else if scrollDirection == .up && onScrollPositionModifier.triggeredGoingDown &&
+                        offsetDifference < onScrollPositionModifier.targetPosition {
+                onScrollPositionModifier.triggeredGoingDown = false
+                action()
+            }
+        })
     }
     
     func body(content: Content) -> some View {
@@ -64,52 +83,14 @@ struct OnScrollModifier: ViewModifier {
                 if isInitCall {
                     return
                 }
+                performWillScrollActions()
                 OnScrollModifier.startedScrolling = true
-                if !isScrolling {
-                    isScrolling = true
-                    OnScrollModifier.onWillScrollActions.forEach({ onWillScrollModifier in
-                        guard let action = onWillScrollModifier.action else {
-                            return
-                        }
-                        action()
-                    })
-                }
                 let offsetDifference: CGFloat = previousScrollOffset - currentOffset
                 var scrollDirection: ScrollDirection = .down
                 if offsetDifference > 0 {
                     scrollDirection = .up
-                    OnScrollModifier.lastScrollDirection = scrollDirection
                 }
-                OnScrollModifier.onScrollPositionActions.forEach({ onScrollPositionModifier in
-                    guard let action = onScrollPositionModifier.action else {
-                        return
-                    }
-                    var appearingPosition: CGFloat = 1000000000
-                    if let position = onScrollPositionModifier.appearingPosition {
-                        appearingPosition = position
-                    } else {
-                        let adjustAppearingPosition = scrollDirection == .down ? 0 : content.getHeight()
-                        appearingPosition = currentOffset - adjustAppearingPosition
-                        onScrollPositionModifier.appearingPosition = appearingPosition
-                    }
-                    let offsetDifference = currentOffset - appearingPosition
-                    print(currentOffset)
-                    print(appearingPosition)
-                    print(offsetDifference)
-                    print(onScrollPositionModifier.targetPosition)
-                    print(scrollDirection)
-                    print(onScrollPositionModifier.triggeredGoingDown)
-                    print()
-                    if scrollDirection == .down && !onScrollPositionModifier.triggeredGoingDown &&
-                        offsetDifference > onScrollPositionModifier.targetPosition {
-                        onScrollPositionModifier.triggeredGoingDown = true
-                        action()
-                    } else if scrollDirection == .up && onScrollPositionModifier.triggeredGoingDown &&
-                                offsetDifference < onScrollPositionModifier.targetPosition {
-                        onScrollPositionModifier.triggeredGoingDown = false
-                        action()
-                    }
-                })
+                performScrollPositionActions(currentOffset: currentOffset, scrollDirection: scrollDirection, viewHeight: content.getHeight())
                 guard let action = action else {
                     return
                 }
@@ -128,7 +109,6 @@ struct OnScrollModifier: ViewModifier {
                     return
                 }
                 isScrolling = false
-                OnScrollModifier.isScrollingTo = false
                 OnScrollModifier.onDidScrollActions.forEach({ onDidScrollModifier in
                     guard let action = onDidScrollModifier.action else {
                         return
