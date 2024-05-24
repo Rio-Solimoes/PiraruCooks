@@ -15,7 +15,7 @@ struct MenuView: View {
                         HStack {
                             Text("Cardápio")
                                 .font(.largeTitle)
-                                .fontWeight(.semibold)
+                                .fontWeight(.bold)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             themeManager.selectedTheme.profileDefault.swiftUIImage
                                 .resizable()
