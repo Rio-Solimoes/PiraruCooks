@@ -20,6 +20,7 @@ class HorizontalScrollViewModel {
         case "Frutos do Mar": return Shared.Images.seafood.swiftUIImage
         case "Guarnições": return Shared.Images.garnishes.swiftUIImage
         case "Saladas": return Shared.Images.salads.swiftUIImage
+        case "Pets": return Shared.Images.pets.swiftUIImage
         default: return nil
         }
     }

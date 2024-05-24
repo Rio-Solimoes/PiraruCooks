@@ -3,15 +3,19 @@ import Parintins
 
 struct TabBarView: View {
     @EnvironmentObject private var themeManager: ThemeManager
-    @State var viewModel = TabBarViewModel()
+    @Environment(\.presentationMode) var presentationMode
+    @Environment(TabBarViewModel.self) var tabBarViewModel
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @State private var isHomePresented = false
+    @State var menuController = MenuController.shared
     
     var body: some View {
-        if networkMonitor.isConnected {                
-            TabView(selection: $viewModel.selectedTab) {
+        @Bindable var tabBarViewModel = tabBarViewModel
+        if networkMonitor.isConnected {
+            TabView(selection: $tabBarViewModel.selectedTab) {
                 MenuView()
                     .tabItem {
-                        if viewModel.selectedTab == "Cardápio" {
+                        if tabBarViewModel.selectedTab == "Cardápio" {
                             themeManager.selectedTheme.menu.swiftUIImage
                         } else {
                             Shared.Images.menu.swiftUIImage
@@ -20,9 +24,9 @@ struct TabBarView: View {
                             .font(.body)
                     }
                     .tag("Cardápio")
-                Text("Buscar")
+                SearchView(isHomePresented: $isHomePresented)
                     .tabItem {
-                        if viewModel.selectedTab == "Buscar" {
+                        if tabBarViewModel.selectedTab == "Buscar" {
                             themeManager.selectedTheme.search.swiftUIImage
                         } else {
                             Shared.Images.search.swiftUIImage
@@ -31,23 +35,44 @@ struct TabBarView: View {
                             .font(.body)
                     }
                     .tag("Buscar")
-                Text("Pedidos")
-                    .tabItem {
-                        if viewModel.selectedTab == "Pedidos" {
-                            themeManager.selectedTheme.orders.swiftUIImage
-                        } else {
-                            Shared.Images.orders.swiftUIImage
+                if menuController.order.menuItems.count == 0 {
+                    EmptyCartView()
+                        .tabItem {
+                            if tabBarViewModel.selectedTab == "Sacola" {
+                                themeManager.selectedTheme.orders.swiftUIImage
+                            } else {
+                                Image(systemName: "bag")
+                                //Shared.Images.orders.swiftUIImage
+                            }
+                            Text("Sacola")
+                                .font(.body)
                         }
-                        Text("Pedidos")
-                            .font(.body)
-                    }
-                    .tag("Pedidos")
+                        .tag("Sacola")
+                } else {
+                    CartView()
+                        .tabItem {
+                            if tabBarViewModel.selectedTab == "Sacola" {
+                                themeManager.selectedTheme.orders.swiftUIImage
+                            } else {
+                                Image(systemName: "bag")
+                                //Shared.Images.orders.swiftUIImage
+                            }
+                            Text("Sacola")
+                                .font(.body)
+                        }
+                        .tag("Sacola")
+                }
             }
-            .sheet(isPresented: $viewModel.showSelectTheme) {
+            .onChange(of: tabBarViewModel.selectedTab) {
+                tabBarViewModel.isDishesDetailPresented = false
+                presentationMode.wrappedValue.dismiss()
+            }
+            .sheet(isPresented: $tabBarViewModel.showSelectTheme) {
                 SelectThemeView()
+                    .presentationDetents([.medium])
             }
             .onAppear {
-                if viewModel.dismissThemeSelection {
+                if tabBarViewModel.dismissThemeSelection {
                     themeManager.selectedTheme = Themes.Parintins.shared
                 }
             }

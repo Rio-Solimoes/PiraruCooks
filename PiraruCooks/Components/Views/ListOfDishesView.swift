@@ -61,6 +61,8 @@ struct ListOfDishesView: View {
                                 .frame(height: getWidth() * 0.25)
                                 Spacer()
                                 Image(systemName: "chevron.right")
+                                    .foregroundStyle(Shared.Colors.mediumGray.swiftUIColor)
+                                    .fontWeight(.semibold)
                             }
                             .padding(.vertical, 8)
                             .foregroundStyle(.black)
