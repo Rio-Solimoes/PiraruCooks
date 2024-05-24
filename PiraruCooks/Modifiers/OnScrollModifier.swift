@@ -49,7 +49,7 @@ struct OnScrollModifier: ViewModifier {
             guard let action = onWillScrollModifier.action else {
                 return
             }
-            action()
+            action(previousScrollOffset)
         })
     }
     
@@ -61,7 +61,7 @@ struct OnScrollModifier: ViewModifier {
             guard let action = onDidScrollModifier.action else {
                 return
             }
-            action()
+            action(previousScrollOffset)
         })
     }
     

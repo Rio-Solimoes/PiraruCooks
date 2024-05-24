@@ -70,17 +70,16 @@ struct MenuView: View {
                             }
                         }
                     }
-                    .onWillScroll {
-                        if viewModel.willScrollToCategory && !viewModel.isScrollingToCategory {
+                    .onWillScroll { offset in
+                        if viewModel.scrollToStartOffset == offset && viewModel.willScrollToCategory {
                             viewModel.willScrollToCategory = false
-                            viewModel.isScrollingToCategory = true
-                        } else if !viewModel.willScrollToCategory && viewModel.isScrollingToCategory {
-                            viewModel.isScrollingToCategory = false
                             enableScrollAction(types: [.scrollPosition])
                         }
+                        viewModel.scrollToStartOffset = offset
                     }
-                    .onDidScroll {
-                        if viewModel.isScrollingToCategory {
+                    .onDidScroll { _ in
+                        if viewModel.willScrollToCategory {
+                            viewModel.willScrollToCategory = false
                             enableScrollAction(types: [.scrollPosition])
                         }
                     }

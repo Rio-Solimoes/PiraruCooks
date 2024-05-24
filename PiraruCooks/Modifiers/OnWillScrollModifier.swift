@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 struct OnWillScrollModifier: ViewModifier {
-    let action: (() -> Void)?
+    let action: ((CGFloat) -> Void)?
     
     func body(content: Content) -> some View {
         content
@@ -13,7 +13,7 @@ struct OnWillScrollModifier: ViewModifier {
 }
 
 extension View {
-    func onWillScroll(action: @escaping () -> Void) -> some View {
+    func onWillScroll(action: @escaping (CGFloat) -> Void) -> some View {
         modifier(OnWillScrollModifier(action: action))
     }
 }

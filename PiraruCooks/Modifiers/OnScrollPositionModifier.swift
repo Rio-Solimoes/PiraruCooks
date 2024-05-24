@@ -31,6 +31,15 @@ struct OnScrollPositionModifier: ViewModifier {
                         if isAppearing {
                             appearingPosition = OnScrollModifier.previousScrollOffsetPublished.value +
                             (geometry.frame(in: .global).maxY - content.getHeight())
+                            if let appearingPosition = appearingPosition {
+                                let offsetDifference = 
+                                OnScrollModifier.previousScrollOffsetPublished.value - appearingPosition
+                                if  offsetDifference > targetPosition {
+                                    triggeredGoingDown = true
+                                } else {
+                                    triggeredGoingDown = false
+                                }
+                            }
                         }
                     }
             })
