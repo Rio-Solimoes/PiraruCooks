@@ -69,7 +69,7 @@ class MenuController {
                     self.dishes = fetchResults.fetchedDishes
                 }
             } catch {
-                print("Error fetching initial data: \(error)")
+                //print("Error fetching initial data: \(error)")
             }
         }
     }
@@ -116,7 +116,7 @@ class MenuController {
 
             return fetchedMenuItems
         } catch {
-            print("Error decoding menu items: \(error)")
+            //print("Error decoding menu items: \(error)")
             throw error
         }
     }
@@ -129,14 +129,14 @@ class MenuController {
         }
 
         if httpResponse.statusCode != 200 {
-            print("Image fetch failed with status code: \(httpResponse.statusCode)")
+            //print("Image fetch failed with status code: \(httpResponse.statusCode)")
             throw MenuControllerError.imageDataMissing
         }
 
         if let image = UIImage(data: data) {
             return image
         } else {
-            print("Failed to create UIImage from data")
+            //print("Failed to create UIImage from data")
             throw MenuControllerError.imageDataMissing
         }
     }
