@@ -23,17 +23,25 @@ struct HorizontalScrollView: View {
                                     if menuViewModel.currentShownCategory == category {
                                         Circle()
                                             .foregroundStyle(themeManager.selectedTheme.primary.swiftUIColor)
+                                        if let image = viewModel.getImage(for: category) {
+                                            image
+                                                .resizable()
+                                                .renderingMode(.template)
+                                                .aspectRatio(contentMode: .fit)
+                                                .foregroundStyle(.white)
+                                                .padding(10)
+                                        }
                                     } else {
                                         Circle()
-                                            .foregroundStyle(.black)
-                                    }
-                                    if let image = viewModel.getImage(for: category) {
-                                        image
-                                            .resizable()
-                                            .renderingMode(.template)
-                                            .aspectRatio(contentMode: .fit)
-                                            .foregroundStyle(.white)
-                                            .padding(10)
+                                            .foregroundStyle(themeManager.selectedTheme.secondary.swiftUIColor)
+                                        if let image = viewModel.getImage(for: category) {
+                                            image
+                                                .resizable()
+                                                .renderingMode(.template)
+                                                .aspectRatio(contentMode: .fit)
+                                                .foregroundStyle(.primary)
+                                                .padding(10)
+                                        }
                                     }
                                 }
                                 .frame(width: getWidth() * 0.15, height: getWidth() * 0.15)
