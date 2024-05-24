@@ -3,6 +3,7 @@ import Parintins
 
 struct HorizontalScrollView: View {
     @EnvironmentObject private var themeManager: ThemeManager
+    @State var menuViewModel: MenuViewModel
     @State var viewModel: HorizontalScrollViewModel
     @State var menuController = MenuController.shared
 
@@ -13,18 +14,34 @@ struct HorizontalScrollView: View {
                     ZStack(alignment: .top) {
                         Button {
                             viewModel.scrollToCategory(named: category)
+                            menuViewModel.currentShownCategory = category
+                            menuViewModel.willScrollToCategory = true
+                            disableScrollActions(types: [.scrollPosition])
                         } label: {
                             VStack {
                                 ZStack {
-                                    Circle()
-                                        .foregroundStyle(themeManager.selectedTheme.primary.swiftUIColor)
-                                    if let image = viewModel.getImage(for: category) {
-                                        image
-                                            .resizable()
-                                            .renderingMode(.template)
-                                            .aspectRatio(contentMode: .fit)
-                                            .foregroundStyle(.white)
-                                            .padding(10)
+                                    if menuViewModel.currentShownCategory == category {
+                                        Circle()
+                                            .foregroundStyle(themeManager.selectedTheme.primary.swiftUIColor)
+                                        if let image = viewModel.getImage(for: category) {
+                                            image
+                                                .resizable()
+                                                .renderingMode(.template)
+                                                .aspectRatio(contentMode: .fit)
+                                                .foregroundStyle(.white)
+                                                .padding(10)
+                                        }
+                                    } else {
+                                        Circle()
+                                            .foregroundStyle(themeManager.selectedTheme.secondary.swiftUIColor)
+                                        if let image = viewModel.getImage(for: category) {
+                                            image
+                                                .resizable()
+                                                .renderingMode(.template)
+                                                .aspectRatio(contentMode: .fit)
+                                                .foregroundStyle(.primary)
+                                                .padding(10)
+                                        }
                                     }
                                 }
                                 .frame(width: getWidth() * 0.15, height: getWidth() * 0.15)
