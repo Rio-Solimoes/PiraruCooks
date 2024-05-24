@@ -156,13 +156,14 @@ class MenuController {
         }
         do {
             let menuItemsData = try Data(contentsOf: menuItemsUrl)
-            let menuItems = try JSONDecoder().decode([MenuItem].self, from: menuItemsData)
+            var menuItems = try JSONDecoder().decode([MenuItem].self, from: menuItemsData)
             var categories = [String]()
-            menuItems.forEach({ dish in
-                if !categories.contains(where: { category in category == dish.category }) {
-                    categories.append(dish.category)
+            for item in 0..<menuItems.count {
+                menuItems[item].image = UIImage(named: menuItems[item].imageURL.absoluteString)
+                if !categories.contains(where: { category in category == menuItems[item].category }) {
+                    categories.append(menuItems[item].category)
                 }
-            })
+            }
             self.categories = categories.sorted(by: {(categoryA, categoryB) in
                 if let indexA = categories.firstIndex(of: categoryA),
                     let indexB = categories.firstIndex(of: categoryB) {

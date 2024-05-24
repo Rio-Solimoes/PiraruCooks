@@ -6,7 +6,7 @@
   "price": 15,
   "category": "Entradas",
   "estimated_prep_time": 10,
-  "image_url": "emptyDish"
+  "image_url": "1"
  },
  {
   "id": 2,
@@ -15,7 +15,7 @@
   "price": 30,
   "category": "Peixes",
   "estimated_prep_time": 20,
-  "image_url": "emptyDish"
+  "image_url": "2"
  },
  {
   "id": 3,
@@ -24,7 +24,7 @@
   "price": 25,
   "category": "Peixes",
   "estimated_prep_time": 25,
-  "image_url": "emptyDish"
+  "image_url": "3"
  },
  {
   "id": 4,
@@ -33,7 +33,7 @@
   "price": 35,
   "category": "Peixes",
   "estimated_prep_time": 40,
-  "image_url": "emptyDish"
+  "image_url": "4"
  },
  {
   "id": 5,
@@ -42,7 +42,7 @@
   "price": 40,
   "category": "Peixes",
   "estimated_prep_time": 50,
-  "image_url": "emptyDish"
+  "image_url": "5"
  },
  {
   "id": 6,
@@ -51,7 +51,7 @@
   "price": 8,
   "category": "Guarnições",
   "estimated_prep_time": 15,
-  "image_url": "emptyDish"
+  "image_url": "6"
  },
  {
   "id": 7,
@@ -60,7 +60,7 @@
   "price": 20,
   "category": "Caldos e Sopas",
   "estimated_prep_time": 30,
-  "image_url": "emptyDish"
+  "image_url": "7"
  },
  {
   "id": 8,
@@ -69,7 +69,7 @@
   "price": 5,
   "category": "Bebidas",
   "estimated_prep_time": 0,
-  "image_url": "emptyDish"
+  "image_url": "8"
  },
  {
   "id": 9,
@@ -78,7 +78,7 @@
   "price": 10,
   "category": "Bebidas",
   "estimated_prep_time": 5,
-  "image_url": "emptyDish"
+  "image_url": "9"
  },
  {
   "id": 10,
@@ -87,7 +87,7 @@
   "price": 10,
   "category": "Bebidas",
   "estimated_prep_time": 5,
-  "image_url": "emptyDish"
+  "image_url": "10"
  },
  {
   "id": 11,
@@ -96,7 +96,7 @@
   "price": 10,
   "category": "Bebidas",
   "estimated_prep_time": 5,
-  "image_url": "emptyDish"
+  "image_url": "11"
  },
  {
   "id": 12,
@@ -105,7 +105,7 @@
   "price": 12,
   "category": "Bebidas",
   "estimated_prep_time": 5,
-  "image_url": "emptyDish"
+  "image_url": "12"
  },
  {
   "id": 13,
@@ -114,7 +114,7 @@
   "price": 10,
   "category": "Sobremesas",
   "estimated_prep_time": 45,
-  "image_url": "emptyDish"
+  "image_url": "13"
  },
  {
   "id": 14,
@@ -123,6 +123,60 @@
   "price": 25,
   "category": "Sobremesas",
   "estimated_prep_time": 60,
-  "image_url": "emptyDish"
+  "image_url": "14"
+ },
+ {
+  "id": 15,
+  "name": "Biscoitos de banana com manteiga de amendoim",
+  "description": "Biscoitos feitos com banana, aveia em flocos, e manteiga de amendoim natural.",
+  "price": 16,
+  "category": "Pets",
+  "estimated_prep_time": 30,
+  "image_url": "15"
+ },
+ {
+  "id": 16,
+  "name": "Biscoitos de bacon",
+  "description": "Biscoitos feitos com bacon, banana, manteiga de amendoim e farinha de aveia.",
+  "price": 20,
+  "category": "Pets",
+  "estimated_prep_time": 45,
+  "image_url": "16"
+ },
+ {
+  "id": 17,
+  "name": "Biscoitos de frango e batata doce",
+  "description": "Biscoitos feitos com carne de  frango, batata doce, ovos e farinha de trigo.",
+  "price": 10,
+  "category": "Pets",
+  "estimated_prep_time": 60,
+  "image_url": "17"
+ },
+ {
+  "id": 18,
+  "name": "Biscoito de abóbora",
+  "description": "Biscoitos feitos com salmão, purê de abóbora, ovo, aveia em flocos grossos e óleo de abacate.",
+  "price": 12,
+  "category": "Pets",
+  "estimated_prep_time": 30,
+  "image_url": "18"
+ },
+ {
+  "id": 19,
+  "name": "Biscoito de atum",
+  "description": "Biscoitos feitos com atum, ovo, farinha de trigo, e óleo de oliva.",
+  "price": 15,
+  "category": "Pets",
+  "estimated_prep_time": 30,
+  "image_url": "19"
+ },
+ {
+  "id": 20,
+  "name": "Biscoito de salmão",
+  "description": "Biscoitos feitos com salmão, purê de abóbora, ovo e flocos de aveia.",
+  "price": 30,
+  "category": "Pets",
+  "estimated_prep_time": 50,
+  "image_url": "20"
  }
 ]
