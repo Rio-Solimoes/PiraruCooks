@@ -13,6 +13,15 @@ struct EditAddressView: View {
     @Binding var addresses: [Address]
     @Binding var showSheet: Bool
     
+    var isFormValid: Bool {
+        // Check if all required fields are filled
+        return !viewModel.zipCode.isEmpty &&
+               !viewModel.street.isEmpty &&
+               !viewModel.number.isEmpty &&
+               !viewModel.city.isEmpty &&
+               viewModel.selectedCategory != nil
+    }
+    
     var body: some View {
         Form {
             Section(header: Text("Endereço")) {
@@ -71,6 +80,7 @@ struct EditAddressView: View {
                     Text("Done")
                         .fontWeight(.semibold)
                 }
+                .disabled(!isFormValid)
             }
         }
     }
