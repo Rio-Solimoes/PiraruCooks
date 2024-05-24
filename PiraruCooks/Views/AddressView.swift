@@ -70,7 +70,6 @@ struct AddNewAddressSection: View {
                         showSheet: $showEditAddressSheet
                     )
                 }
-                .presentationDetents([.medium])
             }
         }
     }

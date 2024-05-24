@@ -18,11 +18,16 @@ struct SavedAddressView: View {
 
     var body: some View {
         HStack(spacing: 24) {
-            Shared.Images.home.swiftUIImage
-                .resizable()
-                .frame(width: getWidth() * 0.07, height: getWidth() * 0.07, alignment: .leading)
-                .aspectRatio(contentMode: .fit)
-                .padding(.leading, 6)
+            if addressCategory == "Casa" {
+                Shared.Images.home.swiftUIImage
+                    .padding(.leading, 6)
+            } else if addressCategory == "Trabalho" {
+                Shared.Images.work.swiftUIImage
+                    .padding(.leading, 6)
+            } else {
+                Image(systemName: "mappin.and.ellipse")
+                    .padding(.leading, 6)
+            }
             
             VStack(alignment: .leading, spacing: 3) {
                 Text(addressCategory)

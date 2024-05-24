@@ -31,12 +31,12 @@ struct EditAddressView: View {
                     selectedCategory: $viewModel.selectedCategory
                 )
                 AddressCategory(
-                    image: Shared.Images.home.swiftUIImage,
+                    image: Shared.Images.work.swiftUIImage,
                     category: "Trabalho",
                     selectedCategory: $viewModel.selectedCategory
                 )
                 AddressCategory(
-                    image: Shared.Images.home.swiftUIImage,
+                    image: Image(systemName: "mappin.and.ellipse"),
                     category: "Outro",
                     selectedCategory: $viewModel.selectedCategory
                 )
@@ -85,9 +85,6 @@ struct AddressCategory: View {
     var body: some View {
         HStack {
             image
-                .resizable()
-                .frame(width: getWidth() * 0.05, height: getWidth() * 0.05, alignment: .leading)
-                .aspectRatio(contentMode: .fit)
                 .padding(.trailing, 8)
             Text(category)
             
