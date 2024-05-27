@@ -60,6 +60,10 @@ struct MenuView: View {
                         }
                     }
                     .onScroll(coordinateSpace: "scroll") { direction, offset in
+                        if viewModel.userIsScrolling {
+                            viewModel.userIsScrolling = false
+                            enableScrollAction(types: [.scrollPosition])
+                        }
                         if direction == .up {
                             if offset < 50 {
                                 viewModel.showNavigationBar = false
@@ -70,13 +74,12 @@ struct MenuView: View {
                             }
                         }
                     }
-                    .onWillScroll { offset in
-                        if viewModel.scrollToStartOffset == offset && viewModel.willScrollToCategory {
-                            viewModel.willScrollToCategory = false
-                            enableScrollAction(types: [.scrollPosition])
-                        }
-                        viewModel.scrollToStartOffset = offset
-                    }
+                    .simultaneousGesture(
+                        DragGesture()
+                            .onChanged { _ in
+                                viewModel.userIsScrolling = true
+                            }
+                    )
                     .onDidScroll { _ in
                         if viewModel.willScrollToCategory {
                             viewModel.willScrollToCategory = false
