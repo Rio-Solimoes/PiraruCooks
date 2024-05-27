@@ -2,6 +2,7 @@ import SwiftUI
 import Parintins
 
 struct MenuView: View {
+    @Environment(TabBarViewModel.self) var tabBarViewModel
     @EnvironmentObject private var themeManager: ThemeManager
     @StateObject var cloudKit = CloudKitModel()
     @State var viewModel = MenuViewModel()
@@ -11,23 +12,26 @@ struct MenuView: View {
         NavigationStack {
             ScrollViewReader { value in
                 ScrollView {
-                    LazyVStack {
+                    LazyVStack(pinnedViews: [.sectionHeaders]) {
                         HStack {
                             Text("Cardápio")
                                 .font(.largeTitle)
-                                .fontWeight(.semibold)
+                                .fontWeight(.bold)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            themeManager.selectedTheme.profileDefault.swiftUIImage
-                                .resizable()
-                                .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
+                            Button {
+                                tabBarViewModel.showSelectTheme = true
+                            } label: {
+                                themeManager.selectedTheme.profileDefault.swiftUIImage
+                                    .resizable()
+                                    .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
+                            }
                         }
                         .foregroundStyle(.black)
                         .padding(.vertical, 8)
                         .padding(.horizontal, 20)
                         VStack {
                             NavigationLink {
-                                Text("Endereços")
-                                    .font(.body)
+                                AddressView()
                             } label: {
                                 AddressCardView()
                             }
@@ -41,18 +45,51 @@ struct MenuView: View {
                             .padding(.horizontal, 16)
                             CarouselView()
                                 .frame(height: getHeight() * 0.23)
+                        }
+                        Section {
+                            ListOfDishesView(
+                                isHomePresented: $isHomePresented,
+                                currentShownCategory: $viewModel.currentShownCategory
+                            )
+                                .padding(.horizontal, 16)
+                        } header: {
                             HorizontalScrollView(
+                                menuViewModel: viewModel,
                                 viewModel: HorizontalScrollViewModel(
                                     value: value)
                             )
+                            .background {
+                                Color.white
+                            }
                         }
-                        ListOfDishesView(isHomePresented: $isHomePresented)
-                            .padding(.horizontal, 16)
                     }
-                    .onScroll(coordinateSpace: "scroll", upTriggerOffset: 50, downTriggerOffset: 5,
-                              upAction: { viewModel.showNavigationBar = false },
-                              downAction: { viewModel.showNavigationBar = true }
+                    .onScroll(coordinateSpace: "scroll") { direction, offset in
+                        if viewModel.userIsScrolling {
+                            viewModel.userIsScrolling = false
+                            enableScrollAction(types: [.scrollPosition])
+                        }
+                        if direction == .up {
+                            if offset < 50 {
+                                viewModel.showNavigationBar = false
+                            }
+                        } else {
+                            if offset > 5 {
+                                viewModel.showNavigationBar = true
+                            }
+                        }
+                    }
+                    .simultaneousGesture(
+                        DragGesture()
+                            .onChanged { _ in
+                                viewModel.userIsScrolling = true
+                            }
                     )
+                    .onDidScroll { _ in
+                        if viewModel.willScrollToCategory {
+                            viewModel.willScrollToCategory = false
+                            enableScrollAction(types: [.scrollPosition])
+                        }
+                    }
                     .background(alignment: .top) {
                         if themeManager.selectedTheme.userDefaultsValue != "Parintins" {
                             LinearGradient(

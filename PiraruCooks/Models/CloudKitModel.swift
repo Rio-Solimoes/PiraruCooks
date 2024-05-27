@@ -77,7 +77,6 @@ final class CloudKitModel: ObservableObject {
                 if let name = returnIdentity?.userIdentity.nameComponents?.givenName {
                     self?.userName = name
                     print("name: \(String(describing: self?.userName))")
-
                 }
             }
         }

@@ -14,8 +14,12 @@ class SearchViewModel {
     
     var filteredDishes: [MenuItem] {
         guard !searchTerm.isEmpty else { return Array(menuController.dishes.prefix(3)) }
-        return Array(menuController.dishes
-            .filter { $0.name.normalized().localizedCaseInsensitiveContains(searchTerm) })
+        let normalizedSearchTerm = searchTerm.normalized()
+        return Array(
+            menuController.dishes.filter {
+                $0.name.normalized().localizedCaseInsensitiveContains(normalizedSearchTerm)
+            }
+        )
     }
     
     var sectionHeaderTitle: String {

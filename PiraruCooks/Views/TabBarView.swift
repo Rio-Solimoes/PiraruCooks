@@ -38,12 +38,7 @@ struct TabBarView: View {
                 if menuController.order.menuItems.count == 0 {
                     EmptyCartView()
                         .tabItem {
-                            if tabBarViewModel.selectedTab == "Sacola" {
-                                themeManager.selectedTheme.orders.swiftUIImage
-                            } else {
-                                Image(systemName: "bag")
-                                //Shared.Images.orders.swiftUIImage
-                            }
+                            Image(systemName: "bag")
                             Text("Sacola")
                                 .font(.body)
                         }
@@ -51,12 +46,7 @@ struct TabBarView: View {
                 } else {
                     CartView()
                         .tabItem {
-                            if tabBarViewModel.selectedTab == "Sacola" {
-                                themeManager.selectedTheme.orders.swiftUIImage
-                            } else {
-                                Image(systemName: "bag")
-                                //Shared.Images.orders.swiftUIImage
-                            }
+                            Image(systemName: "bag")
                             Text("Sacola")
                                 .font(.body)
                         }
@@ -69,7 +59,7 @@ struct TabBarView: View {
             }
             .sheet(isPresented: $tabBarViewModel.showSelectTheme) {
                 SelectThemeView()
-                    .presentationDetents([.medium])
+                    .presentationDetents([.fraction(0.75)])
             }
             .onAppear {
                 if tabBarViewModel.dismissThemeSelection {

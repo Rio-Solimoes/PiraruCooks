@@ -98,7 +98,7 @@ class MenuController {
         let (data, response) = try await URLSession.shared.data(from: menuURL)
 
         let jsonString = String(data: data, encoding: .utf8)
-        //print("Received JSON data: \(jsonString ?? "")")
+        print("Received JSON data: \(jsonString ?? "")")
 
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             throw MenuControllerError.menuItemsNotFound
