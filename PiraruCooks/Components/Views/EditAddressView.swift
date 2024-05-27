@@ -9,9 +9,9 @@ import SwiftUI
 import Parintins
 
 struct EditAddressView: View {
+    @Environment(\.presentationMode) var presentationMode
     @State var viewModel = EditAddressViewModel()
     @Binding var addresses: [Address]
-    @Binding var showSheet: Bool
     
     var isFormValid: Bool {
         // Check if all required fields are filled
@@ -54,7 +54,7 @@ struct EditAddressView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
-                    showSheet = false
+                    presentationMode.wrappedValue.dismiss()
                 } label: {
                     Text("Cancel")
                 }
@@ -75,7 +75,7 @@ struct EditAddressView: View {
                         category: viewModel.selectedCategory ?? ""
                     )
                     addresses.append(newAddress)
-                    showSheet = false
+                    presentationMode.wrappedValue.dismiss()
                 } label: {
                     Text("Done")
                         .fontWeight(.semibold)

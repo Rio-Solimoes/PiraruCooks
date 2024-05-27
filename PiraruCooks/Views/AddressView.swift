@@ -19,7 +19,10 @@ struct AddressView: View {
                     addresses: $viewModel.addresses
                 )
             } else {
-                SavedAddressesSection(addresses: viewModel.addresses)
+                SavedAddressesSection(
+                    showEditAddressSheet: $viewModel.showEditAddressSheet, 
+                    addresses: $viewModel.addresses
+                )
                 AddNewAddressSection(
                     showEditAddressSheet: $viewModel.showEditAddressSheet,
                     addresses: $viewModel.addresses
@@ -65,10 +68,7 @@ struct AddNewAddressSection: View {
             }
             .sheet(isPresented: $showEditAddressSheet) {
                 NavigationStack {
-                    EditAddressView(
-                        addresses: $addresses,
-                        showSheet: $showEditAddressSheet
-                    )
+                    EditAddressView(addresses: $addresses)
                 }
             }
         }
@@ -76,7 +76,9 @@ struct AddNewAddressSection: View {
 }
 
 struct SavedAddressesSection: View {
-    var addresses: [Address]
+    @State var viewModel = AddressViewModel()
+    @Binding var showEditAddressSheet: Bool
+    @Binding var addresses: [Address]
     
     var body: some View {
         Section(
@@ -86,6 +88,8 @@ struct SavedAddressesSection: View {
         ) {
             ForEach(addresses) { address in
                 SavedAddressView(
+                    showEditAddressSheet: $viewModel.showEditAddressSheet, 
+                    addresses: $addresses,
                     addressCategory: address.category,
                     addressStreet: address.street,
                     addressNumber: address.number,
