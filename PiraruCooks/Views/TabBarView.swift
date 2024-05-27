@@ -59,7 +59,7 @@ struct TabBarView: View {
             }
             .sheet(isPresented: $tabBarViewModel.showSelectTheme) {
                 SelectThemeView()
-                    .presentationDetents([.medium])
+                    .presentationDetents([.fraction(0.75)])
             }
             .onAppear {
                 if tabBarViewModel.dismissThemeSelection {
