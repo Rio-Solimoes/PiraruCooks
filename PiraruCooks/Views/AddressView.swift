@@ -9,9 +9,10 @@ import SwiftUI
 import Parintins
 
 struct AddressView: View {
-    @State var viewModel = AddressViewModel()
-    
+    @Environment(AddressViewModel.self) var viewModel
+
     var body: some View {
+        @Bindable var viewModel = viewModel
         List {
             if viewModel.addresses.isEmpty {
                 AddNewAddressSection(
@@ -20,7 +21,7 @@ struct AddressView: View {
                 )
             } else {
                 SavedAddressesSection(
-                    showEditAddressSheet: $viewModel.showEditAddressSheet, 
+                    showEditAddressSheet: $viewModel.showEditAddressSheet,
                     addresses: $viewModel.addresses
                 )
                 AddNewAddressSection(
@@ -76,7 +77,6 @@ struct AddNewAddressSection: View {
 }
 
 struct SavedAddressesSection: View {
-    @State var viewModel = AddressViewModel()
     @Binding var showEditAddressSheet: Bool
     @Binding var addresses: [Address]
     
@@ -88,7 +88,7 @@ struct SavedAddressesSection: View {
         ) {
             ForEach(addresses) { address in
                 SavedAddressView(
-                    showEditAddressSheet: $viewModel.showEditAddressSheet, 
+                    showEditAddressSheet: $showEditAddressSheet, 
                     addresses: $addresses,
                     addressCategory: address.category,
                     addressStreet: address.street,

@@ -8,6 +8,7 @@ struct MenuView: View {
     @State var viewModel = MenuViewModel()
     @State private var isHomePresented = false
     
+    
     var body: some View {
         NavigationStack {
             ScrollViewReader { value in
