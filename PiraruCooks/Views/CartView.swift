@@ -62,7 +62,12 @@ struct CartView: View {
                                         Spacer()
                                         Text("R$ \(replaceDotWithComma(String(format: "%.2f", dish.price)))")
                                             .font(.subheadline)
-                                        Text("Quantidade: \(menuController.order.menuItems[dish] ?? -1)")
+                                        Stepper(value: Binding(
+                                            get: { menuController.order.menuItems[dish] ?? 0 },
+                                            set: { menuController.order.menuItems[dish] = $0 }
+                                        )) {
+                                            Text("Quantidade: \(menuController.order.menuItems[dish] ?? 0)")
+                                        }
                                     }
                                     
                                     .multilineTextAlignment(.leading)

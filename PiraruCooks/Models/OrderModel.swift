@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Order: Codable {
+struct Order: Codable, Hashable {
     var menuItems: [MenuItem: Int]
     var price: Double
 
