@@ -65,9 +65,7 @@ struct CartView: View {
                                         Stepper(value: Binding(
                                             get: { menuController.order.menuItems[dish] ?? 0 },
                                             set: { menuController.order.menuItems[dish] = $0 }
-                                        ), onIncrement: {
-                                            menuController.order.price += dish.price
-                                        }) {
+                                        )) {
                                             Text("Quantidade: \(menuController.order.menuItems[dish] ?? 0)")
                                         }
                                     }
