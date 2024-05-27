@@ -12,14 +12,20 @@ import Combine
 struct DishesDetailView: View {
     @EnvironmentObject private var themeManager: ThemeManager
     @Environment(\.presentationMode) var presentationMode
+    @Environment(TabBarViewModel.self) var tabBarViewModel
     @State var viewModel = DishesDetailViewModel()
     @Binding var isMenuDetailScrolling: Bool
     var selectedDish: MenuItem?
+    @State var menuController = MenuController.shared
     
+    var showCloseButton: Bool
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 24) {
-                closeButton
+                if showCloseButton {
+                    closeButton
+                }
                 dishImage
                 dishInformation
                 orderInformation
@@ -29,14 +35,21 @@ struct DishesDetailView: View {
                 
                 customerRating
             }
+            .onAppear {
+                tabBarViewModel.isDishesDetailPresented = true
+            }
             .padding()
-            .padding(.horizontal, 8)
             .padding(.bottom)
             .background(viewModel.scrollOffsetPreference)
             .onPreferenceChange(ViewOffsetKey.self, perform: handlePreferenceChange)
         }
         .modifier(BouncesModifier())
         .coordinateSpace(name: "scroll")
+        .onChange(of: tabBarViewModel.isDishesDetailPresented) {
+            if !tabBarViewModel.isDishesDetailPresented {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
     
     // MARK: View Components
@@ -59,13 +72,22 @@ struct DishesDetailView: View {
     private var dishImage: some View {
         ZStack {
             GeometryReader { geometry in
-                Image(uiImage: selectedDish?.image ?? UIImage(named: "tacaca")!)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: geometry.size.width, height: getHeight() * 0.4)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .clipped()
-                
+                if let image = selectedDish?.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geometry.size.width, height: getHeight() * 0.4)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .clipped()
+                } else {
+                    Shared.Images.emptyDish.swiftUIImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geometry.size.width, height: getHeight() * 0.4)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .clipped()
+                }
+
                 LinearGradient(
                     gradient: Gradient(stops: [
                         .init(color: .clear, location: 0.8),
@@ -132,6 +154,18 @@ struct DishesDetailView: View {
     private var addOrderButton: some View {
         Button {
             // Action
+            for _ in 0..<viewModel.stepperValue {
+                menuController.order.menuItems[selectedDish!, default: 0] += 1
+            }
+            print("CHEGUEI AQUI")
+            print(menuController.order.menuItems)
+            var priceCart: Double = 0.0
+            for itemInCart in menuController.order.menuItems {
+                priceCart += itemInCart.key.price * Double(itemInCart.value)
+            }
+            menuController.order.price = priceCart
+            print("Teste de preço: ", priceCart)
+            
         } label: {
             Text("Adicionar | R$ \(formattedPrice)")
                 .frame(maxWidth: .infinity)
@@ -164,7 +198,7 @@ struct DishesDetailView: View {
             .foregroundStyle(themeManager.selectedTheme.primary.swiftUIColor)
             .background(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(themeManager.selectedTheme.primary.swiftUIColor, lineWidth: 1)
+                    .stroke(.clear, lineWidth: 1)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
                             .fill(themeManager.selectedTheme.secondary.swiftUIColor)
@@ -230,7 +264,7 @@ struct DishesDetailView: View {
         if abs(offsetDifference) > viewModel.minimumOffset {
             if offsetDifference < 0 {
                 isMenuDetailScrolling = true
-            } else if offsetDifference > 20 {
+            } else if offsetDifference > 30 {
                 isMenuDetailScrolling = false
             }
             self.viewModel.previousViewOffset = currentOffset

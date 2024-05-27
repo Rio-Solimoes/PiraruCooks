@@ -20,13 +20,14 @@ class HorizontalScrollViewModel {
         case "Frutos do Mar": return Shared.Images.seafood.swiftUIImage
         case "Guarnições": return Shared.Images.garnishes.swiftUIImage
         case "Saladas": return Shared.Images.salads.swiftUIImage
+        case "Pets": return Shared.Images.pets.swiftUIImage
         default: return nil
         }
     }
     
     func scrollToCategory(named category: String) {
         withAnimation {
-            value.scrollTo("\(category)Id", anchor: .top)
+            value.scrollTo("\(category)Id", anchor: UnitPoint(x: 0, y: 0.2))
         }
     }
 }

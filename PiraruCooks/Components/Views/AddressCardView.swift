@@ -3,20 +3,30 @@ import Parintins
 
 struct AddressCardView: View {
     @State var isThereAdress = false
+    @Environment(AddressViewModel.self) var viewModel
+
     var body: some View {
         HStack {
-            Shared.Images.home.swiftUIImage
-                .padding(.horizontal, 8)
-            
+            if viewModel.addresses.isEmpty || viewModel.addresses[0].category == "Casa" {
+                Shared.Images.home.swiftUIImage
+                    .padding(.horizontal, 8)
+            } else if viewModel.addresses[0].category == "Trabalho" {
+                Shared.Images.work.swiftUIImage
+                    .padding(.horizontal, 8)
+            } else {
+                Image(systemName: "mappin.and.ellipse")
+                    .padding(.horizontal, 8)
+            }
+                
             VStack(alignment: .leading) {
-                if isThereAdress {
-                    Text("Casa")
+                if !viewModel.addresses.isEmpty {
+                    Text(viewModel.addresses[0].category)
                         .font(.body)
-                    Text("Av. Alan Turing, 275")
+                    Text("\(viewModel.addresses[0].street), \(viewModel.addresses[0].number)")
                         .font(.footnote)
                         .fontWeight(.light)
                 } else {
-                    Text("Adicione um endereço")
+                    Text("Adicione novo endereço")
                 }
             }
             Spacer()
@@ -38,8 +48,4 @@ struct AddressCardView: View {
         }
         .padding(.horizontal, 16)
     }
-}
-
-#Preview {
-    AddressCardView()
 }

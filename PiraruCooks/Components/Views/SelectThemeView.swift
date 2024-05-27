@@ -7,12 +7,13 @@ struct SelectThemeView: View {
     
     var body: some View {
         VStack {
-            Text("O Festival de Parintins está chegando!")
+            Text("Os temas do Festival de Parintins já estão disponíveis")
                 .fontWeight(.semibold)
                 .padding(.bottom, 8)
-            Text("Escolha o seu boi favorito e aproveite o festival no seu estilo!")
                 .multilineTextAlignment(.center)
-                .padding(.bottom, 36)
+            Text("Escolha seu boi preferido e desfrute dos sabores amazônicos!")
+                .multilineTextAlignment(.center)
+                .padding(.bottom, 28)
             HStack(spacing: 12) {
                 Button {
                     themeManager.selectedTheme = Themes.Garantido.shared
@@ -51,13 +52,40 @@ struct SelectThemeView: View {
                     )
                 }
             }
-                .padding(.bottom, 48)
-            ButtonView(viewModel: ButtonViewModel(
-                text: "Confirmar",
-                action: { dismiss() },
-                enabled: true)
-            )
-                .padding(.horizontal, 20)
+                .padding(.bottom, 40)
+            if themeManager.selectedTheme.userDefaultsValue == "Parintins" {
+                ButtonView(viewModel: ButtonViewModel(
+                    text: "Confirmar",
+                    action: { dismiss() },
+                    enabled: false)
+                )
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 8)
+            } else {
+                ButtonView(viewModel: ButtonViewModel(
+                    text: "Confirmar",
+                    action: { dismiss() },
+                    enabled: true)
+                )
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 8)
+            }
+            if themeManager.selectedTheme.userDefaultsValue == "Parintins" {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Continuar usando tema padrão")
+                        .padding(.horizontal, 20)
+                }
+            } else {
+                Button {
+                    themeManager.selectedTheme = Themes.Parintins.shared
+                    dismiss()
+                } label: {
+                    Text("Voltar ao tema padrão")
+                        .padding(.horizontal, 20)
+                }
+            }
         }
         .padding(20)
         .interactiveDismissDisabled()
