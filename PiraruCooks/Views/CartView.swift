@@ -25,13 +25,20 @@ struct CartView: View {
                                 .font(.largeTitle)
                                 .fontWeight(.semibold)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            themeManager.selectedTheme.profileDefault.swiftUIImage
-                                .resizable()
-                                .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
+                            Spacer()
+                            Button(action: {
+                                // Your edit action here
+                                print("Edit button tapped")
+                            }) {
+                                Text("Editar")
+                            }
                         }
                         .foregroundStyle(.black)
-                        .padding(.vertical, 8)
-                        .padding(.horizontal, 20)
+                        .padding()
+                        Text("Itens adicionados")
+                            .font(.title2)
+                            .fontWeight(.medium)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         ForEach(Array(menuController.order.menuItems.keys), id: \.self) { dish in
                             VStack {
                                 HStack {
@@ -103,32 +110,8 @@ struct CartView: View {
                             
                         }
                     }
-                    .background(alignment: .top) {
-                        if themeManager.selectedTheme.userDefaultsValue != "Parintins" {
-                            LinearGradient(
-                                gradient: Gradient(
-                                    stops: [
-                                        .init(
-                                            color: (themeManager.selectedTheme.primary.swiftUIColor)
-                                                .opacity(0.3),
-                                            location: 0.0
-                                        ),
-                                        .init(
-                                            color: (themeManager.selectedTheme.tertiary.swiftUIColor)
-                                                .opacity(0.2),
-                                            location: 1.0
-                                        )
-                                    ]
-                                ),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                            .frame(width: getWidth() * 1.13, height: getHeight() * 0.24)
-                            .offset(x: -(getWidth() * 0.025), y: -(getHeight() * 0.1))
-                            .blur(radius: 8)
-                        }
-                    }
                 }
+                .padding()
                 .coordinateSpace(name: "scroll")
             }
             //.navigationTitle("Cardápio")
