@@ -7,6 +7,7 @@ struct TabBarView: View {
     @Environment(TabBarViewModel.self) var tabBarViewModel
     @EnvironmentObject var networkMonitor: NetworkMonitor
     @State private var isHomePresented = false
+    @State var menuController = MenuController.shared
     
     var body: some View {
         @Bindable var tabBarViewModel = tabBarViewModel
@@ -34,17 +35,23 @@ struct TabBarView: View {
                             .font(.body)
                     }
                     .tag("Buscar")
-                Text("Pedidos")
-                    .tabItem {
-                        if tabBarViewModel.selectedTab == "Pedidos" {
-                            themeManager.selectedTheme.orders.swiftUIImage
-                        } else {
-                            Shared.Images.orders.swiftUIImage
+                if menuController.order.menuItems.count == 0 {
+                    EmptyCartView()
+                        .tabItem {
+                            Image(systemName: "bag")
+                            Text("Sacola")
+                                .font(.body)
                         }
-                        Text("Pedidos")
-                            .font(.body)
-                    }
-                    .tag("Pedidos")
+                        .tag("Sacola")
+                } else {
+                    CartView()
+                        .tabItem {
+                            Image(systemName: "bag")
+                            Text("Sacola")
+                                .font(.body)
+                        }
+                        .tag("Sacola")
+                }
             }
             .onChange(of: tabBarViewModel.selectedTab) {
                 tabBarViewModel.isDishesDetailPresented = false

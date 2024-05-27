@@ -24,56 +24,33 @@ struct SearchView: View {
                         Text(searchViewModel.sectionHeaderTitle)
                             .font(.title2)
                             .fontWeight(.semibold)
-                            .foregroundColor(.black)
+                            .foregroundStyle(.black)
+                            .padding(.bottom, 16)
                     ) {
                         ForEach(searchViewModel.filteredDishes, id: \.id) { dish in
-                            NavigationLink(
-                                destination: DishesDetailView(
-                                    isMenuDetailScrolling: $menuViewModel.isMenuDetailScrolling,
-                                    selectedDish: dish, showCloseButton: false)) {
-                                        
-                                HStack {
-                                    if let dishImage = dish.image {
-                                        Image(uiImage: dishImage)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
-                                            .clipShape(RoundedRectangle(cornerRadius: 6))
-                                    } else {
-                                        Shared.Images.emptyDish.swiftUIImage
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
-                                            .clipShape(RoundedRectangle(cornerRadius: 6))
-                                    }
-                                    VStack(alignment: .leading) {
-                                        Text(dish.name)
-                                            .fontWeight(.semibold)
-                                            .fixedSize(horizontal: false, vertical: true)
-                                        Spacer()
-                                        Text(dish.detailText)
-                                            .font(.subheadline)
-                                            .lineLimit(2)
-                                            .fixedSize(horizontal: false, vertical: true)
-                                        Spacer()
-                                        Text("R$ \(replaceDotWithComma(String(format: "%.2f", dish.price)))")
-                                            .font(.subheadline)
-                                    }
-                                    .padding(8)
-                                    .multilineTextAlignment(.leading)
-                                }
-                                        
+                            ZStack {
+                                NavigationLink(value: dish) {}
+                                Color.white
+                                DishCardView(viewModel: DishCardViewModel(dish: dish))
                             }
+                            .listRowSeparator(.hidden)
+                            .padding(.top, -16)
                         }
                     }
                 }
                 .navigationTitle("Busca")
                 .toolbarTitleDisplayMode(.inlineLarge)
+                .navigationDestination(for: MenuItem.self) { dish in
+                    DishesDetailView(
+                        isMenuDetailScrolling: $menuViewModel.isMenuDetailScrolling,
+                        selectedDish: dish, 
+                        showCloseButton: false
+                    )
+                }
             }
         }
         .searchable(text: $searchViewModel.searchTerm, prompt: "Pratos & Bebidas")
         .listStyle(.inset)
-        .padding()
     }
     
     private var emptyState: some View {

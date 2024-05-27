@@ -55,7 +55,7 @@ final class CloudKitModel: ObservableObject {
             DispatchQueue.main.async {[weak self] in
                 if returnedStatus == .granted {
                     self?.permissionStatus = true
-                    print("permissionStatus: \(String(describing: self?.permissionStatus.description))")
+                    //print("permissionStatus: \(String(describing: self?.permissionStatus.description))")
                 }
             }
         }
@@ -76,7 +76,7 @@ final class CloudKitModel: ObservableObject {
             DispatchQueue.main.async { [weak self] in
                 if let name = returnIdentity?.userIdentity.nameComponents?.givenName {
                     self?.userName = name
-                    print("name: \(String(describing: self?.userName))")
+                    //print("name: \(String(describing: self?.userName))")
 
                 }
             }
