@@ -128,6 +128,16 @@ struct CartView: View {
             }
             //.navigationTitle("Cardápio")
             .toolbarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    ButtonView(viewModel: ButtonViewModel(text: "Revisar Pedido", action: {
+                        viewModel.showReviewOrder = true
+                    }))
+                }
+            }
+            .sheet(isPresented: $viewModel.showReviewOrder) {
+                ReviewOrderView()
+            }
         }
     }
 }

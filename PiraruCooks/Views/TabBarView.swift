@@ -35,23 +35,30 @@ struct TabBarView: View {
                             .font(.body)
                     }
                     .tag("Buscar")
-                if menuController.order.menuItems.count == 0 {
-                    EmptyCartView()
-                        .tabItem {
-                            Image(systemName: "bag")
-                            Text("Sacola")
-                                .font(.body)
-                        }
-                        .tag("Sacola")
-                } else {
-                    CartView()
-                        .tabItem {
-                            Image(systemName: "bag")
-                            Text("Sacola")
-                                .font(.body)
-                        }
-                        .tag("Sacola")
-                }
+                CartView()
+                    .tabItem {
+                        Image(systemName: "bag")
+                        Text("Sacola")
+                            .font(.body)
+                    }
+                    .tag("Sacola")
+//                if menuController.order.menuItems.count == 0 {
+//                    EmptyCartView()
+//                        .tabItem {
+//                            Image(systemName: "bag")
+//                            Text("Sacola")
+//                                .font(.body)
+//                        }
+//                        .tag("Sacola")
+//                } else {
+//                    CartView()
+//                        .tabItem {
+//                            Image(systemName: "bag")
+//                            Text("Sacola")
+//                                .font(.body)
+//                        }
+//                        .tag("Sacola")
+//                }
             }
             .onChange(of: tabBarViewModel.selectedTab) {
                 tabBarViewModel.isDishesDetailPresented = false
