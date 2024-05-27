@@ -53,12 +53,39 @@ struct SelectThemeView: View {
                 }
             }
                 .padding(.bottom, 40)
-            ButtonView(viewModel: ButtonViewModel(
-                text: "Confirmar",
-                action: { dismiss() },
-                enabled: true)
-            )
-                .padding(.horizontal, 20)
+            if themeManager.selectedTheme.userDefaultsValue == "Parintins" {
+                ButtonView(viewModel: ButtonViewModel(
+                    text: "Confirmar",
+                    action: { dismiss() },
+                    enabled: false)
+                )
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 8)
+            } else {
+                ButtonView(viewModel: ButtonViewModel(
+                    text: "Confirmar",
+                    action: { dismiss() },
+                    enabled: true)
+                )
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 8)
+            }
+            if themeManager.selectedTheme.userDefaultsValue == "Parintins" {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Continuar usando tema padrão")
+                        .padding(.horizontal, 20)
+                }
+            } else {
+                Button {
+                    themeManager.selectedTheme = Themes.Parintins.shared
+                    dismiss()
+                } label: {
+                    Text("Voltar ao tema padrão")
+                        .padding(.horizontal, 20)
+                }
+            }
         }
         .padding(20)
         .interactiveDismissDisabled()

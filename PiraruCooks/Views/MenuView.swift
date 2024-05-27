@@ -2,6 +2,7 @@ import SwiftUI
 import Parintins
 
 struct MenuView: View {
+    @Environment(TabBarViewModel.self) var tabBarViewModel
     @EnvironmentObject private var themeManager: ThemeManager
     @StateObject var cloudKit = CloudKitModel()
     @State var viewModel = MenuViewModel()
@@ -17,9 +18,13 @@ struct MenuView: View {
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            themeManager.selectedTheme.profileDefault.swiftUIImage
-                                .resizable()
-                                .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
+                            Button {
+                                tabBarViewModel.showSelectTheme = true
+                            } label: {
+                                themeManager.selectedTheme.profileDefault.swiftUIImage
+                                    .resizable()
+                                    .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
+                            }
                         }
                         .foregroundStyle(.black)
                         .padding(.vertical, 8)
