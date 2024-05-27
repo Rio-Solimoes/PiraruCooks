@@ -6,8 +6,8 @@ class MenuViewModel {
     let menuController = MenuController.shared
     var showNavigationBar = false
     var currentShownCategory: String = "Entradas"
+    var userIsScrolling: Bool = false
     var willScrollToCategory: Bool = false
-    var scrollToStartOffset: CGFloat = -1000000000
     
     func refreshData() {
         menuController.fetchInitialData()
