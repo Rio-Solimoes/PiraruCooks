@@ -16,7 +16,7 @@ final class CloudKitModel: ObservableObject {
         self.database = container.publicCloudDatabase
         getiCloudStatus()
         requestPermission()
-        fetchiCloudUserRecordNameAndSaveOnDatabase()
+        userLogin()
     }
     
     private func getiCloudStatus() {
@@ -51,18 +51,27 @@ final class CloudKitModel: ObservableObject {
         }
     }
     
-    //find userId
-    func fetchiCloudUserRecordNameAndSaveOnDatabase() {
+    // find userId
+    func userLogin() {
         container.fetchUserRecordID { [weak self] returnedID, _ in
             DispatchQueue.main.async { [weak self] in
                 if let id = returnedID {
-                    self?.addNewUser(id: id)
+                    Task {
+                        let userInfo = await self!.getUserInfo(userRecordName: id.recordName)
+                        print("ID: \(id.recordName)")
+                        if userInfo == nil {
+                            self?.addNewUser(id: id)
+                        } else {
+                            print("UserInfo: \(String(describing: userInfo))")
+                        }
+                    }
+    
                 }
             }
         }
     }
     
-    //add userId and userName to database
+    // add userId and userName to database
     private func addNewUser(id: CKRecord.ID) {
         let newUserRecordName = CKRecord(recordType: "Account")
         newUserRecordName["recordName"] = id.recordName
