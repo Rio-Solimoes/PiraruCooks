@@ -8,13 +8,13 @@
 import SwiftUI
 import Parintins
 
-struct CartView: View {
+struct CartEditView: View {
     
     @EnvironmentObject private var themeManager: ThemeManager
     @State var menuController = MenuController.shared
     @State var alreadyInCart: Set<MenuItem> = []
     @State var viewModel = CartViewModel()
-    @State private var isCartEditViewPresented = false
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         NavigationStack {
@@ -29,9 +29,10 @@ struct CartView: View {
                             Spacer()
                             Button(action: {
                                 // Your edit action here
-                                isCartEditViewPresented = true
+                                presentationMode.wrappedValue.dismiss()
+                                print("Edit button tapped")
                             }) {
-                                Text("Editar")
+                                Text("Finalizar")
                             }
                         }
                         .foregroundStyle(.black)
@@ -43,6 +44,15 @@ struct CartView: View {
                         ForEach(Array(menuController.order.menuItems.keys), id: \.self) { dish in
                             VStack {
                                 HStack {
+                                    Button(action: {
+                                        menuController.order.menuItems.removeValue(forKey: dish)
+                                        print("to removendo")
+                                    }) {
+                                        Image(systemName: "trash")
+                                            .resizable()
+                                            .frame(width: getWidth() * 0.06, height: getWidth() * 0.06)
+                                        
+                                    }
                                     if dish.image != nil {
                                         Image(uiImage: dish.image!)
                                             .resizable()
@@ -56,7 +66,7 @@ struct CartView: View {
                                             .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
                                             .clipShape(RoundedRectangle(cornerRadius: 10))
                                     }
-                                    
+
                                     VStack(alignment: .leading) {
                                         Text(dish.name)
                                             .font(.body)
@@ -117,9 +127,6 @@ struct CartView: View {
             }
             //.navigationTitle("Cardápio")
             .toolbarTitleDisplayMode(.inline)
-        }
-        .fullScreenCover(isPresented: $isCartEditViewPresented) {
-            CartEditView()
         }
     }
 }
