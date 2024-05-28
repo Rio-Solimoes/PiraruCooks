@@ -11,13 +11,13 @@ struct ButtonView: View {
         } label: {
             Text(viewModel.text)
                 .fontWeight(.medium)
-                .foregroundColor(viewModel.enabled ? .white : .gray)
+                .foregroundColor(viewModel.enabled ? .white : Shared.Colors.darkGray.swiftUIColor)
                 .frame(maxWidth: .infinity, maxHeight: 44)
         }
         .disabled(!viewModel.enabled)
         .background(viewModel.enabled
                     ? themeManager.selectedTheme.primary.swiftUIColor
-                    : .gray.opacity(0.3))
+                    : Shared.Colors.mediumGray.swiftUIColor)
         .cornerRadius(8)
     }
 }

@@ -14,6 +14,7 @@ class CartViewModel {
     var currentSpacing: CGFloat = 12
     var currentTrailingSpace: CGFloat = 66
     var currentPaddingTop: CGFloat = 15
+    var showReviewOrder: Bool = false
     
     func addItemToSet(set: inout Set<MenuItem>, item: MenuItem) {
         set.insert(item)

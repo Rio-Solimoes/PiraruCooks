@@ -2,10 +2,12 @@ import SwiftUI
 import Parintins
 
 struct MenuView: View {
+    @Environment(TabBarViewModel.self) var tabBarViewModel
     @EnvironmentObject private var themeManager: ThemeManager
     @StateObject var cloudKit = CloudKitModel()
     @State var viewModel = MenuViewModel()
     @State private var isHomePresented = false
+    
     
     var body: some View {
         NavigationStack {
@@ -17,17 +19,20 @@ struct MenuView: View {
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            themeManager.selectedTheme.profileDefault.swiftUIImage
-                                .resizable()
-                                .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
+                            Button {
+                                tabBarViewModel.showSelectTheme = true
+                            } label: {
+                                themeManager.selectedTheme.profileDefault.swiftUIImage
+                                    .resizable()
+                                    .frame(width: getWidth() * 0.1, height: getWidth() * 0.1)
+                            }
                         }
                         .foregroundStyle(.black)
                         .padding(.vertical, 8)
                         .padding(.horizontal, 20)
                         VStack {
                             NavigationLink {
-                                Text("Endereços")
-                                    .font(.body)
+                                AddressView()
                             } label: {
                                 AddressCardView()
                             }
@@ -60,6 +65,10 @@ struct MenuView: View {
                         }
                     }
                     .onScroll(coordinateSpace: "scroll") { direction, offset in
+                        if viewModel.userIsScrolling {
+                            viewModel.userIsScrolling = false
+                            enableScrollAction(types: [.scrollPosition])
+                        }
                         if direction == .up {
                             if offset < 50 {
                                 viewModel.showNavigationBar = false
@@ -70,13 +79,12 @@ struct MenuView: View {
                             }
                         }
                     }
-                    .onWillScroll { offset in
-                        if viewModel.scrollToStartOffset == offset && viewModel.willScrollToCategory {
-                            viewModel.willScrollToCategory = false
-                            enableScrollAction(types: [.scrollPosition])
-                        }
-                        viewModel.scrollToStartOffset = offset
-                    }
+                    .simultaneousGesture(
+                        DragGesture()
+                            .onChanged { _ in
+                                viewModel.userIsScrolling = true
+                            }
+                    )
                     .onDidScroll { _ in
                         if viewModel.willScrollToCategory {
                             viewModel.willScrollToCategory = false

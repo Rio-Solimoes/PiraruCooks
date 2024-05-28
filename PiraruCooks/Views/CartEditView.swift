@@ -8,19 +8,35 @@
 import SwiftUI
 import Parintins
 
-struct CartView: View {
+struct CartEditView: View {
     
     @EnvironmentObject private var themeManager: ThemeManager
     @State var menuController = MenuController.shared
     @State var alreadyInCart: Set<MenuItem> = []
     @State var viewModel = CartViewModel()
-    @State private var isCartEditSelected = false
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         NavigationStack {
             ScrollViewReader { value in
                 ScrollView {
                     LazyVStack {
+                        HStack {
+                            Text("Carrinho")
+                                .font(.largeTitle)
+                                .fontWeight(.semibold)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Spacer()
+                            Button(action: {
+                                // Your edit action here
+                                presentationMode.wrappedValue.dismiss()
+                                print("Edit button tapped")
+                            }) {
+                                Text("Finalizar")
+                            }
+                        }
+                        .foregroundStyle(.black)
+                        .padding()
                         Text("Itens adicionados")
                             .font(.title2)
                             .fontWeight(.medium)
@@ -28,15 +44,14 @@ struct CartView: View {
                         ForEach(Array(menuController.order.menuItems.keys), id: \.self) { dish in
                             VStack {
                                 HStack {
-                                    if isCartEditSelected {
-                                        Button(action: {
-                                            menuController.order.menuItems.removeValue(forKey: dish)
-                                        }) {
-                                            Image(systemName: "minus.circle.fill")
-                                                .resizable()
-                                                .frame(width: getWidth() * 0.06, height: getWidth() * 0.06)
-                                                .foregroundStyle(.red)
-                                        }
+                                    Button(action: {
+                                        menuController.order.menuItems.removeValue(forKey: dish)
+                                        print("to removendo")
+                                    }) {
+                                        Image(systemName: "trash")
+                                            .resizable()
+                                            .frame(width: getWidth() * 0.06, height: getWidth() * 0.06)
+                                        
                                     }
                                     if dish.image != nil {
                                         Image(uiImage: dish.image!)
@@ -51,7 +66,7 @@ struct CartView: View {
                                             .frame(width: getWidth() * 0.25, height: getWidth() * 0.25)
                                             .clipShape(RoundedRectangle(cornerRadius: 10))
                                     }
-                                    
+
                                     VStack(alignment: .leading) {
                                         Text(dish.name)
                                             .font(.body)
@@ -65,20 +80,11 @@ struct CartView: View {
                                         Spacer()
                                         Text("R$ \(replaceDotWithComma(String(format: "%.2f", dish.price)))")
                                             .font(.subheadline)
-                                        HStack {
+                                        Stepper(value: Binding(
+                                            get: { menuController.order.menuItems[dish] ?? 0 },
+                                            set: { menuController.order.menuItems[dish] = $0 }
+                                        )) {
                                             Text("Quantidade: \(menuController.order.menuItems[dish] ?? 0)")
-                                                .font(.caption)
-                                            if isCartEditSelected {
-                                                Stepper("", onIncrement: {
-                                                    menuController.order.menuItems[dish]? += 1
-                                                    menuController.order.price += dish.price
-                                                }, onDecrement: {
-                                                    if menuController.order.menuItems[dish] ?? 1 > 1 {
-                                                        menuController.order.menuItems[dish]? -= 1
-                                                        menuController.order.price -= dish.price
-                                                    }
-                                                })
-                                            }
                                         }
                                     }
                                     
@@ -86,13 +92,13 @@ struct CartView: View {
                                     .padding(.horizontal, 8)
                                     .frame(height: getWidth() * 0.25)
                                     Spacer()
+                                    Image(systemName: "chevron.right")
                                 }
                                 .padding(.vertical, 8)
                                 .foregroundStyle(.black)
                                 Divider()
                                     .padding(.vertical, 8)
                             }
-                            .padding(.top, 16)
                         }
                         VStack(alignment: .leading) {
                             HStack {
@@ -114,47 +120,13 @@ struct CartView: View {
                             }
                             
                         }
-                        .padding(.top, 32)
                     }
                 }
                 .padding()
                 .coordinateSpace(name: "scroll")
             }
-            .navigationTitle("Sacola")
-            .toolbarTitleDisplayMode(.inlineLarge)
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button {
-                        viewModel.showReviewOrder = true
-                    } label: {
-                        Text("Continuar a Compra")
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                            .frame(width: 272, height: 36)
-                    }
-                    .background(themeManager.selectedTheme.primary.swiftUIColor)
-                    .cornerRadius(8)
-                    .padding(.bottom, 32)
-                }
-                ToolbarItem(placement: .primaryAction) {
-                    if !isCartEditSelected {
-                        Button(action: {
-                            isCartEditSelected = true
-                        }) {
-                            Text("Editar")
-                        }
-                    } else {
-                        Button(action: {
-                            isCartEditSelected = false
-                        }) {
-                            Text("Pronto")
-                        }
-                    }
-                }
-            }
-            .sheet(isPresented: $viewModel.showReviewOrder) {
-                ReviewOrderView()
-            }
+            //.navigationTitle("Cardápio")
+            .toolbarTitleDisplayMode(.inline)
         }
     }
 }
