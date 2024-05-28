@@ -117,6 +117,24 @@ struct CartView: View {
             }
             //.navigationTitle("Cardápio")
             .toolbarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button {
+                        viewModel.showReviewOrder = true
+                    } label: {
+                        Text("Confirmar Itens")
+                            .fontWeight(.medium)
+                            .foregroundColor(.white)
+                            .frame(width: 272, height: 36)
+                    }
+                    .background(themeManager.selectedTheme.primary.swiftUIColor)
+                    .cornerRadius(8)
+                    .padding(.bottom, 32)
+                }
+            }
+            .sheet(isPresented: $viewModel.showReviewOrder) {
+                ReviewOrderView()
+            }
         }
         .fullScreenCover(isPresented: $isCartEditViewPresented) {
             CartEditView()
