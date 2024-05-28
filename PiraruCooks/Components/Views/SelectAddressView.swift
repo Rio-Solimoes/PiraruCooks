@@ -48,11 +48,6 @@ struct SelectAddressView: View {
                 }
             }
             Spacer()
-            Button {
-                reviewOrderViewModel.showFinishOrder = true
-            } label: {
-                Text("Finalizar")
-            }
         }
     }
 }

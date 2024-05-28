@@ -9,6 +9,9 @@ import Foundation
 
 @Observable
 class ReviewOrderViewModel {
+    let priceOptions = ["Crédito", "Débito", "Pix", "Dinheiro"]
+    
     var selectedAddress: Address?
+    var selectedPaymentOption: String = "Crédito"
     var showFinishOrder: Bool = false
 }

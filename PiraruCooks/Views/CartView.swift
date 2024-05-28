@@ -133,14 +133,14 @@ struct CartView: View {
                     Button {
                         viewModel.showReviewOrder = true
                     } label: {
-                        Text("Revisar Pedido")
+                        Text("Confirmar Itens")
                             .fontWeight(.medium)
                             .foregroundColor(.white)
                             .frame(width: 272, height: 36)
                     }
                     .background(themeManager.selectedTheme.primary.swiftUIColor)
                     .cornerRadius(8)
-                    .padding(.bottom, 16)
+                    .padding(.bottom, 32)
                 }
             }
             .sheet(isPresented: $viewModel.showReviewOrder) {

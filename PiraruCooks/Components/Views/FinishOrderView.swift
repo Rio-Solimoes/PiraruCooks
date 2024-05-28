@@ -12,25 +12,46 @@ struct FinishOrderView: View {
     @State var reviewOrderViewModel: ReviewOrderViewModel
     
     var body: some View {
+        let selectedAddress = reviewOrderViewModel.selectedAddress
         VStack {
-            HStack {
-                Label("Opção de entrega", systemImage: "")
+            Text("Revisão do pedido")
+                .font(.title2)
+                .fontWeight(.semibold)
+                .padding(.bottom, 8)
+            HStack(alignment: .center) {
+                Image(systemName: "storefront")
+                Text("\(selectedAddress != nil ? "Entregar no endereço" : "Retirar na loja")")
+                    .fontWeight(.medium)
                 Spacer()
             }
-            if reviewOrderViewModel.selectedAddress != nil {
-                HStack {
-                    Label("Endereco de entrega", systemImage: "")
+            .padding(.vertical, 8)
+            if selectedAddress != nil {
+                HStack(alignment: .center) {
+                    Image(systemName: "\(selectedAddress!.category)")
+                    Text("\(selectedAddress!.street), \(selectedAddress!.number)")
+                        .fontWeight(.medium)
                     Spacer()
                 }
+                .padding(.vertical, 8)
             }
-            HStack {
-                Label("Opção de pagamento", systemImage: "")
+            HStack(alignment: .center) {
+                Image(systemName: "creditcard")
+                Text("Pagamento na entrega")
+                    .fontWeight(.medium)
                 Spacer()
+                Text("\(reviewOrderViewModel.selectedPaymentOption)")
+                    .font(.callout)
             }
-            HStack {
-                Label("Valor total", systemImage: "")
+            .padding(.vertical, 8)
+            HStack(alignment: .center) {
+                Image(systemName: "dollarsign.circle")
+                Text("Valor total")
+                    .fontWeight(.medium)
                 Spacer()
+                Text("Valor")
+                    .font(.callout)
             }
+            .padding(.vertical, 8)
             Spacer()
             ButtonView(viewModel: ButtonViewModel(text: "Fazer Pedido", action: {
                 reviewOrderViewModel.showFinishOrder = false
@@ -38,7 +59,6 @@ struct FinishOrderView: View {
             }))
             Button {
                 reviewOrderViewModel.showFinishOrder = false
-                dismiss()
             } label: {
                 Text("Alterar pedido")
                     .padding(16)
