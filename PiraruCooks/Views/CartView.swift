@@ -130,9 +130,17 @@ struct CartView: View {
             .toolbarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
-                    ButtonView(viewModel: ButtonViewModel(text: "Revisar Pedido", action: {
+                    Button {
                         viewModel.showReviewOrder = true
-                    }))
+                    } label: {
+                        Text("Revisar Pedido")
+                            .fontWeight(.medium)
+                            .foregroundColor(.white)
+                            .frame(width: 272, height: 36)
+                    }
+                    .background(themeManager.selectedTheme.primary.swiftUIColor)
+                    .cornerRadius(8)
+                    .padding(.bottom, 16)
                 }
             }
             .sheet(isPresented: $viewModel.showReviewOrder) {

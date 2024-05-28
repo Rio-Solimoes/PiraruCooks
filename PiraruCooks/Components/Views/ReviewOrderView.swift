@@ -8,8 +8,19 @@
 import SwiftUI
 
 struct ReviewOrderView: View {
+    @Environment(\.dismiss) var dismiss
+    @Environment(AddressViewModel.self) var addressViewModel
+    @State var viewModel = ReviewOrderViewModel()
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        SelectAddressView(reviewOrderViewModel: viewModel)
+            .onAppear {
+                viewModel.selectedAddress = addressViewModel.addresses.first
+            }
+            .sheet(isPresented: $viewModel.showFinishOrder) {
+                FinishOrderView(dismiss: dismiss, reviewOrderViewModel: viewModel)
+                    .presentationDetents([.medium])
+            }
     }
 }
 
