@@ -38,15 +38,15 @@ struct ReviewOrderView: View {
                                     Text(address.zipCode)
                                 }
                                 .font(.subheadline)
+                                
+                                Spacer()
+                                
+                                Image(systemName: "chevron.right")
+                                    .foregroundStyle(Shared.Colors.mediumGray.swiftUIColor)
+                                    .fontWeight(.semibold)
                             }
-                            
-                            Spacer()
-                            
-                            Image(systemName: "chevron.right")
-                                .foregroundStyle(Shared.Colors.mediumGray.swiftUIColor)
-                                .fontWeight(.semibold)
                         } else {
-                            HStack {
+                            HStack(spacing: 24) {
                                 Label("Rua Paulo Souza, 987", systemImage: "storefront")
                                     .padding()
                                 
