@@ -127,7 +127,7 @@ struct CartView: View {
                     Button {
                         viewModel.showReviewOrder = true
                     } label: {
-                        Text("Confirmar Itens")
+                        Text("Continuar a Compra")
                             .fontWeight(.medium)
                             .foregroundColor(.white)
                             .frame(width: 272, height: 36)

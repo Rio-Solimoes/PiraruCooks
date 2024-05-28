@@ -78,7 +78,7 @@ struct ReviewOrderView: View {
                 viewModel.showFinishOrder = true
             }))
             .padding()
-            .navigationTitle("Confirmar Itens")
+            .navigationTitle("Continuar a Compra")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
