@@ -23,6 +23,7 @@ struct PiraruCooksApp: App {
                 .environment(tabBarViewModel)
                 .environment(addressViewModel)
                 .tint(themeManager.selectedTheme.primary.swiftUIColor)
+                .preferredColorScheme(.light)
         }
     }
 }

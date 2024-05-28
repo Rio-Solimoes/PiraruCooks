@@ -56,7 +56,7 @@ struct EditAddressView: View {
                 Button {
                     presentationMode.wrappedValue.dismiss()
                 } label: {
-                    Text("Cancel")
+                    Text("Cancelar")
                 }
             }
             ToolbarItem(placement: .principal) {
@@ -77,7 +77,7 @@ struct EditAddressView: View {
                     addresses.append(newAddress)
                     presentationMode.wrappedValue.dismiss()
                 } label: {
-                    Text("Done")
+                    Text("Pronto")
                         .fontWeight(.semibold)
                 }
                 .disabled(!isFormValid)
