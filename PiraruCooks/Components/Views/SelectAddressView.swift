@@ -23,21 +23,28 @@ struct SelectAddressView: View {
     }
     
     var body: some View {
+        @Bindable var addressViewModel = addressViewModel
         VStack {
             Picker("Opção de Entrega", selection: $selectedAddress) {
                 Text("Entregar no endereço").tag("Entregar no endereço")
                 Text("Retirar na loja").tag("Retirar na loja")
             }
             .pickerStyle(.segmented)
-            .colorMultiply(themeManager.selectedTheme.primary.swiftUIColor)
+            .colorMultiply(.white)
             .padding()
             if selectedAddress == "Entregar no endereço" {
                 List {
-                    Section(header: Text("Endereço de entrega")) {
-                        ForEach(addressViewModel.addresses) { address in
-                            SelectAddressCardView(reviewOrderViewModel: reviewOrderViewModel, address: address)
+                    if !addressViewModel.addresses.isEmpty {
+                        Section(header: Text("Endereço de entrega")) {
+                            ForEach(addressViewModel.addresses) { address in
+                                SelectAddressCardView(reviewOrderViewModel: reviewOrderViewModel, address: address)
+                            }
                         }
                     }
+                    AddNewAddressSection(
+                        showEditAddressSheet: $addressViewModel.showEditAddressSheet,
+                        addresses: $addressViewModel.addresses
+                    )
                 }
             } else {
                 List {

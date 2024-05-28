@@ -10,6 +10,7 @@ import SwiftUI
 struct FinishOrderView: View {
     @State var dismiss: DismissAction
     @State var reviewOrderViewModel: ReviewOrderViewModel
+    @State var menuController = MenuController.shared
     
     var body: some View {
         let selectedAddress = reviewOrderViewModel.selectedAddress
@@ -48,12 +49,13 @@ struct FinishOrderView: View {
                 Text("Valor total")
                     .fontWeight(.medium)
                 Spacer()
-                Text("Valor")
+                Text("R$ \(replaceDotWithComma(String(format: "%.2f", menuController.order.price)))")
                     .font(.callout)
             }
             .padding(.vertical, 8)
             Spacer()
             ButtonView(viewModel: ButtonViewModel(text: "Fazer Pedido", action: {
+                menuController.order = Order()
                 reviewOrderViewModel.showFinishOrder = false
                 dismiss()
             }))

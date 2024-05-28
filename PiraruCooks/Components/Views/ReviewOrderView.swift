@@ -4,15 +4,16 @@ import Parintins
 struct ReviewOrderView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(AddressViewModel.self) var addressViewModel
+    @State var menuController = MenuController.shared
     @State var viewModel = ReviewOrderViewModel()
     
     var body: some View {
         NavigationStack {
             List {
                 Section(header: Text("Endereço de \(viewModel.selectedAddress != nil ? "Entrega" : "Retirada")")) {
-                    NavigationLink {
-                        SelectAddressView(reviewOrderViewModel: viewModel)
-                    } label: {
+                    ZStack {
+                        NavigationLink("", destination: SelectAddressView(reviewOrderViewModel: viewModel))
+                        Color.white
                         if let address = viewModel.selectedAddress {
                             HStack(spacing: 24) {
                                 if address.category == "Casa" {
@@ -37,6 +38,17 @@ struct ReviewOrderView: View {
                                     Text(address.zipCode)
                                 }
                                 .font(.subheadline)
+                            }
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.right")
+                                .foregroundStyle(Shared.Colors.mediumGray.swiftUIColor)
+                                .fontWeight(.semibold)
+                        } else {
+                            HStack {
+                                Label("Rua Paulo Souza, 987", systemImage: "storefront")
+                                    .padding()
                                 
                                 Spacer()
                                 
@@ -44,9 +56,6 @@ struct ReviewOrderView: View {
                                     .foregroundStyle(Shared.Colors.mediumGray.swiftUIColor)
                                     .fontWeight(.semibold)
                             }
-                        } else {
-                            Label("Rua Paulo Souza, 987", systemImage: "storefront")
-                                .padding()
                         }
                     }
                 }
@@ -61,9 +70,8 @@ struct ReviewOrderView: View {
                 Text("Total com a entrega")
                     .font(.headline)
                 Spacer()
-                Text("R$ 22,63 / 1 item")
+                Text("R$ \(replaceDotWithComma(String(format: "%.2f", menuController.order.price)))")
                     .font(.headline)
-                    .foregroundColor(.green)
             }
             .padding(.horizontal)
             ButtonView(viewModel: ButtonViewModel(text: "Revisar Pedido", action: {
@@ -72,6 +80,15 @@ struct ReviewOrderView: View {
             .padding()
             .navigationTitle("Confirmar Itens")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Cancelar")
+                    }
+                }
+            }
         }
         .onAppear {
             viewModel.selectedAddress = addressViewModel.addresses.first
